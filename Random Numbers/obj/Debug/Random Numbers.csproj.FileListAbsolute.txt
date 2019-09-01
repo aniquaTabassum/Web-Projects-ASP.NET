@@ -1,0 +1,10 @@
+C:\Users\aniqu\source\repos\Random Numbers\bin\Debug\Random Numbers.exe.config
+C:\Users\aniqu\source\repos\Random Numbers\bin\Debug\Random Numbers.exe
+C:\Users\aniqu\source\repos\Random Numbers\bin\Debug\Random Numbers.pdb
+C:\Users\aniqu\source\repos\Random Numbers\obj\Debug\Random Numbers.csprojAssemblyReference.cache
+C:\Users\aniqu\source\repos\Random Numbers\obj\Debug\Random_Numbers.Form1.resources
+C:\Users\aniqu\source\repos\Random Numbers\obj\Debug\Random_Numbers.Properties.Resources.resources
+C:\Users\aniqu\source\repos\Random Numbers\obj\Debug\Random Numbers.csproj.GenerateResource.cache
+C:\Users\aniqu\source\repos\Random Numbers\obj\Debug\Random Numbers.csproj.CoreCompileInputs.cache
+C:\Users\aniqu\source\repos\Random Numbers\obj\Debug\Random Numbers.exe
+C:\Users\aniqu\source\repos\Random Numbers\obj\Debug\Random Numbers.pdb
