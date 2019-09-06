@@ -10,7 +10,7 @@ namespace ReadingCat.Controllers
 {
     public class HomeController : Controller
     {
-        string connectionString = @"Data Source =(local)\sqle2012; Initial Catalog = ReadingCat; Integrated Security = True";
+        string connectionString = @"Data Source = DESKTOP-BKFDVUR\SQLEXPRESS; Initial Catalog = ReadingCat; Integrated Security = True";
         [HttpGet]
 
         public ActionResult Index()
@@ -22,7 +22,7 @@ namespace ReadingCat.Controllers
                 SqlDataAdapter sqlDataAdapter = new SqlDataAdapter("SELECT *FROM USERS", sqlConnection);
                 sqlDataAdapter.Fill(dataTable);
             }
-            return View();
+            return View(dataTable);
         }
 
         public ActionResult About()
