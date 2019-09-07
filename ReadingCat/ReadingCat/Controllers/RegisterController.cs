@@ -24,14 +24,16 @@ namespace ReadingCat.Controllers
             using (SqlConnection sqlConnection = new SqlConnection(connectionString))
             {
                 sqlConnection.Open();
-                string query = "INSERT INTO USERS VALUES (@username, @useremail,@password,null)";
+                string query = "INSERT INTO USERS VALUES (@username, @useremail, @password, null)";
                 SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
                 sqlCommand.Parameters.AddWithValue("@username", user.username);
                 sqlCommand.Parameters.AddWithValue("@useremail", user.useremail);
-                sqlCommand.Parameters.AddWithValue("password", user.password);
+                sqlCommand.Parameters.AddWithValue("@password", user.password);
+                string conpass = user.confirmPassword;
                 sqlCommand.ExecuteNonQuery();
             }
-                return View("");
+            return View("~/Views/Login/Login.cshtml");
+            
         }
 
     }
