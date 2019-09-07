@@ -1,4 +1,4 @@
-﻿
+﻿@model ReadingCat.Models.LoginModel
 @{
     Layout = null;
 }
@@ -17,14 +17,19 @@
         <div class="form">
             <form class="register-form">
             </form>
-            <form class="login-form">
-                @Html.TextBox("Username", null, new { placeholder = "Username", @class = "login.css" })
-                @Html.Password("Password", null, new { placeholder = "Password", @class = "login.css" })
-                <div class="form-submit">
-                    <button type="submit" value="Submit" class="submit" id="submit" name="submit" onclick="">Login</button>
-                </div>
-                <p class="message">Not registered? <a href="http://localhost:64907/Register/Register">Create an account</a></p>
-            </form>
+            @using (Html.BeginForm("Login", "Login", FormMethod.Post))
+            {
+        <form class="login-form">
+            @Html.TextBox("Username", null, new { placeholder = "Username", @class = "login.css" })
+            @Html.ValidationMessageFor(model => model.username);
+           @Html.Password("Password", null, new { placeholder = "Password", @class = "login.css" })
+           @Html.ValidationMessageFor(model => model.password);
+            <div class="form-submit">
+                <button type="submit" value="Submit" class="submit" id="submit" name="submit">Login</button>
+            </div>
+            <p class="message">Not registered? <a href="http://localhost:64907/Register/Register">Create an account</a></p>
+        </form>
+            }
         </div>
     </div>
  
