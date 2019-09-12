@@ -13,7 +13,7 @@ namespace ReadingCat.Controllers
         {
             return View();
         }
-        public ActionResult ProfileEdit()
+        public ActionResult ProfileEdit(int id)
         {
             return View();
         }

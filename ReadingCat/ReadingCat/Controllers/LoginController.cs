@@ -11,33 +11,35 @@ namespace ReadingCat.Controllers
 {
     public class LoginController : Controller
     {
-        string connectionString = @"Data Source = DESKTOP-BKFDVUR\SQLEXPRESS; Initial Catalog = ReadingCat; Integrated Security = True";
+       // string connectionString = @"Data Source = DESKTOP-BKFDVUR\SQLEXPRESS; Initial Catalog = ReadingCat; Integrated Security = True";
+        private int userid;
         // GET: Login
         [HttpGet]
         public ActionResult Login()
         {
-            return View(new LoginModel());
+            return View(new DatabaseCombinedWithOtherModel());
         }
         [HttpPost]
-        public ActionResult Login(LoginModel model)
+        public ActionResult Login(DatabaseCombinedWithOtherModel model)
         {
-            DataSet dataset = new DataSet();
             string realPassword = "";
             string paswordFromUser = "";
-            using (SqlConnection sqlConnection = new SqlConnection(connectionString))
-            {
-                sqlConnection.Open();
-                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter("SELECT password FROM USERS WHERE username = '"+model.username+"'", sqlConnection);
-                sqlDataAdapter.Fill(dataset);  
-                    realPassword = dataset.Tables[0].Rows[0].ItemArray[0].ToString();
-                paswordFromUser = model.password;
-             
 
-            }
+
+            string query = "SELECT password, userid FROM USERS WHERE username = '" + model.LoginModel.username + "'";
+            DataSet dataSet;
+            DatabaseModel databaseModel = model.DatabaseModel;
+            databaseModel = new DatabaseModel();
+            dataSet = databaseModel.selectFunction(query);
             if (realPassword == paswordFromUser)
-                return View("~/Views/Profile/Profile.cshtml");
+            {
+                userid = Convert.ToInt32(dataSet.Tables[0].Rows[0].ItemArray[1]);
+                model.LoginModel.userid = userid;
+                return View("~/Views/Profile/Profile.cshtml", model.LoginModel);
+            }
             else
                 return View();
         }
+
     }
 }

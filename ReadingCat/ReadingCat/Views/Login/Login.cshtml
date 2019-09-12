@@ -1,4 +1,4 @@
-﻿@model ReadingCat.Models.LoginModel
+﻿@model ReadingCat.Models.DatabaseCombinedWithOtherModel
 @{
     Layout = null;
 }
@@ -20,10 +20,11 @@
             @using (Html.BeginForm("Login", "Login", FormMethod.Post))
             {
         <form class="login-form">
-            @Html.TextBox("Username", null, new { placeholder = "Username", @class = "login.css" })
-            @Html.ValidationMessageFor(model => model.username);
-           @Html.Password("Password", null, new { placeholder = "Password", @class = "login.css" })
-           @Html.ValidationMessageFor(model => model.password);
+            @Html.EditorFor(model => model.LoginModel.username, new { htmlAttributes = new { @class = "login.css" } })
+            @Html.ValidationMessageFor(model => model.LoginModel.username);
+            @Html.PasswordFor(model => model.LoginModel.password, new { htmlAttributes = new { @class = "login.css" } })
+      
+            @Html.ValidationMessageFor(model => model.LoginModel.password);
             <div class="form-submit">
                 <button type="submit" value="Submit" class="submit" id="submit" name="submit">Login</button>
             </div>

@@ -1,4 +1,4 @@
-﻿
+﻿@model ReadingCat.Models.LoginModel
 @{
     Layout = null;
 }
@@ -138,7 +138,7 @@
 
         <div class="about">@Html.Label("Email", null, new { @class = "profile.css" })</div>
 
-     <a href="http://localhost:64907/Profile/ProfileEdit">   <button type="button" class="btn btn-light" id="editbutton" >Edit Info</button> </a>
+     <a href= "@Url.Action("ProfileEdit", "Profile", new {@id = @Model.userid})">   <button type="button" class="btn btn-light" id="editbutton" >Edit Info</button> </a>
 
         <img src="~/images/cutecat.gif" />
     </div>
