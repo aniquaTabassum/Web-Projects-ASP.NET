@@ -31,6 +31,9 @@ namespace ReadingCat.Controllers
             DatabaseModel databaseModel = model.DatabaseModel;
             databaseModel = new DatabaseModel();
             dataSet = databaseModel.selectFunction(query);
+            realPassword = dataSet.Tables[0].Rows[0].ItemArray[0].ToString();
+
+            paswordFromUser = model.LoginModel.password;
             if (realPassword == paswordFromUser)
             {
                 userid = Convert.ToInt32(dataSet.Tables[0].Rows[0].ItemArray[1]);

@@ -203,6 +203,7 @@
     <Content Include="Views\Profile\ProfileEdit.cshtml" />
     <Content Include="Views\Book\BookDetails.cshtml" />
     <Content Include="Views\Register\Register1.cshtml" />
+    <Content Include="Views\Profile\ProfileEdit1.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
