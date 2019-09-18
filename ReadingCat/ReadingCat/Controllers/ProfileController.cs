@@ -29,6 +29,7 @@ namespace ReadingCat.Controllers
                 user.username = dataSet.Tables[0].Rows[0].ItemArray[1].ToString();
                 user.useremail = dataSet.Tables[0].Rows[0].ItemArray[2].ToString();
                 user.password = dataSet.Tables[0].Rows[0].ItemArray[3].ToString();
+               // user.paths[0] = dataSet.Tables[0].Rows[0].ItemArray[4].ToString();
                 return View(user);
             }
 
@@ -48,7 +49,8 @@ namespace ReadingCat.Controllers
                     fileName = Path.GetFileName(file.FileName);
                     filePath = Path.Combine(Server.MapPath("~/images"), fileName);
                     file.SaveAs(filePath);
-                    query = "UPDATE USERS SET PASSWORD = '" + user.password + "', photo = '"+filePath+"' WHERE USERNAME = '" + user.username + "'";
+                    string toSave = "~/images/" + fileName;
+                    query = "UPDATE USERS SET PASSWORD = '" + user.password + "', photo = '"+toSave+"' WHERE USERNAME = '" + user.username + "'";
                     //ViewBag.Message("Uploaded file saved");
                 }
                 else
@@ -72,7 +74,7 @@ namespace ReadingCat.Controllers
             LoginModel loginModel = new LoginModel();
             loginModel.userid = Convert.ToInt32(dataSet.Tables[0].Rows[0].ItemArray[0]);
             loginModel.username = dataSet.Tables[0].Rows[0].ItemArray[1].ToString();
-           
+            loginModel.path = dataSet.Tables[0].Rows[0].ItemArray[4].ToString();
             return View("~/Views/Profile/Profile.cshtml", loginModel);
             
         }

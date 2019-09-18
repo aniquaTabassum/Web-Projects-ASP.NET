@@ -10,6 +10,7 @@ namespace ReadingCat.Models
         public User()
         {
             File = new List<HttpPostedFileBase>();
+            paths = new List<string>();
         }
         public int userid { get; set; }
         public string username { get; set; }
@@ -18,6 +19,7 @@ namespace ReadingCat.Models
         public string confirmPassword { get; set; }
 
         public List<HttpPostedFileBase> File { get; set; }
+        public List<string> paths { get; set; }
     }
 
 

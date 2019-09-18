@@ -26,7 +26,8 @@ namespace ReadingCat.Controllers
             string paswordFromUser = "";
 
 
-            string query = "SELECT password, userid FROM USERS WHERE username = '" + model.LoginModel.username + "'";
+            string query = "SELECT password, userid, photo FROM USERS WHERE username = '" + model.LoginModel.username + "'";
+            string photo = "";
             DataSet dataSet;
             DatabaseModel databaseModel = model.DatabaseModel;
             databaseModel = new DatabaseModel();
@@ -37,7 +38,9 @@ namespace ReadingCat.Controllers
             if (realPassword == paswordFromUser)
             {
                 userid = Convert.ToInt32(dataSet.Tables[0].Rows[0].ItemArray[1]);
+                photo = dataSet.Tables[0].Rows[0].ItemArray[2].ToString();
                 model.LoginModel.userid = userid;
+                model.LoginModel.path = photo;
                 return View("~/Views/Profile/Profile.cshtml", model.LoginModel);
             }
             else

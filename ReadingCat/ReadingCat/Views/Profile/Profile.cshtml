@@ -131,16 +131,28 @@
 
 
     <div class="sidenav">
+        @{
+            var img = Model.path;
+            if (img.IsEmpty())
+            { 
+                <img src="~/images/profile.png" class="profile" alt=" Image" />
 
-        <img src="~/images/profile.png" class="profile" />
+            }
+            else
+            {
+                <img src="@Url.Content(Model.path)" class="profile" alt=" Image" />
+            }
+        }
+
         <div class="about"> @Html.Label("Name", null, new { @class = "profile.css" })</div>
 
 
         <div class="about">@Html.Label("Email", null, new { @class = "profile.css" })</div>
 
-     <a href= "@Url.Action("ProfileEdit1", "Profile", new {@id = @Model.userid})">   <button type="button" class="btn btn-light" id="editbutton" >Edit Info</button> </a>
+        <a href="@Url.Action("ProfileEdit1", "Profile", new {@id = @Model.userid})">   <button type="button" class="btn btn-light" id="editbutton">Edit Info</button> </a>
 
         <img src="~/images/cutecat.gif" />
+        ~/images/Young_cats.jpg
     </div>
 
 
