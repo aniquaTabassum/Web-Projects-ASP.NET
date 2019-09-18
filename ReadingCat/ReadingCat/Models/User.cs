@@ -7,11 +7,17 @@ namespace ReadingCat.Models
 {
     public class User
     {
+        public User()
+        {
+            File = new List<HttpPostedFileBase>();
+        }
         public int userid { get; set; }
         public string username { get; set; }
         public string useremail { get; set; }
         public string password { get; set; }
         public string confirmPassword { get; set; }
+
+        public List<HttpPostedFileBase> File { get; set; }
     }
 
 

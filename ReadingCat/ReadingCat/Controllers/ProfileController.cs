@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Data;
 using ReadingCat.Models;
+using System.IO;
 
 namespace ReadingCat.Controllers
 {
@@ -36,7 +37,30 @@ namespace ReadingCat.Controllers
         [HttpPost]
         public ActionResult ProfileEdit1(User user)
         {
-            string query = "UPDATE USERS SET PASSWORD = '" + user.password + "' WHERE USERNAME = '" + user.username + "'";
+            string fileName = "";
+            string filePath = "";
+            var file = user.File[0];
+            string query = "";
+            try
+            {
+                if(file.ContentLength>0)
+                {
+                    fileName = Path.GetFileName(file.FileName);
+                    filePath = Path.Combine(Server.MapPath("~/images"), fileName);
+                    file.SaveAs(filePath);
+                    query = "UPDATE USERS SET PASSWORD = '" + user.password + "', photo = '"+filePath+"' WHERE USERNAME = '" + user.username + "'";
+                    //ViewBag.Message("Uploaded file saved");
+                }
+                else
+                {
+                    query = "UPDATE USERS SET PASSWORD = '" + user.password + "' WHERE USERNAME = '" + user.username + "'";
+                }
+            }
+            catch
+            {
+               // ViewBag.Message("Uploade file not saved");
+            }
+            //query = "UPDATE USERS SET PASSWORD = '" + user.password + "' WHERE USERNAME = '" + user.username + "'";
             DatabaseModel databaseModel = new DatabaseModel();
             databaseModel.update(query);
 
