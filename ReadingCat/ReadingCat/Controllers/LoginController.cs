@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using System.Data;
 using System.Data.SqlClient;
 using ReadingCat.Models;
+using ReadingCat.ViewModel;
+using System.Web.Routing;
 
 namespace ReadingCat.Controllers
 {
@@ -41,7 +43,17 @@ namespace ReadingCat.Controllers
                 photo = dataSet.Tables[0].Rows[0].ItemArray[2].ToString();
                 model.LoginModel.userid = userid;
                 model.LoginModel.path = photo;
-                return View("~/Views/Profile/Profile.cshtml", model.LoginModel);
+
+                LoginAndBookList loginAndBookList = new LoginAndBookList();
+                loginAndBookList.loginModel = new LoginModel();
+                loginAndBookList.loginModel = model.LoginModel;
+                loginAndBookList.loginModel.userid = userid;
+                //return View("~/Views/Profile/Profile.cshtml", loginAndBookList);
+                // return RedirectToAction("Profile", new { id = loginAndBookList });
+                //return RedirectToAction("Main", new RouteValueDictionary(
+                //new { controller = "ProfileController", action = "Profile", Id = loginAndBookList }));
+                return RedirectToAction("Profile", "Profile", new {id = userid } );
+
             }
             else
                 return View();

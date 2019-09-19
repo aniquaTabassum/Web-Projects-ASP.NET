@@ -6,15 +6,23 @@ using System.Web.Mvc;
 using System.Data;
 using ReadingCat.Models;
 using System.IO;
+using ReadingCat.ViewModel;
 
 namespace ReadingCat.Controllers
 {
     public class ProfileController : Controller
     {
-        // GET: Profile
-        public ActionResult Profile()
+        LoginAndBookList loginAndBookList = new LoginAndBookList();
+        BooksAndDatabase booksAndDatabase = new BooksAndDatabase();
+        [HttpGet]
+        public ActionResult Profile(int id)
         {
-            return View();
+            getReadList(id);
+            getPublishedList(id);
+            loginAndBookList.booksAndDatabase = booksAndDatabase;
+            loginAndBookList.loginModel = new LoginModel();
+            loginAndBookList.loginModel.userid = id;
+            return View(loginAndBookList);
         }
         public ActionResult ProfileEdit1(int id)
         {
@@ -75,8 +83,48 @@ namespace ReadingCat.Controllers
             loginModel.userid = Convert.ToInt32(dataSet.Tables[0].Rows[0].ItemArray[0]);
             loginModel.username = dataSet.Tables[0].Rows[0].ItemArray[1].ToString();
             loginModel.path = dataSet.Tables[0].Rows[0].ItemArray[4].ToString();
-            return View("~/Views/Profile/Profile.cshtml", loginModel);
+            LoginAndBookList loginAndBookList = new LoginAndBookList();
+            loginAndBookList.loginModel = loginModel;
+            return View("~/Views/Profile/Profile.cshtml", loginAndBookList);
             
+        }
+
+        private void getPublishedList(int id)
+        {
+            String query = "SELECT *FROM BOOKS WHERE USERID = " + id;
+            DataSet dataSet = new DataSet();
+            dataSet = booksAndDatabase.databaseModel.selectFunction(query);
+            if (dataSet.Tables[0].Rows.Count >= 1)
+            {
+                for (int i = 0; i < dataSet.Tables[0].Rows.Count; i++)
+                {
+                    Books books = new Books();
+                    books.bookId = Convert.ToInt32(dataSet.Tables[0].Rows[i].ItemArray[0]);
+                    books.bookName = dataSet.Tables[0].Rows[i].ItemArray[1].ToString();
+                    books.userId = Convert.ToInt32(dataSet.Tables[0].Rows[i].ItemArray[2]);
+                    books.bookCover = dataSet.Tables[0].Rows[i].ItemArray[4].ToString();
+                    booksAndDatabase.listOfBooks[1].Add(books);
+                }
+            }
+        }
+
+        private void getReadList(int id)
+        {
+            String query = "SELECT *FROM BOOKS WHERE BOOKID IN (SELECT BOOKID FROM READLOG WHERE USERID = "+id+")";
+            DataSet dataSet = new DataSet();
+            dataSet = booksAndDatabase.databaseModel.selectFunction(query);
+            if (dataSet.Tables[0].Rows.Count >= 1)
+            {
+                for (int i = 0; i < dataSet.Tables[0].Rows.Count; i++)
+                {
+                    Books books = new Books();
+                    books.bookId = Convert.ToInt32(dataSet.Tables[0].Rows[i].ItemArray[0]);
+                    books.bookName = dataSet.Tables[0].Rows[i].ItemArray[1].ToString();
+                    books.userId = Convert.ToInt32(dataSet.Tables[0].Rows[i].ItemArray[2]);
+                    books.bookCover = dataSet.Tables[0].Rows[i].ItemArray[4].ToString();
+                    booksAndDatabase.listOfBooks[0].Add(books);
+                }
+            }
         }
     }
 }
