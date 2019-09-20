@@ -1,0 +1,146 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>NewStory</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width" />
+    <title>BookDetails</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/css/newstory.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="~/css/newstory.css">
+</head>
+<body>
+    <div class="container-contact100">
+
+        <div class="wrap-contact100">
+            <form class="contact100-form validate-form">
+                <span class="contact100-form-title">
+                    Story Details
+                </span>
+
+
+                <div>
+                    <label class="label-input100" for="image">Upload Book Cover</label>
+                    <div class="container">
+
+                        <div class="well" data-bind="fileDrag: fileData">
+                            <div class="form-group row">
+
+                                <div class="col-md-6">
+                                    <input type="file">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                </div>
+
+                <label class="label-input100">Title</label>
+                <div class="wrap-input100 validate-input">
+                    <input id="title" class="input100" type="text">
+                    <span class="focus-input100"></span>
+                </div>
+
+                <label class="label-input100" for="email">Genre</label>
+                <div class="wrap-input100 validate-input">
+                    <input id="genre" class="input100" type="text">
+                    <span class="focus-input100"></span>
+                </div>
+
+
+                <label class="label-input100" for="message">Description</label>
+                <div class="wrap-input100 validate-input">
+                    <textarea id="description" class="input100" name="message"></textarea>
+                    <span class="focus-input100"></span>
+                </div>
+                <div class="row">
+                    <div class="col-md-4" style="">
+                        <div class="container-contact100-form-btn">
+                            <button class="contact100-form-btn">
+                                <span>
+                                    Cancel
+                                    <i class="zmdi zmdi-arrow-right m-l-8"></i>
+                                </span>
+                            </button>
+                        </div>
+
+                    </div>
+                    <div class="col-md-2"></div>
+                    <div class="col-md-6" style="padding-left:210px;">
+                        <div class="container-contact100-form-btn">
+                            <button class="contact100-form-btn">
+                                <span>
+                                    Confirm
+                                    <i class="zmdi zmdi-arrow-right m-l-8"></i>
+                                </span>
+                            </button>
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+            </form>
+        </div>
+    </div>
+
+    <script lang="">
+        $(function () {
+            var viewModel = {};
+            viewModel.fileData = ko.observable({
+                dataURL: ko.observable(),
+                // base64String: ko.observable(),
+            });
+            viewModel.multiFileData = ko.observable({
+                dataURLArray: ko.observableArray(),
+            });
+            viewModel.onClear = function (fileData) {
+                if (confirm('Are you sure?')) {
+                    fileData.clear && fileData.clear();
+                }
+            };
+            viewModel.debug = function () {
+                window.viewModel = viewModel;
+                console.log(ko.toJSON(viewModel));
+                debugger;
+            };
+            ko.applyBindings(viewModel);
+        });
+    </script>
+
+    <!--===============================================================================================-->
+    <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="vendor/animsition/js/animsition.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="vendor/bootstrap/js/popper.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="vendor/select2/select2.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="vendor/daterangepicker/moment.min.js"></script>
+    <script src="vendor/daterangepicker/daterangepicker.js"></script>
+    <!--===============================================================================================-->
+    <script src="vendor/countdowntime/countdowntime.js"></script>
+    <!--===============================================================================================-->
+    <script src="js/main.js"></script>
+
+
+
+
+</body>
+</html>

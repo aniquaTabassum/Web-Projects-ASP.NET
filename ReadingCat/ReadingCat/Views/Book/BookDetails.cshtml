@@ -1,40 +1,169 @@
 ﻿
 @{
-    Layout = null;
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <!DOCTYPE html>
 
 <html>
 <head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width" />
     <title>BookDetails</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="~/css/bookdetails.css">
-    <link rel="stylesheet" href="~/css/home.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-    <div> 
-        <div>
-            <div class="hovereffect">
-                <img src="~/Books/image10.jpg" class="bookcover" />
-                <div class="overlay">
-                    <a class="info" href="#">Read Now</a>
-                    <a class="info" href="#">Add to Library</a>
-                </div>
+    <div class="box">
+        <div class="row">
+            <div class="col-md-5">
             </div>
+            <div class="col-md-5">
+                <img src="~/Books/image11.jpg" />
             </div>
         </div>
-    <div class="center">
-        <h1>Title:</h1>
-        <h2>Writer:</h2>
-        <span class="fa fa-star checked"></span>
-        <span class="fa fa-star checked"></span>
-        <span class="fa fa-star checked"></span>
-        <span class="fa fa-star"></span>
-        <span class="fa fa-star"></span>
-        <h2>Summary:</h2>
-        <p>The above book is one of the best sellers...</p>
+        <div class="row">
+            <div class="col-md-5">
+
+            </div>
+            <div class="col-md-5">
+                <button class="btn btn-success" style="width:250px;">Add to Library</button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+
+            </div>
+            <!-- Get Rating Value here!-->
+            <div class="col-md-6">
+                <div class="rate">
+                    <input type="radio" id="star5" name="rate" value="5" />
+                    <label for="star5" title="text">5 stars</label>
+                    <input type="radio" id="star4" name="rate" value="4" />
+                    <label for="star4" title="text">4 stars</label>
+                    <input type="radio" id="star3" name="rate" value="3" />
+                    <label for="star3" title="text">3 stars</label>
+                    <input type="radio" id="star2" name="rate" value="2" />
+                    <label for="star2" title="text">2 stars</label>
+                    <input type="radio" id="star1" name="rate" value="1" />
+                    <label for="star1" title="text">1 star</label>
+                </div>
+            </div>
+
+        </div>
+        <br />
+        <div class="row" style="">
+            <div class="col-md-5" style="">
+
+            </div>
+            <div class="col-md-offset-4" style="font-weight:bold;margin-left:60px;font-size:14px;">
+                Views:
+            </div>
+            <div class="col-md-2" style="font-weight:bold;margin-left:60px;font-size:13px;">
+                Rating:
+            </div>
+
+        </div>
+        <div class="row" style="">
+            <div class="col-md-5" style="">
+
+            </div>
+            <!-- Change View Value here!-->
+            <div class="col-md-offset-4" style="font-weight:bold;margin-left:60px;">
+                10M<a href="#">
+                    <span class="glyphicon glyphicon-eye-open"></span>
+                </a>
+            </div>
+            <!-- Change Rating Value here!-->
+            <div class="col-md-2" style="font-weight:bold;margin-left:69px;">
+                5 <a href="#">
+                    <span class="glyphicon glyphicon-star"></span>
+                </a>
+            </div>
+
+        </div>
+
+        <br /><br /><br />
+        <div class="row">
+            <div class="col-md-6" style="margin-left:45px;">
+                <div style="font-weight:bold;">Genre: <p><!-- Change Genre here!--></p></div>
+            </div>
+        </div>
+        <br />
+        <div class="row" style="margin-left:30px;">
+            <div class="col-md-6">
+                <div style="font-weight:bold;">Summary:<p><!-- Change Summary here!--></p></div>
+            </div>
+        </div>
+        <br /><br /><br />
+        <!-- Table consisting of all chapters-->
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="table-wrapper-scroll-y my-custom-scrollbar">
+
+                    <table class="table table-bordered table-striped mb-0">
+                        <thead>
+                            <tr>
+                                <th scope="col">Chapter</th>
+                                <th scope="col">Chapter Name</th>
+
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>Mark</td>
+
+
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>Jacob</td>
+
+
+                            </tr>
+                            <tr>
+                                <th scope="row">3</th>
+                                <td>Larry</td>
+
+                            </tr>
+                            <tr>
+                                <th scope="row">4</th>
+                                <td>Mark</td>
+
+
+                            </tr>
+                            <tr>
+                                <th scope="row">5</th>
+                                <td>Jacob</td>
+
+
+                            </tr>
+                            <tr>
+                                <th scope="row">6</th>
+                                <td>Larry</td>
+
+
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
     </div>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
 </html>

@@ -96,6 +96,11 @@ namespace ReadingCat.Controllers
             
         }
 
+        public ActionResult NewStory()
+        {
+            return View();
+        }
+
         private void getPublishedList(int id)
         {
             String query = "SELECT *FROM BOOKS WHERE USERID = " + id;

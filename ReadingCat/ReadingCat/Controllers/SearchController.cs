@@ -14,9 +14,9 @@ namespace ReadingCat.Controllers
         SearchResults searchResults = new SearchResults();
         // GET: Search
         [HttpPost]
-        public ActionResult Index(LoginAndBookList loginAndBookList)
+        public ActionResult Index(string id)
         {
-            string searchString = loginAndBookList.loginModel.username;
+            string searchString = id;
             searchString.Trim();
             string[] arrayOfString = searchString.Split(new char[0]);
             if(arrayOfString.Length == 1)
