@@ -1,4 +1,4 @@
-﻿
+﻿@model ReadingCat.Models.Books
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -23,7 +23,7 @@
             <div class="col-md-5">
             </div>
             <div class="col-md-5">
-                <img src="~/Books/image11.jpg" />
+                <img src="@Url.Content(Model.bookCover)" />
             </div>
         </div>
         <div class="row">
