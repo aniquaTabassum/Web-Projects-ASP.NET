@@ -14,14 +14,17 @@ namespace ReadingCat.Controllers
     {
         LoginAndBookList loginAndBookList = new LoginAndBookList();
         BooksAndDatabase booksAndDatabase = new BooksAndDatabase();
+        string pathName = "";
         [HttpGet]
         public ActionResult Profile(int id)
         {
             getReadList(id);
             getPublishedList(id);
+            getProfilePicture(id);
             loginAndBookList.booksAndDatabase = booksAndDatabase;
             loginAndBookList.loginModel = new LoginModel();
             loginAndBookList.loginModel.userid = id;
+            loginAndBookList.loginModel.path = pathName;
             return View(loginAndBookList);
         }
         public ActionResult ProfileEdit1(int id)
@@ -85,6 +88,10 @@ namespace ReadingCat.Controllers
             loginModel.path = dataSet.Tables[0].Rows[0].ItemArray[4].ToString();
             LoginAndBookList loginAndBookList = new LoginAndBookList();
             loginAndBookList.loginModel = loginModel;
+
+           
+            int id = (int)System.Web.HttpContext.Current.Session["Id"];
+            return RedirectToAction("Profile", "Profile", new { id = id });
             return View("~/Views/Profile/Profile.cshtml", loginAndBookList);
             
         }
@@ -124,6 +131,18 @@ namespace ReadingCat.Controllers
                     books.bookCover = dataSet.Tables[0].Rows[i].ItemArray[4].ToString();
                     booksAndDatabase.listOfBooks[0].Add(books);
                 }
+            }
+        }
+
+        private void getProfilePicture(int id)
+        {
+            String query = "SELECT PHOTO FROM USERS WHERE USERID = " + id; ;
+            DataSet dataSet = new DataSet();
+            dataSet = booksAndDatabase.databaseModel.selectFunction(query);
+            if (dataSet.Tables[0].Rows.Count >= 1)
+            {
+                pathName = dataSet.Tables[0].Rows[0].ItemArray[0].ToString();
+                
             }
         }
     }

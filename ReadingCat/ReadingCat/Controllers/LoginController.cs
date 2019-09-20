@@ -48,12 +48,10 @@ namespace ReadingCat.Controllers
                 loginAndBookList.loginModel = new LoginModel();
                 loginAndBookList.loginModel = model.LoginModel;
                 loginAndBookList.loginModel.userid = userid;
-                //return View("~/Views/Profile/Profile.cshtml", loginAndBookList);
-                // return RedirectToAction("Profile", new { id = loginAndBookList });
-                //return RedirectToAction("Main", new RouteValueDictionary(
-                //new { controller = "ProfileController", action = "Profile", Id = loginAndBookList }));
+                Session["Id"] = loginAndBookList.loginModel.userid;
+           
                 return RedirectToAction("Profile", "Profile", new {id = userid } );
-
+             
             }
             else
                 return View();
