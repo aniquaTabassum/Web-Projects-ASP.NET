@@ -1,4 +1,4 @@
-﻿@model ReadingCat.ViewModel.LoginAndBookList
+﻿@model ReadingCat.ViewModel.SearchResults
 @{
     Layout = null;
 }
@@ -120,35 +120,22 @@
                 <a href="#">Logout</a>
             </div>
         </div>
-        <div class="search-container">
-           
-            @using (Html.BeginForm("Index", "Search", FormMethod.Post, new { encType = "multipart/form-data" }))
-            {
-                          @Html.AntiForgeryToken()
-
-                
-                           @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                    
-                            @Html.EditorFor(model => model.loginModel.username, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.loginModel.username, "", new { @class = "text-danger" })
-                           <button type="submit"><i class="fa fa-search"></i></button>
-            }
-        </div>
+        
     </div>
 
 
 
     <div class="sidenav">
         @{
-            var img = Model.loginModel.path;
-            if (img.IsEmpty())
+            var img = Session["Picture"];
+            if (img == null)
             {
                 <img src="~/images/profile.png" class="profile" alt=" Image" />
 
             }
             else
             {
-                <img src="@Url.Content(Model.loginModel.path)" class="profile" alt=" Image" />
+                <img src="@Url.Content(img.ToString())" class="profile" alt=" Image" />
             }
         }
 
@@ -157,40 +144,30 @@
 
         <div class="about">@Html.Label("Email", null, new { @class = "profile.css" })</div>
 
-        <a href="@Url.Action("ProfileEdit1", "Profile", new {@id = @Model.loginModel.userid})">   <button type="button" class="btn btn-light" id="editbutton">Edit Info</button> </a>
+        <a href="@Url.Action("ProfileEdit1", "Profile", new {@id = Session["Id"]})">   <button type="button" class="btn btn-light" id="editbutton">Edit Info</button> </a>
 
         <img src="~/images/cutecat.gif" />
 
     </div>
 
 
-    <h3 class="headingprofile">Library</h3>
+    <h3 class="headingprofile"> Search By Tag Results</h3>
     <div class="container">
         <div class="row">
             <div class="MultiCarousel2" data-items="1,3,5,6" data-slide="1" id="MultiCarousel2" data-interval="1000">
                 <div class="MultiCarousel2-inner">
 
-                    @for (int i = 0; i < Model.booksAndDatabase.listOfBooks[0].Count; i++)
+                    @for (int i = 0; i < Model.searchByTag.Count; i++)
                     {
                         <div class="item">
                             <div class="pad15">
                                 <div class="hovereffect">
                                     @{
-                                        var selectedId = Model.booksAndDatabase.listOfBooks[0][i].bookId;
+                                        var selectedId = Model.searchByTag[i].bookId;
                                     }
-                                    <!--  <img src="@Url.Content(Model.booksAndDatabase.listOfBooks[1][i].bookCover)" class="img-responsive" />-->
-                                    <a href="@Url.Action("Index", "ReadBook", new { @id = selectedId })"> <img src="@Url.Content(Model.booksAndDatabase.listOfBooks[1][i].bookCover)" class="img-responsive" /> </a> -->
-                                    <!-- @using (Html.BeginForm("Index", "ReadBook", new { @id = selectedId }, FormMethod.Post, new { encType = "multipart/form-data" }))
-                                    {
-                                         @Html.HiddenFor(model => model.booksAndDatabase.listOfBooks[0][i].bookId, new { @Value = selectedId })
-                                         <Input type="submit"><img src="@Url.Content(Model.booksAndDatabase.listOfBooks[0][i].bookCover)" class="img-responsive" />
-                                    }
-                                     -->
-                                    <!--<div class="overlay">
-                                        <h2>Genre:</h2>
-                                        <a class="info" href="#">Read</a>
-                                    </div>
-                                    -->
+                                   
+                                    <a href="@Url.Action("Index", "ReadBook", new { @id = selectedId })"> <img src="@Url.Content(Model.searchByTag[i].bookCover)" class="img-responsive" /> </a> -->
+                                   
                                 </div>
                             </div>
                         </div>
@@ -207,47 +184,7 @@
 
 
 
-    <h3 class="headingprofile2">Published Stories</h3>
-    <div class="container">
-        <div class="row">
-            <div class="MultiCarousel3" data-items="1,3,5,6" data-slide="1" id="MultiCarousel3" data-interval="1000">
-                <div class="MultiCarousel3-inner">
-                    @for (int i = 0; i < Model.booksAndDatabase.listOfBooks[1].Count; i++)
-                    {
-                        <div class="item">
-                            <div class="pad15">
-                                <div class="hovereffect">
-
-                                    @{
-                                        var selectedId = Model.booksAndDatabase.listOfBooks[1][i].bookId;
-                                    }
-                                    <!--  <img src="@Url.Content(Model.booksAndDatabase.listOfBooks[1][i].bookCover)" class="img-responsive" />-->
-                                    <a href="@Url.Action("Index", "ReadBook", new {@id = selectedId})"> <img src="@Url.Content(Model.booksAndDatabase.listOfBooks[1][i].bookCover)" class="img-responsive" /> </a> -->
-                                   <!-- @using (Html.BeginForm("Index", "ReadBook",new { @id = selectedId}, FormMethod.Post, new { encType = "multipart/form-data" }))
-                                    {
-                                        @Html.HiddenFor(model => model.booksAndDatabase.listOfBooks[1][i].bookId, new { @Value = selectedId})
-                                        <Input type="submit"><img src="@Url.Content(Model.booksAndDatabase.listOfBooks[1][i].bookCover)" class="img-responsive" />
-                                    }
-                                    -->
-
-                                    <!--<div class="overlay">
-                                        <h2>Genre:</h2>
-                                        <a class="info" href="#">Read</a>
-                                    </div>
-                                    -->
-                                </div>
-                            </div>
-                        </div>
-                    }
-
-
-                    <button class="btn btn-primary leftLst"><</button>
-                    <button class="btn btn-primary rightLst">></button>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    
 
     <script>
         $(document).ready(function () {
@@ -476,3 +413,4 @@
 
 </body>
 </html>
+

@@ -49,7 +49,7 @@ namespace ReadingCat.Controllers
                 loginAndBookList.loginModel = model.LoginModel;
                 loginAndBookList.loginModel.userid = userid;
                 Session["Id"] = loginAndBookList.loginModel.userid;
-           
+                Session["Picture"] = loginAndBookList.loginModel.path;
                 return RedirectToAction("Profile", "Profile", new {id = userid } );
              
             }
