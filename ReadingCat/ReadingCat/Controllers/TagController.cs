@@ -17,7 +17,7 @@ namespace ReadingCat.Controllers
         int returnedRows;
         // GET: Tag
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult ViewTags()
         {
             getTags();
             returnedRows = dataSet.Tables[0].Rows.Count;
@@ -26,27 +26,31 @@ namespace ReadingCat.Controllers
         }
 
         [HttpPost]
-        public string Index(Tags tags)
+        public ActionResult ViewTags(Tags tags)
         {
             if(tags.listOfTags.Count(m => m.isSelected) == 0)
             {
-                return "Nothing Selected";
+                return View(tags);
             }
 
             else
             {
-                StringBuilder sb = new StringBuilder();
-                sb.Append("You selected ");
+
+                DatabaseModel databaseModel = new DatabaseModel();
+
+                int currentUser = (int)System.Web.HttpContext.Current.Session["Id"];
 
                 foreach (Tags tag in tags.listOfTags)
                 {
+                    
                     if(tag.isSelected)
                     {
-                        sb.Append(tag.tagName + " ");
+                        string query = "INSERT INTO USERTAG VALUES (" + System.Web.HttpContext.Current.Session["Id"] + "," + tag.tagId + ")";
+                        databaseModel.insert(query);
                     }
                 }
 
-                return sb.ToString();
+                return RedirectToAction("Profile", "Profile", new { id = currentUser});
             }
         }
         private void getTags()
@@ -68,6 +72,17 @@ namespace ReadingCat.Controllers
                 tag.isSelected = false;
                 tags.listOfTags.Add(tag);
             }
+        }
+
+        private void addTags()
+        {
+            DatabaseModel databaseModel = new DatabaseModel();
+            for(int i=0; i<tags.listOfTags.Count;i++)
+            {
+                string query = "INSERT INTO USERTAG VALUES (" + System.Web.HttpContext.Current.Session["Id"] + "," + tags.listOfTags[i].tagId + ")";
+                databaseModel.insert(query);
+            }
+            
         }
     }
 }

@@ -161,6 +161,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="css\bookdetails.css" />
+    <Content Include="css\catpattern.png" />
     <Content Include="css\catwallpaper.png" />
     <Content Include="css\editprofile.css" />
     <Content Include="css\home.css" />
@@ -168,6 +169,7 @@
     <Content Include="css\newstory.css" />
     <Content Include="css\profile.css" />
     <Content Include="css\register.css" />
+    <Content Include="css\tag.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -186,6 +188,7 @@
     <Content Include="images\Books\image9.jpg" />
     <Content Include="images\caticon.jpg" />
     <Content Include="images\catlogo.png" />
+    <Content Include="images\catpattern.png" />
     <Content Include="images\coffee.gif" />
     <Content Include="images\cover.jpg" />
     <Content Include="images\cutecat.gif" />
@@ -225,7 +228,7 @@
     <Content Include="Views\Book\BookDetails.cshtml" />
     <Content Include="Views\Register\Register1.cshtml" />
     <Content Include="Views\Profile\ProfileEdit1.cshtml" />
-    <Content Include="Views\Tag\Index.cshtml" />
+    <Content Include="Views\Tag\ViewTags.cshtml" />
     <Content Include="Views\Search\Index.cshtml" />
     <Content Include="Views\Profile\NewStory.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />

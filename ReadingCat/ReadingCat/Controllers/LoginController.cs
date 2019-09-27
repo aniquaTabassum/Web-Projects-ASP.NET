@@ -50,12 +50,30 @@ namespace ReadingCat.Controllers
                 loginAndBookList.loginModel.userid = userid;
                 Session["Id"] = loginAndBookList.loginModel.userid;
                 Session["Picture"] = loginAndBookList.loginModel.path;
-                return RedirectToAction("Profile", "Profile", new {id = userid } );
-             
+
+                Boolean newUser = checkTags();
+                if (newUser)
+                {
+                   return RedirectToAction("ViewTags", "Tag");
+                }
+                else
+                {
+                    return RedirectToAction("Profile", "Profile", new { id = userid });
+                }
             }
             else
                 return View();
         }
 
+        private Boolean checkTags()
+        {
+            string query = "SELECT *FROM USERTAG WHERE USERID = " + System.Web.HttpContext.Current.Session["Id"];
+            DatabaseModel database = new DatabaseModel();
+            DataSet set = database.selectFunction(query);
+            if (set.Tables[0].Rows.Count == 0)
+                return true;
+            else
+                return false;
+        }
     }
 }
