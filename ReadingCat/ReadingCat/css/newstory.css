@@ -195,6 +195,7 @@ iframe {
     justify-content: center;
     align-items: center;
     padding: 15px;
+   
 }
 
 .wrap-contact100 {
@@ -218,7 +219,8 @@ iframe {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    margin: 0 auto;
+    margin:0 auto;
+
 }
 
 .contact100-form-title {
@@ -512,9 +514,9 @@ textarea.input100 {
 .container {
     width: 600px;
     padding: 0px;
-    height: 70px;
+    height:70px;
 }
-
-    .container btn {
-        background-color: black;
-    }
+.container btn
+{
+    background-color:black;
+}

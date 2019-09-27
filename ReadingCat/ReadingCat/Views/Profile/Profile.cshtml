@@ -91,7 +91,8 @@
             margin-left: -50px;
         }
     </style>
-    <link rel="stylesheet" href="~/css/profile.css">
+ 
+    <link rel="stylesheet" href="~/css/home.css">
 </head>
 <body>
 
@@ -136,11 +137,12 @@
 
     @if ((int)System.Web.HttpContext.Current.Session["Id"] == Model.loginModel.userid)
     {
-        <h3 class="headingprofile2">Library</h3>
+        <h3 class="heading">Continue Reading</h3>
+        <h4 class="heading2">Find more in your Library</h4>
         <div class="container">
             <div class="row">
-                <div class="MultiCarousel3" data-items="1,3,5,6" data-slide="1" id="MultiCarousel3" data-interval="1000">
-                    <div class="MultiCarousel3-inner">
+                <div class="MultiCarousel" data-items="1,3,5,6" data-slide="1" id="MultiCarousel" data-interval="1000">
+                    <div class="MultiCarousel-inner">
                         @for (int i = 0; i < Model.booksAndDatabase.listOfBooks[0].Count; i++)
                         {
                             <div class="item">
@@ -151,27 +153,28 @@
                                             var selectedId = Model.booksAndDatabase.listOfBooks[0][i].bookId;
                                         }
 
-                                        <a href="@Url.Action("BookDetails", "Book", new { @id = selectedId })"> <img src="@Url.Content(Model.booksAndDatabase.listOfBooks[0][i].bookCover)" class="img-responsive" /> </a>
-
-
+                                        <img src="@Url.Content(Model.booksAndDatabase.listOfBooks[0][i].bookCover) " class="img-responsive" />
+                                        <div class="overlay">
+                                            <h2>Genre:</h2>
+                                            <a href="@Url.Action("BookDetails", "Book", new { @id = selectedId })">Read</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         }
-
-
-                        <button class="btn btn-primary leftLst"><</button>
-                        <button class="btn btn-primary rightLst">></button>
                     </div>
+                    <button class="btn btn-primary leftLst"><</button>
+                    <button class="btn btn-primary rightLst">></button>
                 </div>
             </div>
         </div>
     }
-    <h3 class="headingprofile2">Published Stories</h3>
+    <h3 class="heading">Continue Reading</h3>
+    <h4 class="heading2">Find more in your Library</h4>
     <div class="container">
         <div class="row">
-            <div class="MultiCarousel3" data-items="1,3,5,6" data-slide="1" id="MultiCarousel3" data-interval="1000">
-                <div class="MultiCarousel3-inner">
+            <div class="MultiCarousel" data-items="1,3,5,6" data-slide="1" id="MultiCarousel" data-interval="1000">
+                <div class="MultiCarousel-inner">
                     @for (int i = 0; i < Model.booksAndDatabase.listOfBooks[1].Count; i++)
                     {
                         <div class="item">
@@ -181,56 +184,51 @@
                                     @{
                                         var selectedId = Model.booksAndDatabase.listOfBooks[1][i].bookId;
                                     }
-                                    <!--  <img src="@Url.Content(Model.booksAndDatabase.listOfBooks[1][i].bookCover)" class="img-responsive" />-->
-                                    <a href="@Url.Action("BookDetails", "Book", new {@id = selectedId})"> <img src="@Url.Content(Model.booksAndDatabase.listOfBooks[1][i].bookCover)" class="img-responsive" /> </a> -->
-                                    <!-- @using (Html.BeginForm("Index", "ReadBook",new { @id = selectedId}, FormMethod.Post, new { encType = "multipart/form-data" }))
-                                     {
-                                         @Html.HiddenFor(model => model.booksAndDatabase.listOfBooks[1][i].bookId, new { @Value = selectedId})
-                                         <Input type="submit"><img src="@Url.Content(Model.booksAndDatabase.listOfBooks[1][i].bookCover)" class="img-responsive" />
-                                     }
-                                     -->
-                                    <!--<div class="overlay">
+
+                                    <img src="@Url.Content(Model.booksAndDatabase.listOfBooks[1][i].bookCover) " class="img-responsive" />
+                                    <div class="overlay">
                                         <h2>Genre:</h2>
-                                        <a class="info" href="#">Read</a>
+                                        <a href="@Url.Action("BookDetails", "Book", new { @id = selectedId })">Read</a>
                                     </div>
-                                    -->
                                 </div>
                             </div>
                         </div>
                     }
-
-
-                    <button class="btn btn-primary leftLst"><</button>
-                    <button class="btn btn-primary rightLst">></button>
                 </div>
+                <button class="btn btn-primary leftLst"><</button>
+                <button class="btn btn-primary rightLst">></button>
             </div>
         </div>
     </div>
     @for (int j = 0; j < Model.booksAndDatabase.tagList.Count; j++)
     {
+        <h3 class="heading">Continue Reading</h3>
         <h3 class="headingprofile2">Recommenation by @Model.booksAndDatabase.tagList[j].tagName</h3>
         <div class="container">
             <div class="row">
-                <div class="MultiCarousel3" data-items="1,3,5,6" data-slide="1" id="MultiCarousel3" data-interval="1000">
-                    <div class="MultiCarousel3-inner">
-
+                <div class="MultiCarousel" data-items="1,3,5,6" data-slide="1" id="MultiCarousel" data-interval="1000">
+                    <div class="MultiCarousel-inner">
                         @for (int i = 0; i < Model.booksAndDatabase.recommendation[j].Count; i++)
+
                         {
                             <div class="item">
                                 <div class="pad15">
                                     <div class="hovereffect">
-                                        <a href="@Url.Action("BookDetails", "Book", new { @id = Model.booksAndDatabase.recommendation[j][i].bookId })"> <img src="@Url.Content(Model.booksAndDatabase.recommendation[j][i].bookCover)" class="img-responsive" /> </a>
 
 
+                                        <img src="@Url.Content(Model.booksAndDatabase.recommendation[j][i].bookCover)" class="img-responsive" />
+
+                                        <div class="overlay">
+                                            <h2>Genre:</h2>
+                                            <a href="@Url.Action("BookDetails", "Book", new { @id = Model.booksAndDatabase.recommendation[j][i].bookCover })">Read</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         }
-                        
-
-                        <button class="btn btn-primary leftLst"><</button>
-                        <button class="btn btn-primary rightLst">></button>
                     </div>
+                    <button class="btn btn-primary leftLst"><</button>
+                    <button class="btn btn-primary rightLst">></button>
                 </div>
             </div>
         </div>
@@ -238,8 +236,8 @@
 
     <script>
         $(document).ready(function () {
-            var itemsMainDiv = ('.MultiCarousel2');
-            var itemsDiv = ('.MultiCarousel2-inner');
+            var itemsMainDiv = ('.MultiCarousel');
+            var itemsDiv = ('.MultiCarousel-inner');
             var itemWidth = "";
 
             $('.leftLst, .rightLst').click(function () {
@@ -274,7 +272,7 @@
                     var itemNumbers = $(this).find(itemClass).length;
                     btnParentSb = $(this).parent().attr(dataItems);
                     itemsSplit = btnParentSb.split(',');
-                    $(this).parent().attr("id", "MultiCarousel2" + id);
+                    $(this).parent().attr("id", "MultiCarousel" + id);
 
 
                     if (bodyWidth >= 1200) {
@@ -345,120 +343,42 @@
         });
     </script>
 
+    <br />
+
+    <!-- Footer -->
+    <footer class="page-footer">
+
+        <!-- Footer Text -->
+        <div class="container-fluid text-center text-md-left">
+
+            <!-- Grid row -->
+            <div class="row">
+                <!-- Grid column -->
+                <!-- Content -->
+                <p class="footerpg">Reading Cat takes everything you love about storytelling,</p>
+                <p class="footerpg">and turns it into a social, on-the-go experience.</p>
+                <p class="footerpg">The result is a one-of-a-kind adventure in creation and discovery.</p>
+                <!-- Grid column -->
+
+            </div>
+            <!-- Grid row -->
+
+        </div>
+        <!-- Footer Text -->
+        <!-- Copyright -->
+        <div class="footer-copyright text-center py-3">
+            © 2018 Copyright:
+            <a href=""> ReadingCat.com</a>
+        </div>
+        <!-- Copyright -->
+
+    </footer>
+    <!-- Footer -->
 
 
-
-    <script>
-        $(document).ready(function () {
-            var itemsMainDiv = ('.MultiCarousel3');
-            var itemsDiv = ('.MultiCarousel3-inner');
-            var itemWidth = "";
-
-            $('.leftLst, .rightLst').click(function () {
-                var condition = $(this).hasClass("leftLst");
-                if (condition)
-                    click(0, this);
-                else
-                    click(1, this)
-            });
-
-            ResCarouselSize();
-
-
-
-
-            $(window).resize(function () {
-                ResCarouselSize();
-            });
-
-            //this function define the size of the items
-            function ResCarouselSize() {
-                var incno = 0;
-                var dataItems = ("data-items");
-                var itemClass = ('.item');
-                var id = 0;
-                var btnParentSb = '';
-                var itemsSplit = '';
-                var sampwidth = $(itemsMainDiv).width();
-                var bodyWidth = $('body').width();
-                $(itemsDiv).each(function () {
-                    id = id + 1;
-                    var itemNumbers = $(this).find(itemClass).length;
-                    btnParentSb = $(this).parent().attr(dataItems);
-                    itemsSplit = btnParentSb.split(',');
-                    $(this).parent().attr("id", "MultiCarousel3" + id);
-
-
-                    if (bodyWidth >= 1200) {
-                        incno = itemsSplit[3];
-                        itemWidth = sampwidth / incno;
-                    }
-                    else if (bodyWidth >= 992) {
-                        incno = itemsSplit[2];
-                        itemWidth = sampwidth / incno;
-                    }
-                    else if (bodyWidth >= 768) {
-                        incno = itemsSplit[1];
-                        itemWidth = sampwidth / incno;
-                    }
-                    else {
-                        incno = itemsSplit[0];
-                        itemWidth = sampwidth / incno;
-                    }
-                    $(this).css({ 'transform': 'translateX(0px)', 'width': itemWidth * itemNumbers });
-                    $(this).find(itemClass).each(function () {
-                        $(this).outerWidth(itemWidth);
-                    });
-
-                    $(".leftLst").addClass("over");
-                    $(".rightLst").removeClass("over");
-
-                });
-            }
-
-
-            //this function used to move the items
-            function ResCarousel(e, el, s) {
-                var leftBtn = ('.leftLst');
-                var rightBtn = ('.rightLst');
-                var translateXval = '';
-                var divStyle = $(el + ' ' + itemsDiv).css('transform');
-                var values = divStyle.match(/-?[\d\.]+/g);
-                var xds = Math.abs(values[4]);
-                if (e == 0) {
-                    translateXval = parseInt(xds) - parseInt(itemWidth * s);
-                    $(el + ' ' + rightBtn).removeClass("over");
-
-                    if (translateXval <= itemWidth / 2) {
-                        translateXval = 0;
-                        $(el + ' ' + leftBtn).addClass("over");
-                    }
-                }
-                else if (e == 1) {
-                    var itemsCondition = $(el).find(itemsDiv).width() - $(el).width();
-                    translateXval = parseInt(xds) + parseInt(itemWidth * s);
-                    $(el + ' ' + leftBtn).removeClass("over");
-
-                    if (translateXval >= itemsCondition - itemWidth / 2) {
-                        translateXval = itemsCondition;
-                        $(el + ' ' + rightBtn).addClass("over");
-                    }
-                }
-                $(el + ' ' + itemsDiv).css('transform', 'translateX(' + -translateXval + 'px)');
-            }
-
-            //It is used to get some elements from btn
-            function click(ell, ee) {
-                var Parent = "#" + $(ee).parent().attr("id");
-                var slide = $(Parent).attr("data-slide");
-                ResCarousel(ell, Parent, slide);
-            }
-
-        });
-    </script>
-
-
-
+    <script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.4.min.js"></script>
+    <script>window.jQuery || document.write('<script src="/js/jquery-1.12.4.min.js">\x3C/script>')</script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
 
 
 </body>

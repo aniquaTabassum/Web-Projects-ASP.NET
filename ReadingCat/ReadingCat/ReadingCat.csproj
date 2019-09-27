@@ -129,6 +129,7 @@
     <Compile Include="Controllers\RegisterController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\TagController.cs" />
+    <Compile Include="Controllers\WriteController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -141,6 +142,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\BooksAndDatabase.cs" />
     <Compile Include="ViewModel\LoginAndBookList.cs" />
+    <Compile Include="ViewModel\NewStoryInfo.cs" />
     <Compile Include="ViewModel\SearchResults.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -163,12 +165,14 @@
     <Content Include="css\bookdetails.css" />
     <Content Include="css\catpattern.png" />
     <Content Include="css\catwallpaper.png" />
+    <Content Include="css\catwallpaper2.png" />
     <Content Include="css\editprofile.css" />
     <Content Include="css\home.css" />
     <Content Include="css\login.css" />
     <Content Include="css\newstory.css" />
     <Content Include="css\profile.css" />
     <Content Include="css\register.css" />
+    <Content Include="css\script.js" />
     <Content Include="css\tag.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -232,8 +236,8 @@
     <Content Include="Views\Profile\ProfileEdit1.cshtml" />
     <Content Include="Views\Tag\ViewTags.cshtml" />
     <Content Include="Views\Search\Index.cshtml" />
-    <Content Include="Views\Profile\NewStory.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Write\NewStory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
