@@ -2,7 +2,7 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+@using System.Linq;
 <!DOCTYPE html>
 <html>
 <head>
@@ -77,15 +77,18 @@
         .dropdownCustom:hover .dropdownCustom-content {
             display: block;
         }
-        .sidenav{
-            margin-right:1000px;
-        }
-                #profileicon{
-           width:80px;height:85px;
+
+        .sidenav {
+            margin-right: 1000px;
         }
 
-        .container{
-            margin-left:-50px;
+        #profileicon {
+            width: 80px;
+            height: 85px;
+        }
+
+        .container {
+            margin-left: -50px;
         }
     </style>
     <link rel="stylesheet" href="~/css/profile.css">
@@ -133,37 +136,37 @@
 
     @if ((int)System.Web.HttpContext.Current.Session["Id"] == Model.loginModel.userid)
     {
-    <h3 class="headingprofile2">Library</h3>
-    <div class="container">
-        <div class="row">
-            <div class="MultiCarousel3" data-items="1,3,5,6" data-slide="1" id="MultiCarousel3" data-interval="1000">
-                <div class="MultiCarousel3-inner">
-                    @for (int i = 0; i < Model.booksAndDatabase.listOfBooks[0].Count; i++)
-    {
-                        <div class="item">
-                            <div class="pad15">
-                                <div class="hovereffect">
+        <h3 class="headingprofile2">Library</h3>
+        <div class="container">
+            <div class="row">
+                <div class="MultiCarousel3" data-items="1,3,5,6" data-slide="1" id="MultiCarousel3" data-interval="1000">
+                    <div class="MultiCarousel3-inner">
+                        @for (int i = 0; i < Model.booksAndDatabase.listOfBooks[0].Count; i++)
+                        {
+                            <div class="item">
+                                <div class="pad15">
+                                    <div class="hovereffect">
 
-                                    @{
-        var selectedId = Model.booksAndDatabase.listOfBooks[0][i].bookId;
-                                    }
-                                   
-                                    <a href="@Url.Action("BookDetails", "Book", new { @id = selectedId })"> <img src="@Url.Content(Model.booksAndDatabase.listOfBooks[0][i].bookCover)" class="img-responsive" /> </a>
+                                        @{
+                                            var selectedId = Model.booksAndDatabase.listOfBooks[0][i].bookId;
+                                        }
+
+                                        <a href="@Url.Action("BookDetails", "Book", new { @id = selectedId })"> <img src="@Url.Content(Model.booksAndDatabase.listOfBooks[0][i].bookCover)" class="img-responsive" /> </a>
 
 
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-        }
+                        }
 
 
-                    <button class="btn btn-primary leftLst"><</button>
-                    <button class="btn btn-primary rightLst">></button>
+                        <button class="btn btn-primary leftLst"><</button>
+                        <button class="btn btn-primary rightLst">></button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-        }
+    }
     <h3 class="headingprofile2">Published Stories</h3>
     <div class="container">
         <div class="row">
@@ -203,7 +206,35 @@
             </div>
         </div>
     </div>
+    @for (int j = 0; j < Model.booksAndDatabase.tagList.Count; j++)
+    {
+        <h3 class="headingprofile2">Recommenation by @Model.booksAndDatabase.tagList[j].tagName</h3>
+        <div class="container">
+            <div class="row">
+                <div class="MultiCarousel3" data-items="1,3,5,6" data-slide="1" id="MultiCarousel3" data-interval="1000">
+                    <div class="MultiCarousel3-inner">
 
+                        @for (int i = 0; i < Model.booksAndDatabase.recommendation[j].Count; i++)
+                        {
+                            <div class="item">
+                                <div class="pad15">
+                                    <div class="hovereffect">
+                                        <a href="@Url.Action("BookDetails", "Book", new { @id = Model.booksAndDatabase.recommendation[j][i].bookId })"> <img src="@Url.Content(Model.booksAndDatabase.recommendation[j][i].bookCover)" class="img-responsive" /> </a>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        
+
+                        <button class="btn btn-primary leftLst"><</button>
+                        <button class="btn btn-primary rightLst">></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
 
     <script>
         $(document).ready(function () {

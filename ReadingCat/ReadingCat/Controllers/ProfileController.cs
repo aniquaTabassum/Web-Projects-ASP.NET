@@ -21,6 +21,8 @@ namespace ReadingCat.Controllers
             getReadList(id);
             getPublishedList(id);
             getProfilePicture(id);
+            getTags(id);
+            createRecommendation(id);
             loginAndBookList.booksAndDatabase = booksAndDatabase;
             loginAndBookList.loginModel = new LoginModel();
             loginAndBookList.loginModel.userid = id;
@@ -91,8 +93,10 @@ namespace ReadingCat.Controllers
 
            
             int id = (int)System.Web.HttpContext.Current.Session["Id"];
+
+        
             return RedirectToAction("Profile", "Profile", new { id = id });
-            return View("~/Views/Profile/Profile.cshtml", loginAndBookList);
+
             
         }
 
@@ -148,6 +152,53 @@ namespace ReadingCat.Controllers
             {
                 pathName = dataSet.Tables[0].Rows[0].ItemArray[0].ToString();
                 
+            }
+        }
+
+        private void getTags(int id)
+        {
+            string query = " SELECT *FROM USERTAG LEFT JOIN TAGS ON UserTag.TAGID = Tags.TagID WHERE USERID =" + id;
+            DatabaseModel database = new DatabaseModel();
+            DataSet dataSet = database.selectFunction(query);
+            for(int i=0;i<dataSet.Tables[0].Rows.Count; i++)
+            {
+                Tags tag = new Tags();
+                tag.tagId = Convert.ToInt32(dataSet.Tables[0].Rows[i].ItemArray[2]);
+                tag.tagName = dataSet.Tables[0].Rows[i].ItemArray[4].ToString();
+                booksAndDatabase.tagList.Add(tag);
+              
+            }
+        }
+
+        private void createRecommendation(int id)
+        {
+            DatabaseModel databaseModel = new DatabaseModel();
+            int index = 0;
+            foreach (Tags tag in booksAndDatabase.tagList)
+            {
+                booksAndDatabase.recommendation.Add(new List<Books>());
+                List<Books> books = null;
+                string query = " SELECT READLOG.BOOKID, BOOKS.BookName, BOOKS.BookCover, BOOKS.UserId, Books.Rating, BOOKS.BookCover, BOOKTAGS.TAGID FROM READLOG LEFT JOIN BOOKTAGS ON ReadLog.BookId = BookTags.BookId LEFT JOIN Books ON ReadLog.BookId = BOOKS.BookID WHERE BOOKTAGS.TAGID = "+tag.tagId+" GROUP BY READLOG.BookId, BookTags.TAGID, BOOKS.BookName, BOOKS.BookCover, BOOKS.Rating, BOOKS.UserId ORDER BY COUNT(READLOG.BookId) DESC";
+
+               DataSet dataSet = databaseModel.selectFunction(query);
+                books = new List<Books>();
+                for (int i=0;i<dataSet.Tables[0].Rows.Count;i++)
+                {
+
+                    Books book = new Books();
+                    book.bookId = Convert.ToInt32(dataSet.Tables[0].Rows[i].ItemArray[0]);
+                    book.bookName = dataSet.Tables[0].Rows[i].ItemArray[1].ToString();
+                    book.bookCover = dataSet.Tables[0].Rows[i].ItemArray[2].ToString();
+                    book.userId = Convert.ToInt32(dataSet.Tables[0].Rows[i].ItemArray[3]);
+                   // book.rating = Convert.ToInt32(dataSet.Tables[0].Rows[i].ItemArray[4]);
+                    books.Add(book);
+                }
+
+                booksAndDatabase.recommendation[index] = books;
+                index++;
+            }
+            {
+
             }
         }
     }

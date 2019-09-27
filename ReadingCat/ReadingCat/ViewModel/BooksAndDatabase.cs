@@ -12,6 +12,8 @@ namespace ReadingCat.ViewModel
         {
             databaseModel = new DatabaseModel();
             listOfBooks = new List<List<Books>>();
+            recommendation = new List<List<Books>>();
+            tagList = new List<Tags>();
             initializeList();
         }
         public DatabaseModel databaseModel { get; set; }
@@ -19,13 +21,14 @@ namespace ReadingCat.ViewModel
         public List<List<Books>> listOfBooks { get; set; }
         public List<Books> library { get; set; }
         public List<Books> publishedStories { get; set; }
-        public List<Books> recommendation { get; set; }
-
+        public List<List<Books>> recommendation { get; set; }
+       
+        public List<Tags> tagList { get; set; }
         private void initializeList()
         {
             library = new List<Books>();
             publishedStories = new List<Books>();
-            recommendation = new List<Books>();
+           
 
             for(int i=0;i<3;i++)
             {
@@ -35,7 +38,7 @@ namespace ReadingCat.ViewModel
 
             listOfBooks[0] = library;
             listOfBooks[1] = publishedStories;
-            listOfBooks[2] = recommendation;
+            
         }
 
     }
