@@ -1,6 +1,6 @@
 ﻿
 @{
-    Layout = null;
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <!DOCTYPE html>
@@ -82,56 +82,17 @@
         .dropdownCustom:hover .dropdownCustom-content {
             display: block;
         }
+
+        .heading{
+            margin-left:50px;
+        }
+        .heading2{
+            margin-left:50px;
+        }
     </style>
 </head>
 <body>
-    <div class="navbarCustom">
-        <a href="#home"><img src="~/images/catlogo.png" id="logo" /></a>
-        <div class="dropdownCustom">
-            <button class="dropbtnCustom">
-                Browse
-                <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdownCustom-content">
-                <a href="#">Link 1</a>
-                <a href="#">Link 2</a>
-                <a href="#">Link 3</a>
-            </div>
-        </div>
-        <div class="dropdownCustom">
-            <button class="dropbtnCustom">
-                Write
-                <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdownCustom-content">
-                <a href="#">Link 1</a>
-                <a href="#">Link 2</a>
-                <a href="#">Link 3</a>
-            </div>
-        </div>
-        <div class="dropdownCustom">
-            <button class="dropbtnCustom">
-                Profile
-                <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdownCustom-content">
-                <a href="http://localhost:64907/Profile/profile">My Profile</a>
-                <a href="#">Settings</a>
-                <a href="#">Logout</a>
-            </div>
-        </div>
-        <div class="search-container">
-            <form action="">
-                <input type="text" placeholder="Search.." name="search">
-                <button type="submit"><i class="fa fa-search"></i></button>
-            </form>
-        </div>
-    </div>
-
-
-
-
-
+   
     <h3 class="heading">Continue Reading</h3>
     <h4 class="heading2">Find more in your Library</h4>
     <div class="container">

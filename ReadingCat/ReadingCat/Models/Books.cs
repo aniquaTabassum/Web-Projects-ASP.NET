@@ -12,5 +12,7 @@ namespace ReadingCat.Models
         public int userId { get; set; }
         public int rating { get; set; }
         public string bookCover { get; set; }
+        public int inLibrary { get; set; }
+        public int addToLibrary { get; set; }
     }
 }

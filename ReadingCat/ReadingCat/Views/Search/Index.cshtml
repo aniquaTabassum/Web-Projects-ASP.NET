@@ -81,6 +81,9 @@
         .dropdownCustom:hover .dropdownCustom-content {
             display: block;
         }
+        .sidenav{
+            margin-right:1000px;
+        }
     </style>
     <link rel="stylesheet" href="~/css/profile.css">
 </head>
@@ -120,35 +123,11 @@
                 <a href="#">Logout</a>
             </div>
         </div>
-        
-    </div>
-
-
-
-    <div class="sidenav">
-        @{
-            var img = Session["Picture"];
-            if (img == null)
-            {
-                <img src="~/images/profile.png" class="profile" alt=" Image" />
-
-            }
-            else
-            {
-                <img src="@Url.Content(img.ToString())" class="profile" alt=" Image" />
-            }
-        }
-
-        <div class="about"> @Html.Label("Name", null, new { @class = "profile.css" })</div>
-
-
-        <div class="about">@Html.Label("Email", null, new { @class = "profile.css" })</div>
-
-        <a href="@Url.Action("ProfileEdit1", "Profile", new {@id = Session["Id"]})">   <button type="button" class="btn btn-light" id="editbutton">Edit Info</button> </a>
-
-        <img src="~/images/cutecat.gif" />
 
     </div>
+
+
+
 
 
     <h3 class="headingprofile"> Search By Tag Results</h3>
@@ -157,17 +136,17 @@
             <div class="MultiCarousel2" data-items="1,3,5,6" data-slide="1" id="MultiCarousel2" data-interval="1000">
                 <div class="MultiCarousel2-inner">
 
-                    @for (int i = 0; i < Model.searchByTag.Count; i++)
+                    
                     {
                         <div class="item">
                             <div class="pad15">
                                 <div class="hovereffect">
                                     @{
-                                        var selectedId = Model.searchByTag[i].bookId;
+                                        var selectedId = Model.searchByTag[0].bookId;
                                     }
-                                   
-                                    <a href="@Url.Action("Index", "ReadBook", new { @id = selectedId })"> <img src="@Url.Content(Model.searchByTag[i].bookCover)" class="img-responsive" /> </a> -->
-                                   
+
+                                    <a href="@Url.Action("BookDetails", "Book", new { @id = selectedId })"> <img src="@Url.Content(Model.searchByTag[0].bookCover)" class="img-responsive" /> </a> -->
+                                    <img src="~/images/Books/image10.jpg" class="img-responsive" />
                                 </div>
                             </div>
                         </div>
@@ -184,7 +163,7 @@
 
 
 
-    
+
 
     <script>
         $(document).ready(function () {
@@ -413,4 +392,3 @@
 
 </body>
 </html>
-

@@ -37,5 +37,16 @@ namespace ReadingCat.Models
             }
 
         }
+
+        public void insert(string query)
+        {
+            using (SqlConnection sqlConnection = new SqlConnection(connectionString))
+            {
+                sqlConnection.Open();
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+                sqlCommand.ExecuteNonQuery();
+            }
+
+        }
     }
 }
