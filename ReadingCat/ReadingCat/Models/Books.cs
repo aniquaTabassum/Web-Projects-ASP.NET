@@ -10,6 +10,7 @@ namespace ReadingCat.Models
         public Books()
         {
             chapters = new List<Chapters>();
+            currentChapter = new Chapters();
         }
         public int bookId { get; set; }
         public string bookName { get; set; }
@@ -20,6 +21,7 @@ namespace ReadingCat.Models
         public int addToLibrary { get; set; }
         public string summary { get; set; }
         public string author { get; set; }
+        public Chapters currentChapter { get; set; }
         public List<Chapters> chapters { get; set; }
     }
 }
