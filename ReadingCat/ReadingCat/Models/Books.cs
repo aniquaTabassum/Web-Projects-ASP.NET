@@ -7,6 +7,10 @@ namespace ReadingCat.Models
 {
     public class Books
     {
+        public Books()
+        {
+            chapters = new List<Chapters>();
+        }
         public int bookId { get; set; }
         public string bookName { get; set; }
         public int userId { get; set; }
@@ -15,5 +19,7 @@ namespace ReadingCat.Models
         public int inLibrary { get; set; }
         public int addToLibrary { get; set; }
         public string summary { get; set; }
+        public string author { get; set; }
+        public List<Chapters> chapters { get; set; }
     }
 }

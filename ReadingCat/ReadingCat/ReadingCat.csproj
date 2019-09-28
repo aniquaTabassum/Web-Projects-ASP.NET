@@ -126,6 +126,7 @@
     <Compile Include="Controllers\HomePageController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
+    <Compile Include="Controllers\ReadController.cs" />
     <Compile Include="Controllers\RegisterController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\TagController.cs" />
@@ -172,6 +173,7 @@
     <Content Include="css\login.css" />
     <Content Include="css\newstory.css" />
     <Content Include="css\profile.css" />
+    <Content Include="css\readStory.css" />
     <Content Include="css\register.css" />
     <Content Include="css\script.js" />
     <Content Include="css\tag.css" />
@@ -242,6 +244,7 @@
     <Content Include="Views\Write\NewStory.cshtml" />
     <Content Include="Views\Write\WriteStory.cshtml" />
     <Content Include="Views\Write\ViewPublished.cshtml" />
+    <Content Include="Views\Read\ReadBook.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

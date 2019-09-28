@@ -104,7 +104,7 @@
         <br />
         <div class="row" style="margin-left:30px;">
             <div class="col-md-6">
-                <div style="font-weight:bold;">Summary:<p><!-- Change Summary here!--></p></div>
+                <div style="font-weight:bold;">Summary:<p> @Model.summary</p></div>
             </div>
         </div>
         <br /><br /><br />
@@ -124,41 +124,16 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @for (int i = 0; i < Model.chapters.Count; i++)
+                            {
+                                var index = (i + 1);
                             <tr>
-                                <th scope="row">1</th>
-                                <td>Mark</td>
+                                <th scope="row"> @index</th>
+                                <td><a href="@Url.Action("ReadBook", "Read", new { @id = Model.chapters[i].chapterId})"> @Model.chapters[i].chapterName</a></td>
 
 
                             </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Jacob</td>
-
-
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>Larry</td>
-
-                            </tr>
-                            <tr>
-                                <th scope="row">4</th>
-                                <td>Mark</td>
-
-
-                            </tr>
-                            <tr>
-                                <th scope="row">5</th>
-                                <td>Jacob</td>
-
-
-                            </tr>
-                            <tr>
-                                <th scope="row">6</th>
-                                <td>Larry</td>
-
-
-                            </tr>
+                            }
                         </tbody>
                     </table>
 

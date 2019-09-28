@@ -17,8 +17,10 @@ namespace ReadingCat.Controllers
         {
             databaseModel = new DatabaseModel();
             books = new Books();
-            
+            books.chapters = new List<Chapters>();
             getBookDetails(id);
+            getBookChapters(id);
+            getAuthorName(books.userId);
             booId = id;
             books.bookId = id;
             return View(books);
@@ -32,14 +34,28 @@ namespace ReadingCat.Controllers
             if (dataSet.Tables[0].Rows.Count >= 1)
             {
                 books.bookName = dataSet.Tables[0].Rows[0].ItemArray[1].ToString();
-                books.rating = Convert.ToInt32(dataSet.Tables[0].Rows[0].ItemArray[2]);
+                books.userId = Convert.ToInt32(dataSet.Tables[0].Rows[0].ItemArray[2]);
                 books.bookCover = dataSet.Tables[0].Rows[0].ItemArray[4].ToString();
-
+                books.summary = dataSet.Tables[0].Rows[0].ItemArray[5].ToString();
             }
 
             getLibraryState(id);
         }
-
+        private void getBookChapters(int id)
+        {
+            string query = "SELECT *FROM BookChapters WHERE BOOKID = " + id;
+            DataSet dataSet = new DataSet();
+            databaseModel = new DatabaseModel();
+            dataSet = databaseModel.selectFunction(query);
+            for(int i=0;i<dataSet.Tables[0].Rows.Count;i++)
+            {
+                Chapters chapters = new Chapters();
+                chapters.chapterId = Convert.ToInt32(dataSet.Tables[0].Rows[i].ItemArray[0]);
+                chapters.chapterName = dataSet.Tables[0].Rows[i].ItemArray[2].ToString();
+                chapters.chatpterText = dataSet.Tables[0].Rows[i].ItemArray[3].ToString();
+                books.chapters.Add(chapters);
+            }
+        }
         public ActionResult AddBook(int id)
         {
             int userId = (int)System.Web.HttpContext.Current.Session["Id"];
@@ -63,6 +79,19 @@ namespace ReadingCat.Controllers
             else
             {
                 books.inLibrary = 0;
+            }
+        }
+
+        private void getAuthorName(int id)
+        {
+            string query = "SELECT USERNAME FROM USERS WHERE USERID = " + id;
+            DataSet dataSet = new DataSet();
+            databaseModel = new DatabaseModel();
+            dataSet = databaseModel.selectFunction(query);
+            if (dataSet.Tables[0].Rows.Count >= 1)
+            {
+                books.author = dataSet.Tables[0].Rows[0].ItemArray[0].ToString();
+
             }
         }
     }
