@@ -18,13 +18,14 @@ namespace ReadingCat.Controllers
         [HttpGet]
         public ActionResult Profile(int id)
         {
+            loginAndBookList.loginModel = new LoginModel();
             getReadList(id);
             getPublishedList(id);
             getProfilePicture(id);
             getTags(id);
             createRecommendation(id);
             loginAndBookList.booksAndDatabase = booksAndDatabase;
-            loginAndBookList.loginModel = new LoginModel();
+            
             loginAndBookList.loginModel.userid = id;
             loginAndBookList.loginModel.path = pathName;
             return View(loginAndBookList);
@@ -145,7 +146,7 @@ namespace ReadingCat.Controllers
 
         private void getProfilePicture(int id)
         {
-            String query = "SELECT PHOTO FROM USERS WHERE USERID = " + id; ;
+            String query = "SELECT PHOTO, USERNAME FROM USERS WHERE USERID = " + id; ;
             DataSet dataSet = new DataSet();
             dataSet = booksAndDatabase.databaseModel.selectFunction(query);
             if (dataSet.Tables[0].Rows.Count >= 1)
@@ -153,6 +154,7 @@ namespace ReadingCat.Controllers
                 pathName = dataSet.Tables[0].Rows[0].ItemArray[0].ToString();
                 
             }
+            loginAndBookList.loginModel.username = dataSet.Tables[0].Rows[0].ItemArray[1].ToString();
         }
 
         private void getTags(int id)

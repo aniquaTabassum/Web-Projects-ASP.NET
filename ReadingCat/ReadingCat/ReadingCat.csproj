@@ -136,6 +136,7 @@
     </Compile>
     <Compile Include="Models\Books.cs" />
     <Compile Include="Models\Chapters.cs" />
+    <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\DatabaseCombinedWithOtherModel.cs" />
     <Compile Include="Models\DatabaseModel.cs" />
     <Compile Include="Models\LoginModel.cs" />

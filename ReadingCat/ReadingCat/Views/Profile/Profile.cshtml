@@ -93,6 +93,7 @@
     </style>
 
     <link rel="stylesheet" href="~/css/home.css">
+    <link rel="stylesheet" href="~/css/profile.css">
 </head>
 <body>
 
@@ -105,32 +106,31 @@
         </div>
         <div class="col-md-2">
             <!--load profile image here-->
-            <img src="~/images/caticon.jpg" style="border-radius:50%;border:solid" id="profileicon" />
+            @{
+                var img = Model.loginModel.path;
+                if (img.IsEmpty())
+                {
+                    <img src="~/images/profile.png" class="profile" alt=" Image" />
+
+                }
+                else
+                {
+                    <img src="@Url.Content(img)" class="profile" alt=" Image" />
+                }
+            }
+            
         </div>
         <div class="col-md-2">
             <label style="font-weight:bold; margin-left:-40px;">Name:</label>
         </div>
         <div class="col-md-2" style="margin-left:-50px;">
-            user name here!
+            @Model.loginModel.username
         </div>
         <div class="col-md-4">
-            <button class="btn btn-primary" style="margin-left:100px;">Edit Info</button>
+            <img src="~/images/caticon.jpg" style="border-radius:50%;border:solid" id="profileicon" />
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-2">
-
-        </div>
-        <div class="col-md-2">
-        </div>
-        <div class="col-md-2">
-            <label style="font-weight:bold; margin-left:-40px;">Email:</label>
-        </div>
-        <div class="col-md-2" style="margin-left:-50px;">
-            email here!
-        </div>
-    </div>
     <hr />
     <br />
     <br />

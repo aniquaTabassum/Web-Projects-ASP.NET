@@ -48,7 +48,9 @@ namespace ReadingCat.Controllers
                 loginAndBookList.loginModel = new LoginModel();
                 loginAndBookList.loginModel = model.LoginModel;
                 loginAndBookList.loginModel.userid = userid;
+                loginAndBookList.loginModel.username = model.LoginModel.username;
                 Session["Id"] = loginAndBookList.loginModel.userid;
+                Session["username"] = model.LoginModel.username;
                 Session["Picture"] = loginAndBookList.loginModel.path;
 
                 Boolean newUser = checkTags();

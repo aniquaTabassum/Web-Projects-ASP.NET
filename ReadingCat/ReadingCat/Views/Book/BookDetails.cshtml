@@ -127,12 +127,12 @@
                             @for (int i = 0; i < Model.chapters.Count; i++)
                             {
                                 var index = (i + 1);
-                            <tr>
-                                <th scope="row"> @index</th>
-                                <td><a href="@Url.Action("ReadBook", "Read", new { @id = Model.chapters[i].chapterId})"> @Model.chapters[i].chapterName</a></td>
+                                <tr>
+                                    <th scope="row"> @index</th>
+                                    <td><a href="@Url.Action("ReadBook", "Read", new { @id = Model.chapters[i].chapterId})"> @Model.chapters[i].chapterName</a></td>
 
 
-                            </tr>
+                                </tr>
                             }
                         </tbody>
                     </table>
@@ -142,6 +142,70 @@
         </div>
     </div>
 
+    <br />
+    <br />
+    <div class="row">
+        <div class="col-md-1">
+
+        </div>
+        <div class="col-md-4"> <h2 style="font-weight:bold;">Comments</h2> </div>
+    </div>
+
+    <hr />
+
+    <div class="comment">
+        @for (int i = 0; i < Model.comments.Count; i++)
+        {
+            <div class="row">
+                <div class="col-md-1">
+
+                </div>
+                <div class="col-md-4">
+                    <a href="@Url.Action("Profile", "Profile", new { @id = Model.comments[i].userId})">@Model.comments[i].username</a>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-1">
+
+                </div>
+                <div class="col-md-11">
+                    <p> @Model.comments[i].comment</p>
+                </div>
+            </div>
+
+            <hr />
+        }
+    </div>
+    <hr />
+
+    @Html.BeginForm("BookDetails", "Book", FormMethod.Post){ 
+    <div class="WriteComment">
+        <div class="row">
+            <div class="col-md-1">
+
+            </div>
+            <div class="col-md-11">
+                <h2 style="font-weight:bold;">Write your own comment!</h2>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-11">
+                <div class="form-group" style="font-size:15px;">
+                    @Html.TextAreaFor(model => model.currentComment.comment, new { @class = "form-control", @rows = 5, @id = "comment" })
+                    @Html.ValidationMessageFor(model => model.currentComment.comment)
+                    
+
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-primary" style="font-size:15px;">Comment</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    }
 
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

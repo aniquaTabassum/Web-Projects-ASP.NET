@@ -11,6 +11,8 @@ namespace ReadingCat.Models
         {
             chapters = new List<Chapters>();
             currentChapter = new Chapters();
+            comments = new List<Comment>();
+            currentComment = new Comment();
         }
         public int bookId { get; set; }
         public string bookName { get; set; }
@@ -22,6 +24,8 @@ namespace ReadingCat.Models
         public string summary { get; set; }
         public string author { get; set; }
         public Chapters currentChapter { get; set; }
+        public Comment currentComment { get; set; }
         public List<Chapters> chapters { get; set; }
+        public List<Comment> comments { get; set; }
     }
 }

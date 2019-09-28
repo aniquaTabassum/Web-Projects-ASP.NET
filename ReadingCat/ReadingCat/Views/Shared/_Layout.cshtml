@@ -131,7 +131,7 @@
             </button>
             <div class="dropdownCustom-content">
                 <a href="http://localhost:64907/Profile/profile">My Profile</a>
-                <a href="#">Settings</a>
+                <a href="@Url.Action("ProfileEdit1","Profile", new {@id = (int)System.Web.HttpContext.Current.Session["Id"] })">Settings</a>
                 <a href="#">Logout</a>
             </div>
         </div>

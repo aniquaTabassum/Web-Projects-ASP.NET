@@ -21,8 +21,31 @@ namespace ReadingCat.Controllers
             getBookDetails(id);
             getBookChapters(id);
             getAuthorName(books.userId);
+            getComments(id);
+            getCommenterName();
             booId = id;
             books.bookId = id;
+            Session["CurrentBookId"] = id;
+            return View(books);
+        }
+
+        [HttpPost]
+        public ActionResult BookDetails(Books passedBook)
+        {
+            string getComment = passedBook.currentComment.comment;
+            int commenter = (int)System.Web.HttpContext.Current.Session["Id"];
+            int bookCommented = (int)System.Web.HttpContext.Current.Session["CurrentBookId"];
+            insertComment(getComment, commenter, bookCommented);
+            databaseModel = new DatabaseModel();
+            books = new Books();
+            books.chapters = new List<Chapters>();
+            getBookDetails(bookCommented);
+            getBookChapters(bookCommented);
+            getAuthorName(books.userId);
+            getComments(bookCommented);
+            getCommenterName();
+            booId = bookCommented;
+            books.bookId = bookCommented;
             return View(books);
         }
 
@@ -93,6 +116,44 @@ namespace ReadingCat.Controllers
                 books.author = dataSet.Tables[0].Rows[0].ItemArray[0].ToString();
 
             }
+        }
+
+        private void getComments(int id)
+        {
+            string query = "SELECT *FROM COMMENTS WHERE BOOKID = " + id;
+            DataSet dataSet = new DataSet();
+            databaseModel = new DatabaseModel();
+            dataSet = databaseModel.selectFunction(query);
+            for (int i = 0; i < dataSet.Tables[0].Rows.Count; i++)
+            {
+                Comment comment = new Comment();
+                comment.userId = Convert.ToInt32(dataSet.Tables[0].Rows[i].ItemArray[1]);
+                comment.bookId = Convert.ToInt32(dataSet.Tables[0].Rows[i].ItemArray[2]);
+                comment.comment = dataSet.Tables[0].Rows[i].ItemArray[3].ToString();
+                books.comments.Add(comment);
+            }
+        }
+
+        private void getCommenterName()
+        {
+            int i = 0;
+            foreach (Comment comment in books.comments)
+            {
+                int userid = comment.userId;
+                string query = "SELECT USERNAME FROM USERS WHERE USERID = " + userid;
+                DataSet dataSet = new DataSet();
+                dataSet = databaseModel.selectFunction(query);
+                string username = dataSet.Tables[0].Rows[0].ItemArray[0].ToString();
+                books.comments[i].username = username;
+                i += 1;
+            }
+        }
+
+        private void insertComment(string comment, int commenter, int bookCommented)
+        {
+            string query = "INSERT INTO COMMENTS VALUES (" + commenter + ", " + bookCommented + ", '" + comment + "')";
+            databaseModel = new DatabaseModel();
+            databaseModel.insert(query);
         }
     }
 }
