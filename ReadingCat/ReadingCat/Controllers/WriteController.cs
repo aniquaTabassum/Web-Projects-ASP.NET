@@ -12,6 +12,7 @@ namespace ReadingCat.Controllers
 {
     public class WriteController : Controller
     {
+        BooksAndDatabase booksAndDatabase = new BooksAndDatabase();
         [HttpGet]
         public ActionResult NewStory()
         {
@@ -27,6 +28,7 @@ namespace ReadingCat.Controllers
             string bookName = storyInfo.books.bookName;
             string boodSummary = storyInfo.books.summary;
             string query = "";
+            int bookId = 0;
             try
             {
                 if (file.ContentLength > 0)
@@ -45,7 +47,7 @@ namespace ReadingCat.Controllers
                     query = "SELECT BOOKID FROM BOOKS WHERE BOOKNAME = '" + bookName+"'";
                     DataSet dataSet = new DataSet();
                     dataSet = databaseModel.selectFunction(query);
-                    int bookId = Convert.ToInt32(dataSet.Tables[0].Rows[0].ItemArray[0]);
+                    bookId = Convert.ToInt32(dataSet.Tables[0].Rows[0].ItemArray[0]);
                     query = "SELECT TAGID FROM TAGS WHERE TAGNAME = '" + storyInfo.tags.tagName+"'";
                     dataSet = new DataSet();
                     dataSet = databaseModel.selectFunction(query);
@@ -62,7 +64,56 @@ namespace ReadingCat.Controllers
             {
 
             }
-                return RedirectToAction("Profile","Profile", new { @id = System.Web.HttpContext.Current.Session["Id"]});
+                return RedirectToAction("WriteStory","Write", new { @id = bookId});
+        }
+        public ActionResult ViewPublished()
+        {
+            int id = (int) System.Web.HttpContext.Current.Session["Id"];
+            getPublishedList(id);
+
+            return View(booksAndDatabase);
+        }
+        [HttpGet]
+        public ActionResult WriteStory(int id)
+        {
+            Session["BookId"] = id;
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult WriteStory(Chapters chapters)
+        {
+            string title = chapters.chapterName;
+            string text = chapters.chatpterText;
+            int bookId = (int)System.Web.HttpContext.Current.Session["BookId"];
+            insertChapter(bookId, title, text);
+            return RedirectToAction("BookDetails", "Book", new { @id = bookId });
+        }
+
+        private void getPublishedList(int id)
+        {
+            String query = "SELECT *FROM BOOKS WHERE USERID = " + id;
+            DataSet dataSet = new DataSet();
+            dataSet = booksAndDatabase.databaseModel.selectFunction(query);
+            if (dataSet.Tables[0].Rows.Count >= 1)
+            {
+                for (int i = 0; i < dataSet.Tables[0].Rows.Count; i++)
+                {
+                    Books books = new Books();
+                    books.bookId = Convert.ToInt32(dataSet.Tables[0].Rows[i].ItemArray[0]);
+                    books.bookName = dataSet.Tables[0].Rows[i].ItemArray[1].ToString();
+                    books.userId = Convert.ToInt32(dataSet.Tables[0].Rows[i].ItemArray[2]);
+                    books.bookCover = dataSet.Tables[0].Rows[i].ItemArray[4].ToString();
+                    booksAndDatabase.listOfBooks[1].Add(books);
+                }
+            }
+        }
+
+        private void insertChapter(int id, string title, string text)
+        {
+            string query = "INSERT INTO BOOKCHAPTERS VALUES (" + id + ", '" + title + "', '" + text + "')";
+            DatabaseModel databaseModel = new DatabaseModel();
+            databaseModel.insert(query);
         }
     }
 }

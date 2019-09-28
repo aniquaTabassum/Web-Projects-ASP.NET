@@ -88,10 +88,10 @@
         }
 
         .container {
-            margin-left: -50px;
+            margin-left: 75px;
         }
     </style>
- 
+
     <link rel="stylesheet" href="~/css/home.css">
 </head>
 <body>
@@ -137,8 +137,8 @@
 
     @if ((int)System.Web.HttpContext.Current.Session["Id"] == Model.loginModel.userid)
     {
-        <h3 class="heading">Continue Reading</h3>
-        <h4 class="heading2">Find more in your Library</h4>
+
+        <h4 class="heading2">Library</h4>
         <div class="container">
             <div class="row">
                 <div class="MultiCarousel" data-items="1,3,5,6" data-slide="1" id="MultiCarousel" data-interval="1000">
@@ -169,58 +169,28 @@
             </div>
         </div>
     }
-    <h3 class="heading">Continue Reading</h3>
-    <h4 class="heading2">Find more in your Library</h4>
-    <div class="container">
-        <div class="row">
-            <div class="MultiCarousel" data-items="1,3,5,6" data-slide="1" id="MultiCarousel" data-interval="1000">
-                <div class="MultiCarousel-inner">
-                    @for (int i = 0; i < Model.booksAndDatabase.listOfBooks[1].Count; i++)
-                    {
-                        <div class="item">
-                            <div class="pad15">
-                                <div class="hovereffect">
 
-                                    @{
-                                        var selectedId = Model.booksAndDatabase.listOfBooks[1][i].bookId;
-                                    }
-
-                                    <img src="@Url.Content(Model.booksAndDatabase.listOfBooks[1][i].bookCover) " class="img-responsive" />
-                                    <div class="overlay">
-                                        <h2>Genre:</h2>
-                                        <a href="@Url.Action("BookDetails", "Book", new { @id = selectedId })">Read</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    }
-                </div>
-                <button class="btn btn-primary leftLst"><</button>
-                <button class="btn btn-primary rightLst">></button>
-            </div>
-        </div>
-    </div>
-    @for (int j = 0; j < Model.booksAndDatabase.tagList.Count; j++)
+    @if (Model.booksAndDatabase.listOfBooks[1].Count > 0)
     {
-        <h3 class="heading">Continue Reading</h3>
-        <h3 class="headingprofile2">Recommenation by @Model.booksAndDatabase.tagList[j].tagName</h3>
+        <h4 class="heading2">Published Stories</h4>
         <div class="container">
             <div class="row">
                 <div class="MultiCarousel" data-items="1,3,5,6" data-slide="1" id="MultiCarousel" data-interval="1000">
                     <div class="MultiCarousel-inner">
-                        @for (int i = 0; i < Model.booksAndDatabase.recommendation[j].Count; i++)
-
+                        @for (int i = 0; i < Model.booksAndDatabase.listOfBooks[1].Count; i++)
                         {
                             <div class="item">
                                 <div class="pad15">
                                     <div class="hovereffect">
 
+                                        @{
+                                            var selectedId = Model.booksAndDatabase.listOfBooks[1][i].bookId;
+                                        }
 
-                                        <img src="@Url.Content(Model.booksAndDatabase.recommendation[j][i].bookCover)" class="img-responsive" />
-
+                                        <img src="@Url.Content(Model.booksAndDatabase.listOfBooks[1][i].bookCover) " class="img-responsive" />
                                         <div class="overlay">
                                             <h2>Genre:</h2>
-                                            <a href="@Url.Action("BookDetails", "Book", new { @id = Model.booksAndDatabase.recommendation[j][i].bookCover })">Read</a>
+                                            <a href="@Url.Action("BookDetails", "Book", new { @id = selectedId })">Read</a>
                                         </div>
                                     </div>
                                 </div>
@@ -232,6 +202,44 @@
                 </div>
             </div>
         </div>
+    }
+
+    @for (int j = 0; j < Model.booksAndDatabase.tagList.Count; j++)
+    {
+        if (Model.booksAndDatabase.recommendation[j].Count > 0)
+        {
+            <h3 class="headingprofile2">Recommenation by @Model.booksAndDatabase.tagList[j].tagName</h3>
+            <div class="container">
+                <div class="row">
+                    <div class="MultiCarousel" data-items="1,3,5,6" data-slide="1" id="MultiCarousel" data-interval="1000">
+                        <div class="MultiCarousel-inner">
+                            @for (int i = 0; i < Model.booksAndDatabase.recommendation[j].Count; i++)
+
+                            {
+                                <div class="item">
+                                    <div class="pad15">
+                                        <div class="hovereffect">
+                                            @{
+                                                var selectedId = Model.booksAndDatabase.recommendation[j][i].bookId;
+                                            }
+
+                                            <img src="@Url.Content(Model.booksAndDatabase.recommendation[j][i].bookCover)" class="img-responsive" />
+
+                                            <div class="overlay">
+                                                <h2>Genre:</h2>
+                                                <a href="@Url.Action("BookDetails", "Book", new { @id = selectedId })">Read</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <button class="btn btn-primary leftLst"><</button>
+                        <button class="btn btn-primary rightLst">></button>
+                    </div>
+                </div>
+            </div>
+        }
     }
 
     <script>

@@ -134,6 +134,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Books.cs" />
+    <Compile Include="Models\Chapters.cs" />
     <Compile Include="Models\DatabaseCombinedWithOtherModel.cs" />
     <Compile Include="Models\DatabaseModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
@@ -174,6 +175,7 @@
     <Content Include="css\register.css" />
     <Content Include="css\script.js" />
     <Content Include="css\tag.css" />
+    <Content Include="css\writestory.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -238,6 +240,8 @@
     <Content Include="Views\Search\Index.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Write\NewStory.cshtml" />
+    <Content Include="Views\Write\WriteStory.cshtml" />
+    <Content Include="Views\Write\ViewPublished.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
