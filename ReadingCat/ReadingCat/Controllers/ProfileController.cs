@@ -46,7 +46,7 @@ namespace ReadingCat.Controllers
                 user.password = dataSet.Tables[0].Rows[0].ItemArray[3].ToString();
                 user.bio = dataSet.Tables[0].Rows[0].ItemArray[5].ToString();
                 // user.paths[0] = dataSet.Tables[0].Rows[0].ItemArray[4].ToString();
-                return View(user);
+                return View("~/Views/Profile/ProfileEdit.cshtml",user);
             }
 
             return View("~/Views/Login/Login.cshtml");
@@ -60,23 +60,24 @@ namespace ReadingCat.Controllers
             string query = "";
             try
             {
-                if(file.ContentLength>0)
+                if(file != null && file.ContentLength>0)
                 {
                     fileName = Path.GetFileName(file.FileName);
                     filePath = Path.Combine(Server.MapPath("~/images"), fileName);
                     file.SaveAs(filePath);
                     string toSave = "~/images/" + fileName;
-                    query = "UPDATE USERS SET PASSWORD = '" + user.password + "', photo = '"+toSave+"' WHERE USERNAME = '" + user.username + "'";
+                    query = "UPDATE USERS SET PASSWORD = '" + user.password + "', photo = '"+toSave+"', bio = '"+user.bio+"' WHERE USERNAME = '" + Session["username"].ToString() + "'";
                     //ViewBag.Message("Uploaded file saved");
                 }
                 else
                 {
-                    query = "UPDATE USERS SET PASSWORD = '" + user.password + "' WHERE USERNAME = '" + user.username + "'";
+                    query = "UPDATE USERS SET PASSWORD = '" + user.password + "', bio = '" + user.bio + "' WHERE USERNAME = '" + Session["username"].ToString() + "'";
                 }
             }
             catch
             {
-               // ViewBag.Message("Uploade file not saved");
+                // ViewBag.Message("Uploade file not saved");
+                 
             }
             //query = "UPDATE USERS SET PASSWORD = '" + user.password + "' WHERE USERNAME = '" + user.username + "'";
             DatabaseModel databaseModel = new DatabaseModel();
@@ -84,7 +85,7 @@ namespace ReadingCat.Controllers
 
             DatabaseModel databaseModel1 = new DatabaseModel();
             User user1 = new User();
-            query = "SELECT *FROM USERS WHERE USEREMAIL = '" + user.useremail+"'";
+            query = "SELECT *FROM USERS WHERE USERID = "+ (int)System.Web.HttpContext.Current.Session["Id"];
             DataSet dataSet = new DataSet();
             dataSet = databaseModel1.selectFunction(query);
             LoginModel loginModel = new LoginModel();

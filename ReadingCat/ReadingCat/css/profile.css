@@ -1,8 +1,12 @@
 ﻿
 body {
     font-family: "Lato", sans-serif;
+
 }
 
+.qua{
+    background-color:black;
+}
 
     .about {
         padding: 6px 8px 6px 16px;
