@@ -80,9 +80,9 @@
             <div class="col-md-5" style="">
 
             </div>
-            <!-- Change View Value here!-->
+            
             <div class="col-md-offset-4" style="font-weight:bold;margin-left:60px;">
-                10M<a href="#">
+                @Model.readCount<a href="#">
                     <span class="glyphicon glyphicon-eye-open"></span>
                 </a>
             </div>
@@ -98,13 +98,13 @@
         <br /><br /><br />
         <div class="row">
             <div class="col-md-6" style="margin-left:45px;">
-                <div style="font-weight:bold;">Genre: <p> @Model.tag</p></div>
+                <div style="font-weight:bold; font-size: 15px;">Genre: <p style="font-weight:normal; font-size:12px;"> @Model.tag</p></div>
             </div>
         </div>
         <br />
         <div class="row" style="margin-left:30px;">
             <div class="col-md-6">
-                <div style="font-weight:bold;">Summary:<p> @Model.summary</p></div>
+                <div style="font-weight:bold; font-size: 15px;">Summary:<p style="font-weight:normal; font-size:12px"> @Model.summary</p></div>
             </div>
         </div>
         <br /><br /><br />
@@ -117,7 +117,7 @@
                     <table class="table table-bordered table-striped mb-0">
                         <thead>
                             <tr>
-                                <th scope="col">Chapter</th>
+                                <th scope="col" style="font-size:15px;">Chapter</th>
                                 <th scope="col">Chapter Name</th>
 
 
@@ -129,7 +129,7 @@
                                 var index = (i + 1);
                                 <tr>
                                     <th scope="row"> @index</th>
-                                    <td><a href="@Url.Action("ReadBook", "Read", new { @id = Model.chapters[i].chapterId})"> @Model.chapters[i].chapterName</a></td>
+                                    <td style="font-size : 15px;"><a href="@Url.Action("ReadBook", "Read", new { @id = Model.chapters[i].chapterId})"> @Model.chapters[i].chapterName</a></td>
 
 
                                 </tr>
@@ -161,7 +161,7 @@
 
                 </div>
                 <div class="col-md-4">
-                    <a href="@Url.Action("Profile", "Profile", new { @id = Model.comments[i].userId})">@Model.comments[i].username</a>
+                    <a href="@Url.Action("Profile", "Profile", new { @id = Model.comments[i].userId})" style="font-size: 17px; font-weight : bold;">@Model.comments[i].username</a>
                 </div>
             </div>
 
@@ -170,7 +170,7 @@
 
                 </div>
                 <div class="col-md-11">
-                    <p> @Model.comments[i].comment</p>
+                    <p style="font-size : 15px;"> @Model.comments[i].comment</p>
                 </div>
             </div>
 
@@ -209,6 +209,7 @@
         </div>
     </div>
     
+
 
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

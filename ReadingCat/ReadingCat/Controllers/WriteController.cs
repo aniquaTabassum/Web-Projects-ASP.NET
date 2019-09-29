@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using ReadingCat.ViewModel;
 using ReadingCat.Models;
 using System.Data;
+using System.Data.SqlClient;
 
 namespace ReadingCat.Controllers
 {
@@ -111,9 +112,19 @@ namespace ReadingCat.Controllers
 
         private void insertChapter(int id, string title, string text)
         {
-            string query = "INSERT INTO BOOKCHAPTERS VALUES (" + id + ", '" + title + "', '" + text + "')";
-            DatabaseModel databaseModel = new DatabaseModel();
-            databaseModel.insert(query);
+            string query = "INSERT INTO BOOKCHAPTERS VALUES (@id,@title, @text)";
+
+            string connectionString = @"Data Source = DESKTOP-BKFDVUR\SQLEXPRESS; Initial Catalog = ReadingCat; Integrated Security = True";
+            using (SqlConnection sqlConnection = new SqlConnection(connectionString))
+            {
+                sqlConnection.Open();
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+                sqlCommand.Parameters.AddWithValue("@id", id);
+                sqlCommand.Parameters.AddWithValue("@title", title);
+                sqlCommand.Parameters.AddWithValue("@text", text);
+
+                sqlCommand.ExecuteNonQuery();
+            }
         }
     }
 }

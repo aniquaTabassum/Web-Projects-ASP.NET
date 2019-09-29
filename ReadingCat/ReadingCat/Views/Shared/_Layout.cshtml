@@ -101,7 +101,7 @@
 </head>
 <body>
     <div class="navbarCustom">
-        <a href="#home"><img src="~/images/catlogo.png" id="logo" /></a>
+        <a href="@Url.Action("HomePage", "HomePage")"><img src="~/images/catlogo.png" id="logo" /></a>
 
         <div class="search-container">
             <form action="">
@@ -137,7 +137,7 @@
             <div class="dropdownCustom-content">
                 <a href="@Url.Action("Profile","Profile", new {@id = (int)System.Web.HttpContext.Current.Session["Id"] })">My Profile</a>
                 <a href="@Url.Action("ProfileEdit1","Profile", new {@id = (int)System.Web.HttpContext.Current.Session["Id"] })">Settings</a>
-                <a href="#">Logout</a>
+                <a href="@Url.Action("Login","Login")">Logout</a>
             </div>
         </div>
         <div class="dropdownCustom">
@@ -160,8 +160,10 @@
         @RenderBody()
     </div>
 
-
-    <div class="footercontainer" style="background-color:#A2C9CA;width:100%;color:white">
+    <br />
+    <br />
+    <br />
+    <div class="footercontainer" style="background-color:#A2C9CA;width:100%;color:white; bottom: 0; margin-top : 200px">
         <div class="row" style="opacity:0.8">
             <div class="col-sm-4">
                 <br />

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -24,6 +25,7 @@ namespace ReadingCat.Controllers
             getComments(id);
             getCommenterName();
             getBookTag(id);
+            getReadCount(id);
             booId = id;
             books.bookId = id;
             Session["CurrentBookId"] = id;
@@ -42,6 +44,7 @@ namespace ReadingCat.Controllers
             books.chapters = new List<Chapters>();
             getBookDetails(bookCommented);
             getBookChapters(bookCommented);
+            getReadCount(bookCommented);
             getAuthorName(books.userId);
             getComments(bookCommented);
             getCommenterName();
@@ -153,9 +156,18 @@ namespace ReadingCat.Controllers
 
         private void insertComment(string comment, int commenter, int bookCommented)
         {
-            string query = "INSERT INTO COMMENTS VALUES (" + commenter + ", " + bookCommented + ", '" + comment + "')";
-            databaseModel = new DatabaseModel();
-            databaseModel.insert(query);
+            string connectionString = @"Data Source = DESKTOP-BKFDVUR\SQLEXPRESS; Initial Catalog = ReadingCat; Integrated Security = True";
+            using (SqlConnection sqlConnection = new SqlConnection(connectionString))
+            {
+                sqlConnection.Open();
+                string query = "INSERT INTO COMMENTS VALUES (@commenter, @bookCommented, @comment)";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+                sqlCommand.Parameters.AddWithValue("@commenter", commenter);
+                sqlCommand.Parameters.AddWithValue("@bookCommented", bookCommented);
+                sqlCommand.Parameters.AddWithValue("@comment", comment);
+               
+                sqlCommand.ExecuteNonQuery();
+            }
         }
 
         private void getBookTag(int id)
@@ -166,6 +178,15 @@ namespace ReadingCat.Controllers
             dataSet = databaseModel.selectFunction(query);
             books.tag = dataSet.Tables[0].Rows[0].ItemArray[0].ToString();
 
+        }
+
+        private void getReadCount(int id)
+        {
+            string query = " SELECT COUNT(BOOKID), BOOKID FROM READLOG WHERE BOOKID = "+id+" GROUP BY BOOKID";
+            DataSet dataSet = new DataSet();
+            databaseModel = new DatabaseModel();
+            dataSet = databaseModel.selectFunction(query);
+            books.readCount = Convert.ToInt32( dataSet.Tables[0].Rows[0].ItemArray[0]);
         }
     }
 }

@@ -19,6 +19,7 @@ namespace ReadingCat.Controllers
         [HttpGet]
         public ActionResult Login()
         {
+            Session["Id"] = 0;
             return View(new DatabaseCombinedWithOtherModel());
         }
         [HttpPost]

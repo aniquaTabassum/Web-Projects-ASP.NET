@@ -24,6 +24,7 @@ namespace ReadingCat.Models
         public string summary { get; set; }
         public string author { get; set; }
         public string tag { get; set; }
+        public int readCount { get; set; }
         public Chapters currentChapter { get; set; }
         public Comment currentComment { get; set; }
         public List<Chapters> chapters { get; set; }

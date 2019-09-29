@@ -66,13 +66,27 @@ namespace ReadingCat.Controllers
                     filePath = Path.Combine(Server.MapPath("~/images"), fileName);
                     file.SaveAs(filePath);
                     string toSave = "~/images/" + fileName;
-                    query = "UPDATE USERS SET PASSWORD = '" + user.password + "', photo = '"+toSave+"', bio = '"+user.bio+"' WHERE USERNAME = '" + Session["username"].ToString() + "'";
-                    //ViewBag.Message("Uploaded file saved");
+                    if (!string.IsNullOrEmpty(user.password))
+                    {
+                        query = "UPDATE USERS SET PASSWORD = '" + user.password + "', photo = '" + toSave + "', bio = '" + user.bio + "' WHERE USERNAME = '" + Session["username"].ToString() + "'";
+                        //ViewBag.Message("Uploaded file saved");
+                    }
+                    else
+                    {
+                        query = "UPDATE USERS SET photo = '" + toSave + "', bio = '" + user.bio + "' WHERE USERNAME = '" + Session["username"].ToString() + "'";
+                    }
                 }
                 else
                 {
-                    query = "UPDATE USERS SET PASSWORD = '" + user.password + "', bio = '" + user.bio + "' WHERE USERNAME = '" + Session["username"].ToString() + "'";
-                }
+                    if (!string.IsNullOrEmpty(user.password))
+                    {
+                        query = "UPDATE USERS SET PASSWORD = '" + user.password + "', bio = '" + user.bio + "' WHERE USERNAME = '" + Session["username"].ToString() + "'";
+                    }
+                    else
+                    {
+                        query = "UPDATE USERS SET bio = '" + user.bio + "' WHERE USERNAME = '" + Session["username"].ToString() + "'";
+                    }
+                    }
             }
             catch
             {

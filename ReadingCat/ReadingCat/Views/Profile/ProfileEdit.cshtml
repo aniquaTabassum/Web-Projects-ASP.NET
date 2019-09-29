@@ -26,19 +26,18 @@
     <!-- Main CSS-->
     <link href="~/css/editprofile.css" rel="stylesheet" media="all">
     <link rel="stylesheet" type="text/css" href="~/css/newstory.css">
+    <link rel="stylesheet" href="~/css/bookdetails.css">
 </head>
 <body>
-    <div class="page-wrapper bg-gra-02 p-t-130 p-b-100 font-poppins">
-        <div class="wrapper wrapper--w680">
-            <div class="card card-4">
-
-                <div class="card-body">
+    <!--<div class="page-wrapper bg-gra-02 p-t-130 p-b-100 font-poppins"> -->
+    <div class="box" style="height: 650px;width: 700px;">
+        
                     <br />
-                    <a href="http://localhost:64907/Profile/profile">back</a>
-                    <br />
-                    <h2 class="title">Edit Profile Information</h2>
 
-                    <div class="row row-space">
+                    <br />
+                    <h2 class="title" style="font-family : Arial;">Edit Profile Information</h2>
+
+                    <div class="row row-space" style="font-family : Arial;">
                         <div class="col-2">
                             <div class="input-group">
                                 <label class="label">@Model.username</label>
@@ -47,7 +46,7 @@
                         </div>
 
                     </div>
-                    <div class="row row-space">
+                    <div class="row row-space" style="font-family : Arial;">
                         <div class="col-2">
                             <div class="input-group">
                                 <label class="label">@Model.useremail</label>
@@ -56,9 +55,9 @@
                         </div>
 
                     </div>
-                    @using (Html.BeginForm("ProfileEdit1", "Profile", FormMethod.Post, new { encType="multipart/form-data" }))
+                    @using (Html.BeginForm("ProfileEdit1", "Profile", FormMethod.Post, new { encType = "multipart/form-data" }))
                     {
-                        <div class="col-2">
+                        <div class="col-2" style="font-family : Arial;">
                             <div class="input-group">
                                 <label class="label">Bio</label>
                                 @Html.EditorFor(model => model.bio, new { htmlAttributes = new { @class = "input--style-4" } })
@@ -66,9 +65,9 @@
                                 @Html.ValidationMessageFor(model => model.bio, "", new { @class = "text-danger" })
                             </div>
                         </div>
-                        <div class="row row-space">
+                        <div class="row row-space" style="font-family : Arial;">
 
-                            <div class="col-2">
+                            <div class="col-2" style="font-family : Arial;">
                                 <div class="input-group">
                                     <label class="label">Password</label>
                                     @Html.PasswordFor(model => model.password, new { htmlAttributes = new { @class = "input--style-4" } })
@@ -76,7 +75,7 @@
                                     @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
                                 </div>
                             </div>
-                            <div class="col-2">
+                            <div class="col-2" style="font-family : Arial;">
                                 <div class="input-group">
                                     <label class="label">Confirm Password</label>
                                     @Html.PasswordFor(model => model.confirmPassword, new { htmlAttributes = new { @class = "input--style-4" } })
@@ -87,13 +86,13 @@
                         </div>
 
                         <div>
-                            <label class="label-input100" for="image">Change Profile Picture</label>
+                            <label class="label-input100" for="image" style="font-family : Arial;">Change Profile Picture</label>
                             <div class="container">
 
                                 <div class="well" data-bind="fileDrag: fileData">
                                     <div class="form-group row">
 
-                                        <div class="col-md-6">
+                                        <div class="col-md-6" style="font-family : Arial;">
                                             @Html.TextBoxFor(model => model.File, new { htmlAttributes = new { @class = "input--style-4" }, type = "file", name = "File" })<br /><br />
                                             <!-- <input type="file"> -->
 
@@ -105,15 +104,13 @@
                         </div>
 
                         <div class="p-t-15">
-                            <button class="btn btn--radius-2 btn--blue" type="submit">Submit</button>
+                            <button class="btn btn--radius-2 btn--blue" type="submit">Save </button>
 
                         </div>
                     }
 
                 </div>
-            </div>
-        </div>
-    </div>
+            
     <!-- Jquery JS-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <!-- Vendor JS-->
@@ -122,7 +119,7 @@
     <script src="vendor/datepicker/daterangepicker.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <!-- Main JS-->
-    <script src="js/global.js"></script>
+    <!--<script src="js/global.js"></script>
     $("#chooseimage").click(function() {
     var $input = $('
     <input type="file" />');
@@ -130,6 +127,8 @@
     console.log("selected file:" + $(this).val());
     });
     $input.trigger('click');
+
+        -->
 </body><!-- This templates was made by Colorlib (https://colorlib.com) -->
 </html>
 <!-- end document-->
