@@ -84,10 +84,10 @@
         }
 
         .navbarCustom .search-container button {
-            float: right;
+            float:right;
             padding: 6px 10px;
             margin-top: 18px;
-            margin-right: 16px;
+            margin-right: 116px;
             background: #ddd;
             font-size: 17px;
             border: none;
@@ -102,39 +102,7 @@
 <body>
     <div class="navbarCustom">
         <a href="#home"><img src="~/images/catlogo.png" id="logo" /></a>
-        <div class="dropdownCustom">
-            <button class="dropbtnCustom">
-                Browse
-                <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdownCustom-content">
-                <a href="#">Link 1</a>
-                <a href="#">Link 2</a>
-                <a href="#">Link 3</a>
-            </div>
-        </div>
-        <div class="dropdownCustom">
-            <button class="dropbtnCustom">
-                Write
-                <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdownCustom-content">
-                <a href="@Url.Action("NewStory","Write")">New Story</a>
-                <a href="@Url.Action("ViewPublished","Write")">Continue Previous</a>
-                <a href="#">Link 3</a>
-            </div>
-        </div>
-        <div class="dropdownCustom">
-            <button class="dropbtnCustom">
-                Profile
-                <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdownCustom-content">
-                <a href="http://localhost:64907/Profile/profile">My Profile</a>
-                <a href="@Url.Action("ProfileEdit1","Profile", new {@id = (int)System.Web.HttpContext.Current.Session["Id"] })">Settings</a>
-                <a href="#">Logout</a>
-            </div>
-        </div>
+
         <div class="search-container">
             <form action="">
             </form>
@@ -143,11 +111,47 @@
             {
                 <input type="text" placeholder="Search.." name="id">
                 <input type="submit" class="btn btn-primary" value="&#xf002;" />
-               // <input type="submit" />
+                // <input type="submit" />
                 //<button type="submit"><i class="fa fa-search"></i></button>
             }
 
         </div>
+
+
+        <div class="dropdownCustom">
+            <button class="dropbtnCustom">
+                Write
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdownCustom-content">
+                <a href="@Url.Action("NewStory","Write")">New Story</a>
+                <a href="@Url.Action("ViewPublished","Write")">Continue Previous</a>
+
+            </div>
+        </div>
+        <div class="dropdownCustom">
+            <button class="dropbtnCustom">
+                @Session["username"].ToString()
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdownCustom-content">
+                <a href="@Url.Action("Profile","Profile", new {@id = (int)System.Web.HttpContext.Current.Session["Id"] })">My Profile</a>
+                <a href="@Url.Action("ProfileEdit1","Profile", new {@id = (int)System.Web.HttpContext.Current.Session["Id"] })">Settings</a>
+                <a href="#">Logout</a>
+            </div>
+        </div>
+        <div class="dropdownCustom">
+            <button class="dropbtnCustom">
+                Notifications
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdownCustom-content">
+                <a href="#">Link 1</a>
+                <a href="#">Link 2</a>
+                <a href="#">Link 3</a>
+            </div>
+        </div>
+
     </div>
 
 
@@ -155,6 +159,28 @@
     <div class="container body-content">
         @RenderBody()
     </div>
+
+
+    <div class="footercontainer" style="background-color:dodgerblue;width:100%;color:white">
+        <div class="row" style="opacity:0.8">
+            <div class="col-sm-4">
+                <br />
+                <p>All Manga, Character Designs and Logos are © to their respective copyright holders</p>
+
+            </div>
+            <div class="col-sm-4">
+                <br />
+                <p> © 2010-2019 www.mango.me. Read Fastest Updated Free Manga Online at www.mango.me. </p>
+
+            </div>
+            <div class="col-sm-4">
+                <br />
+                <p><a style="color:yellow">Mango</a>| <a style="color:yellow">Home</a> | <a style="color:yellow">Latest Updates</a> | <a style="color:yellow">Contact Us</a> | <a style="color:yellow">Privacy Policy</a> | <a style="color:yellow">Terms of Service</a></p>
+
+            </div>
+        </div>
+    </div>
+
 
 </body>
 </html>

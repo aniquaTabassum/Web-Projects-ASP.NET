@@ -22,6 +22,7 @@ namespace ReadingCat.Controllers
             getReadList(id);
             getPublishedList(id);
             getProfilePicture(id);
+           
             getTags(id);
             createRecommendation(id);
             loginAndBookList.booksAndDatabase = booksAndDatabase;
@@ -43,7 +44,8 @@ namespace ReadingCat.Controllers
                 user.username = dataSet.Tables[0].Rows[0].ItemArray[1].ToString();
                 user.useremail = dataSet.Tables[0].Rows[0].ItemArray[2].ToString();
                 user.password = dataSet.Tables[0].Rows[0].ItemArray[3].ToString();
-               // user.paths[0] = dataSet.Tables[0].Rows[0].ItemArray[4].ToString();
+                user.bio = dataSet.Tables[0].Rows[0].ItemArray[5].ToString();
+                // user.paths[0] = dataSet.Tables[0].Rows[0].ItemArray[4].ToString();
                 return View(user);
             }
 
@@ -146,7 +148,7 @@ namespace ReadingCat.Controllers
 
         private void getProfilePicture(int id)
         {
-            String query = "SELECT PHOTO, USERNAME FROM USERS WHERE USERID = " + id; ;
+            String query = "SELECT PHOTO, USERNAME, BIO FROM USERS WHERE USERID = " + id; ;
             DataSet dataSet = new DataSet();
             dataSet = booksAndDatabase.databaseModel.selectFunction(query);
             if (dataSet.Tables[0].Rows.Count >= 1)
@@ -155,6 +157,7 @@ namespace ReadingCat.Controllers
                 
             }
             loginAndBookList.loginModel.username = dataSet.Tables[0].Rows[0].ItemArray[1].ToString();
+            loginAndBookList.loginModel.bio = dataSet.Tables[0].Rows[0].ItemArray[2].ToString();
         }
 
         private void getTags(int id)
@@ -199,9 +202,9 @@ namespace ReadingCat.Controllers
                 booksAndDatabase.recommendation[index] = books;
                 index++;
             }
-            {
-
-            }
+            
         }
+
+      
     }
 }

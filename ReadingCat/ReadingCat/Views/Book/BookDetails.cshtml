@@ -98,7 +98,7 @@
         <br /><br /><br />
         <div class="row">
             <div class="col-md-6" style="margin-left:45px;">
-                <div style="font-weight:bold;">Genre: <p><!-- Change Genre here!--></p></div>
+                <div style="font-weight:bold;">Genre: <p> @Model.tag</p></div>
             </div>
         </div>
         <br />
@@ -179,7 +179,6 @@
     </div>
     <hr />
 
-    @Html.BeginForm("BookDetails", "Book", FormMethod.Post){ 
     <div class="WriteComment">
         <div class="row">
             <div class="col-md-1">
@@ -192,20 +191,24 @@
 
         <div class="row">
             <div class="col-md-1"></div>
+            @using (Html.BeginForm("BookDetails", "Book", FormMethod.Post))
+            {
+
             <div class="col-md-11">
-                <div class="form-group" style="font-size:15px;">
-                    @Html.TextAreaFor(model => model.currentComment.comment, new { @class = "form-control", @rows = 5, @id = "comment" })
+                <div class="form-group" style="font-size:15px;width:100px;">
+                    @Html.TextAreaFor(model => model.currentComment.comment, new { @class = "form-control", @rows = 5, @id = "comment",@style="width:800px;" })
                     @Html.ValidationMessageFor(model => model.currentComment.comment)
-                    
+
 
                 </div>
                 <div>
                     <button type="submit" class="btn btn-primary" style="font-size:15px;">Comment</button>
                 </div>
             </div>
+            }
         </div>
     </div>
-    }
+    
 
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

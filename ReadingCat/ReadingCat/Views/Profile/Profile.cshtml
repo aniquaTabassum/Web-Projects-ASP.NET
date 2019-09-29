@@ -2,7 +2,7 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@using System.Linq;
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,83 +13,12 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-    <link rel="stylesheet" href="~/css/home.css">
+    <link rel="stylesheet" href="~/css/home.css"> 
 
 
     <style>
-        .navbarCustom {
-            overflow: hidden;
-            background-color: #A2C9CA;
-        }
 
-            .navbarCustom a {
-                float: left;
-                font-size: 16px;
-                color: white;
-                text-align: center;
-                padding: 14px 16px;
-                text-decoration: none;
-            }
 
-        .dropdownCustom {
-            float: left;
-            overflow: hidden;
-            margin-top: 18px;
-        }
-
-            .dropdownCustom .dropbtnCustom {
-                font-size: 16px;
-                border: none;
-                outline: none;
-                color: white;
-                padding: 14px 16px;
-                background-color: inherit;
-                font-family: inherit;
-                margin: 0;
-            }
-
-            .navbarCustom a:hover, .dropdownCustom:hover .dropbtnCustom {
-                background-color: #ffd9b0;
-            }
-
-        .dropdownCustom-content {
-            display: none;
-            position: absolute;
-            background-color: #f9f9f9;
-            min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 1;
-        }
-
-            .dropdownCustom-content a {
-                float: none;
-                color: black;
-                padding: 12px 16px;
-                text-decoration: none;
-                display: block;
-                text-align: left;
-            }
-
-                .dropdownCustom-content a:hover {
-                    background-color: #ffd9b0;
-                }
-
-        .dropdownCustom:hover .dropdownCustom-content {
-            display: block;
-        }
-
-        .sidenav {
-            margin-right: 1000px;
-        }
-
-        #profileicon {
-            width: 80px;
-            height: 85px;
-        }
-
-        .container {
-            margin-left: 75px;
-        }
     </style>
 
     <link rel="stylesheet" href="~/css/home.css">
@@ -101,9 +30,7 @@
     <br />
     <br />
     <div class="row">
-        <div class="col-md-2">
 
-        </div>
         <div class="col-md-2">
             <!--load profile image here-->
             @{
@@ -115,19 +42,24 @@
                 }
                 else
                 {
-                    <img src="@Url.Content(img)" class="profile" alt=" Image" />
+                    <img src="@Url.Content(img)" class="profile" alt=" Image" style="width:200px;height:200px;"/>
                 }
             }
             
         </div>
         <div class="col-md-2">
-            <label style="font-weight:bold; margin-left:-40px;">Name:</label>
+
         </div>
         <div class="col-md-2" style="margin-left:-50px;">
-            @Model.loginModel.username
+           <h1 style="font-weight:bold;margin-top:85px;"> @Model.loginModel.username </h1>
         </div>
-        <div class="col-md-4">
-            <img src="~/images/caticon.jpg" style="border-radius:50%;border:solid" id="profileicon" />
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8" style="margin-left:145px;margin-top:-75px;">
+            <h3> @Model.loginModel.bio</h3>
         </div>
     </div>
 
@@ -155,8 +87,8 @@
 
                                         <img src="@Url.Content(Model.booksAndDatabase.listOfBooks[0][i].bookCover) " class="img-responsive" />
                                         <div class="overlay">
-                                            <h2>Genre:</h2>
-                                            <a href="@Url.Action("BookDetails", "Book", new { @id = selectedId })">Read</a>
+                                            
+                                            <a class="info" href="@Url.Action("BookDetails", "Book", new { @id = selectedId })">Book Details</a>
                                         </div>
                                     </div>
                                 </div>
@@ -189,8 +121,8 @@
 
                                         <img src="@Url.Content(Model.booksAndDatabase.listOfBooks[1][i].bookCover) " class="img-responsive" />
                                         <div class="overlay">
-                                            <h2>Genre:</h2>
-                                            <a href="@Url.Action("BookDetails", "Book", new { @id = selectedId })">Read</a>
+                                            
+                                            <a class ="info" href="@Url.Action("BookDetails", "Book", new { @id = selectedId })">Book Details</a>
                                         </div>
                                     </div>
                                 </div>
@@ -226,8 +158,8 @@
                                             <img src="@Url.Content(Model.booksAndDatabase.recommendation[j][i].bookCover)" class="img-responsive" />
 
                                             <div class="overlay">
-                                                <h2>Genre:</h2>
-                                                <a href="@Url.Action("BookDetails", "Book", new { @id = selectedId })">Read</a>
+                                                
+                                                <a class="info" href="@Url.Action("BookDetails", "Book", new { @id = selectedId })">Book Details</a>
                                             </div>
                                         </div>
                                     </div>
@@ -353,34 +285,7 @@
 
     <br />
 
-    <!-- Footer -->
-    <footer class="page-footer">
 
-        <!-- Footer Text -->
-        <div class="container-fluid text-center text-md-left">
-
-            <!-- Grid row -->
-            <div class="row">
-                <!-- Grid column -->
-                <!-- Content -->
-                <p class="footerpg">Reading Cat takes everything you love about storytelling,</p>
-                <p class="footerpg">and turns it into a social, on-the-go experience.</p>
-                <p class="footerpg">The result is a one-of-a-kind adventure in creation and discovery.</p>
-                <!-- Grid column -->
-
-            </div>
-            <!-- Grid row -->
-
-        </div>
-        <!-- Footer Text -->
-        <!-- Copyright -->
-        <div class="footer-copyright text-center py-3">
-            © 2018 Copyright:
-            <a href=""> ReadingCat.com</a>
-        </div>
-        <!-- Copyright -->
-
-    </footer>
     <!-- Footer -->
 
 

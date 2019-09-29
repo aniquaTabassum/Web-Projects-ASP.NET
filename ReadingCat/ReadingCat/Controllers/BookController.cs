@@ -23,6 +23,7 @@ namespace ReadingCat.Controllers
             getAuthorName(books.userId);
             getComments(id);
             getCommenterName();
+            getBookTag(id);
             booId = id;
             books.bookId = id;
             Session["CurrentBookId"] = id;
@@ -44,6 +45,7 @@ namespace ReadingCat.Controllers
             getAuthorName(books.userId);
             getComments(bookCommented);
             getCommenterName();
+            getBookTag(bookCommented);
             booId = bookCommented;
             books.bookId = bookCommented;
             return View(books);
@@ -154,6 +156,16 @@ namespace ReadingCat.Controllers
             string query = "INSERT INTO COMMENTS VALUES (" + commenter + ", " + bookCommented + ", '" + comment + "')";
             databaseModel = new DatabaseModel();
             databaseModel.insert(query);
+        }
+
+        private void getBookTag(int id)
+        {
+            string query = "SELECT TAGNAME FROM TAGS WHERE TAGID = ( SELECT TAGID FROM BOOKTAGS WHERE BOOKID = " + id + ")";
+            DataSet dataSet = new DataSet();
+            databaseModel = new DatabaseModel();
+            dataSet = databaseModel.selectFunction(query);
+            books.tag = dataSet.Tables[0].Rows[0].ItemArray[0].ToString();
+
         }
     }
 }

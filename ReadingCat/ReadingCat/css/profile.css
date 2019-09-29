@@ -3,18 +3,6 @@ body {
     font-family: "Lato", sans-serif;
 }
 
-.sidenav {
-    height: 1000px;
-    width: 300px;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    background-color: #ffd9b0;
-    overflow-x: hidden;
-    padding-top: 20px;
-    float:right;
-  
-}
 
     .about {
         padding: 6px 8px 6px 16px;
@@ -36,23 +24,19 @@ body {
 
 }
 
-@media screen and (max-height: 450px) {
-    .sidenav {
-        padding-top: 15px;
-    }
 
-        .sidenav a {
-            font-size: 18px;
-        }
-}
 
 
 .profile{
     border-radius:50px;
-    height:100px;
-    width:100px;
+    height:400px;
+    width:400px;
     margin-left:78px;
     opacity:0.8;
+}
+
+.profile:hover{
+    opacity:0.7;
 }
 
 #editbutton

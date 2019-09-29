@@ -28,29 +28,32 @@ namespace ReadingCat.Controllers
             string paswordFromUser = "";
 
 
-            string query = "SELECT password, userid, photo FROM USERS WHERE username = '" + model.LoginModel.username + "'";
+            string query = "SELECT password, userid, photo, bio FROM USERS WHERE username = '" + model.LoginModel.username + "'";
             string photo = "";
             DataSet dataSet;
             DatabaseModel databaseModel = model.DatabaseModel;
             databaseModel = new DatabaseModel();
             dataSet = databaseModel.selectFunction(query);
             realPassword = dataSet.Tables[0].Rows[0].ItemArray[0].ToString();
-
+            string bio = "";
             paswordFromUser = model.LoginModel.password;
             if (realPassword == paswordFromUser)
             {
                 userid = Convert.ToInt32(dataSet.Tables[0].Rows[0].ItemArray[1]);
                 photo = dataSet.Tables[0].Rows[0].ItemArray[2].ToString();
+                bio = dataSet.Tables[0].Rows[0].ItemArray[3].ToString();
                 model.LoginModel.userid = userid;
                 model.LoginModel.path = photo;
-
+                model.LoginModel.bio = bio;
                 LoginAndBookList loginAndBookList = new LoginAndBookList();
                 loginAndBookList.loginModel = new LoginModel();
                 loginAndBookList.loginModel = model.LoginModel;
                 loginAndBookList.loginModel.userid = userid;
                 loginAndBookList.loginModel.username = model.LoginModel.username;
+                loginAndBookList.loginModel.bio = model.LoginModel.bio;
                 Session["Id"] = loginAndBookList.loginModel.userid;
                 Session["username"] = model.LoginModel.username;
+                Session["bio"] = model.LoginModel.bio;
                 Session["Picture"] = loginAndBookList.loginModel.path;
 
                 Boolean newUser = checkTags();
