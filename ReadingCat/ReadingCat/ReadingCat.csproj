@@ -121,6 +121,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\ApproveController.cs" />
     <Compile Include="Controllers\BookController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HomePageController.cs" />
@@ -143,6 +144,7 @@
     <Compile Include="Models\Tags.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModel\ApproveChapters.cs" />
     <Compile Include="ViewModel\BooksAndDatabase.cs" />
     <Compile Include="ViewModel\LoginAndBookList.cs" />
     <Compile Include="ViewModel\NewStoryInfo.cs" />
@@ -246,6 +248,8 @@
     <Content Include="Views\Write\WriteStory.cshtml" />
     <Content Include="Views\Write\ViewPublished.cshtml" />
     <Content Include="Views\Read\ReadBook.cshtml" />
+    <Content Include="Views\Approve\Approve.cshtml" />
+    <Content Include="Views\Approve\ViewUnapprovedBooks.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

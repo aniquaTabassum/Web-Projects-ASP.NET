@@ -10,6 +10,9 @@ namespace ReadingCat.Models
         public int chapterId { get; set; }
         public string chapterName { get; set; }
         public string chatpterText { get; set; }
+        public int approved { get; set; }
+
+        public int bookId { get; set; }
 
     }
 }

@@ -38,38 +38,38 @@ namespace ReadingCat.Controllers
                     filePath = Path.Combine(Server.MapPath("~/images/Books"), fileName);
                     string toSave = "~/images/Books/" + fileName;
                     file.SaveAs(filePath);
-                    
+
                     // query = "UPDATE USERS SET PASSWORD = '" + user.password + "', photo = '" + toSave + "' WHERE USERNAME = '" + user.username + "'";
                     //ViewBag.Message("Uploaded file saved");
                     int currentUser = (int)System.Web.HttpContext.Current.Session["Id"];
-                    query = "INSERT INTO BOOKS VALUES ('"+bookName+"',"+currentUser+",null,'"+toSave+"','"+boodSummary+"')";
+                    query = "INSERT INTO BOOKS VALUES ('" + bookName + "'," + currentUser + ",null,'" + toSave + "','" + boodSummary + "')";
                     DatabaseModel databaseModel = new DatabaseModel();
                     databaseModel.insert(query);
-                    query = "SELECT BOOKID FROM BOOKS WHERE BOOKNAME = '" + bookName+"'";
+                    query = "SELECT BOOKID FROM BOOKS WHERE BOOKNAME = '" + bookName + "'";
                     DataSet dataSet = new DataSet();
                     dataSet = databaseModel.selectFunction(query);
                     bookId = Convert.ToInt32(dataSet.Tables[0].Rows[0].ItemArray[0]);
-                    query = "SELECT TAGID FROM TAGS WHERE TAGNAME = '" + storyInfo.tags.tagName+"'";
+                    query = "SELECT TAGID FROM TAGS WHERE TAGNAME = '" + storyInfo.tags.tagName + "'";
                     dataSet = new DataSet();
                     dataSet = databaseModel.selectFunction(query);
                     int tagid = Convert.ToInt32(dataSet.Tables[0].Rows[0].ItemArray[0]);
                     query = "INSERT INTO BOOKTAGS VALUES (" + bookId + ", " + tagid + ")";
                     databaseModel.insert(query);
-                    }
+                }
                 else
                 {
-                  //  query = "UPDATE USERS SET PASSWORD = '" + user.password + "' WHERE USERNAME = '" + user.username + "'";
+                    //  query = "UPDATE USERS SET PASSWORD = '" + user.password + "' WHERE USERNAME = '" + user.username + "'";
                 }
             }
             catch
             {
 
             }
-                return RedirectToAction("WriteStory","Write", new { @id = bookId});
+            return RedirectToAction("WriteStory", "Write", new { @id = bookId });
         }
         public ActionResult ViewPublished()
         {
-            int id = (int) System.Web.HttpContext.Current.Session["Id"];
+            int id = (int)System.Web.HttpContext.Current.Session["Id"];
             getPublishedList(id);
 
             return View(booksAndDatabase);
@@ -87,8 +87,11 @@ namespace ReadingCat.Controllers
             string title = chapters.chapterName;
             string text = chapters.chatpterText;
             int bookId = (int)System.Web.HttpContext.Current.Session["BookId"];
-            insertChapter(bookId, title, text);
-            return RedirectToAction("BookDetails", "Book", new { @id = bookId });
+            chapters.bookId = bookId;
+            /* insertChapter(bookId, title, text);
+             return RedirectToAction("BookDetails", "Book", new { @id = bookId });
+             */
+            return RedirectToAction("BookDetals", "Book", new { @id = bookId });
         }
 
         private void getPublishedList(int id)
@@ -112,7 +115,7 @@ namespace ReadingCat.Controllers
 
         private void insertChapter(int id, string title, string text)
         {
-            string query = "INSERT INTO BOOKCHAPTERS VALUES (@id,@title, @text)";
+            string query = "INSERT INTO BOOKCHAPTERS VALUES (@id,@title, @text, @approved)";
 
             string connectionString = @"Data Source = DESKTOP-BKFDVUR\SQLEXPRESS; Initial Catalog = ReadingCat; Integrated Security = True";
             using (SqlConnection sqlConnection = new SqlConnection(connectionString))
@@ -122,7 +125,7 @@ namespace ReadingCat.Controllers
                 sqlCommand.Parameters.AddWithValue("@id", id);
                 sqlCommand.Parameters.AddWithValue("@title", title);
                 sqlCommand.Parameters.AddWithValue("@text", text);
-
+                sqlCommand.Parameters.AddWithValue("@approved", 0);
                 sqlCommand.ExecuteNonQuery();
             }
         }

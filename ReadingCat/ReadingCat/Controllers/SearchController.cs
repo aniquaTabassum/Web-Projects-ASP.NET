@@ -19,7 +19,7 @@ namespace ReadingCat.Controllers
             string searchString = id;
             searchString.Trim();
             string[] arrayOfString = searchString.Split(new char[0]);
-            if(arrayOfString.Length == 1)
+            if (arrayOfString.Length == 1)
             {
                 searchByTag(searchString);
             }
@@ -30,12 +30,12 @@ namespace ReadingCat.Controllers
 
         private void searchByTag(string searchByString)
         {
-            String query = "SELECT *FROM BOOKS WHERE BOOKID IN (SELECT BOOKID FROM BOOKTAGS WHERE TAGID = (SELECT TAGID FROM TAGS WHERE TAGNAME = '"+searchByString+"'))";
+            String query = "SELECT *FROM BOOKS WHERE BOOKID IN (SELECT BOOKID FROM BOOKTAGS WHERE TAGID = (SELECT TAGID FROM TAGS WHERE TAGNAME = '" + searchByString + "'))";
             DatabaseModel databaseModel = new DatabaseModel();
             DataSet dataSet = databaseModel.selectFunction(query);
-            if(dataSet.Tables[0].Rows.Count >=1)
+            if (dataSet.Tables[0].Rows.Count >= 1)
             {
-                for(int i=0;i<dataSet.Tables[0].Rows.Count; i++)
+                for (int i = 0; i < dataSet.Tables[0].Rows.Count; i++)
                 {
                     Books books = new Books();
                     books.bookId = Convert.ToInt32(dataSet.Tables[0].Rows[i].ItemArray[0]);

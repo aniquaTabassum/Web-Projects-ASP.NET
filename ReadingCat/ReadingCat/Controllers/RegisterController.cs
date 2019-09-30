@@ -17,14 +17,14 @@ namespace ReadingCat.Controllers
         {
             return View(new User());
         }
-        
+
         [HttpPost]
         public ActionResult Register1(User user)
         {
             using (SqlConnection sqlConnection = new SqlConnection(connectionString))
             {
                 sqlConnection.Open();
-                string query = "INSERT INTO USERS VALUES (@username, @useremail, @password, null)";
+                string query = "INSERT INTO USERS VALUES (@username, @useremail, @password, null, null, 0)";
                 SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
                 sqlCommand.Parameters.AddWithValue("@username", user.username);
                 sqlCommand.Parameters.AddWithValue("@useremail", user.useremail);
@@ -33,7 +33,7 @@ namespace ReadingCat.Controllers
                 sqlCommand.ExecuteNonQuery();
             }
             return View("~/Views/Login/Login.cshtml");
-            
+
         }
 
     }

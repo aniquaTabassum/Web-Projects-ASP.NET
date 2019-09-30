@@ -80,7 +80,7 @@
             <div class="col-md-5" style="">
 
             </div>
-            
+
             <div class="col-md-offset-4" style="font-weight:bold;margin-left:60px;">
                 @Model.readCount<a href="#">
                     <span class="glyphicon glyphicon-eye-open"></span>
@@ -96,6 +96,11 @@
         </div>
 
         <br /><br /><br />
+        <div class="row">
+            <div class="col-md-6" style="margin-left:45px;">
+                <div style="font-weight:bold; font-size: 15px;">Author: <p style="font-weight:normal; font-size:12px;"> <a href="@Url.Action("Profile", "Profile", new { @id = Model.userId})"> @Model.author</a></p></div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-6" style="margin-left:45px;">
                 <div style="font-weight:bold; font-size: 15px;">Genre: <p style="font-weight:normal; font-size:12px;"> @Model.tag</p></div>
@@ -123,18 +128,65 @@
 
                             </tr>
                         </thead>
-                        <tbody>
-                            @for (int i = 0; i < Model.chapters.Count; i++)
-                            {
-                                var index = (i + 1);
-                                <tr>
-                                    <th scope="row"> @index</th>
-                                    <td style="font-size : 15px;"><a href="@Url.Action("ReadBook", "Read", new { @id = Model.chapters[i].chapterId})"> @Model.chapters[i].chapterName</a></td>
+                        @if ((int)System.Web.HttpContext.Current.Session["review"] == 0)
+                        {
+                            <tbody>
+                                @for (int i = 0; i < Model.chapters.Count; i++)
+                                {
 
 
-                                </tr>
-                            }
-                        </tbody>
+                                    var index = (i + 1);
+                                    <tr>
+
+                                        @if (Model.userId == (int)System.Web.HttpContext.Current.Session["Id"])
+                                        {
+                                            <th scope="row"> @index</th>
+                                            if (Model.chapters[i].approved == 1)
+                                            {
+                                                <td style="font-size : 15px;"><a href="@Url.Action("ReadBook", "Read", new { @id = Model.chapters[i].chapterId })"> @Model.chapters[i].chapterName</a></td>
+                                            }
+                                            else
+                                            {
+                                                <td style="font-size : 15px;"><a href="@Url.Action("ReadBook", "Read", new { @id = Model.chapters[i].chapterId })"> @Model.chapters[i].chapterName (pending)</a></td>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (Model.chapters[i].approved == 1)
+                                            {
+                                                <th scope="row"> @index</th>
+                                                <td style="font-size : 15px;"><a href="@Url.Action("ReadBook", "Read", new { @id = Model.chapters[i].chapterId })"> @Model.chapters[i].chapterName</a></td>
+                                            }
+                                        }
+
+                                    </tr>
+                                }
+                                }
+
+                            </tbody>
+                        }
+                        else
+                        {
+                            <tbody>
+                                @for (int i = 0; i < Model.chapters.Count; i++)
+                                {
+
+
+                                    var index = (i + 1);
+                                    <tr>
+
+                                        @if (Model.chapters[i].approved == 0)
+                                        {
+                                            <th scope="row"> @index</th>
+                                            <td style="font-size : 15px;"><a href="@Url.Action("ReadBook", "Read", new { @id = Model.chapters[i].chapterId })"> @Model.chapters[i].chapterName (pending)</a></td>
+                                        }
+
+                                    </tr>
+                                }
+                                }
+
+                            </tbody>
+                        }
                     </table>
 
                 </div>
@@ -194,21 +246,21 @@
             @using (Html.BeginForm("BookDetails", "Book", FormMethod.Post))
             {
 
-            <div class="col-md-11">
-                <div class="form-group" style="font-size:15px;width:100px;">
-                    @Html.TextAreaFor(model => model.currentComment.comment, new { @class = "form-control", @rows = 5, @id = "comment",@style="width:800px;" })
-                    @Html.ValidationMessageFor(model => model.currentComment.comment)
+                <div class="col-md-11">
+                    <div class="form-group" style="font-size:15px;width:100px;">
+                        @Html.TextAreaFor(model => model.currentComment.comment, new { @class = "form-control", @rows = 5, @id = "comment", @style = "width:800px;", @Value = "default" })
+                        @Html.ValidationMessageFor(model => model.currentComment.comment)
 
 
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-primary" style="font-size:15px;">Comment</button>
+                    </div>
                 </div>
-                <div>
-                    <button type="submit" class="btn btn-primary" style="font-size:15px;">Comment</button>
-                </div>
-            </div>
             }
         </div>
     </div>
-    
+
 
 
 

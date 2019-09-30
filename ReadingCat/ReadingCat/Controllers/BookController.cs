@@ -31,7 +31,8 @@ namespace ReadingCat.Controllers
             Session["CurrentBookId"] = id;
             return View(books);
         }
-
+        
+        
         [HttpPost]
         public ActionResult BookDetails(Books passedBook)
         {
@@ -51,6 +52,8 @@ namespace ReadingCat.Controllers
             getBookTag(bookCommented);
             booId = bookCommented;
             books.bookId = bookCommented;
+            books.currentComment = new Comment();
+            books.currentComment.comment = "";
             return View(books);
         }
 
@@ -75,12 +78,13 @@ namespace ReadingCat.Controllers
             DataSet dataSet = new DataSet();
             databaseModel = new DatabaseModel();
             dataSet = databaseModel.selectFunction(query);
-            for(int i=0;i<dataSet.Tables[0].Rows.Count;i++)
+            for (int i = 0; i < dataSet.Tables[0].Rows.Count; i++)
             {
                 Chapters chapters = new Chapters();
                 chapters.chapterId = Convert.ToInt32(dataSet.Tables[0].Rows[i].ItemArray[0]);
                 chapters.chapterName = dataSet.Tables[0].Rows[i].ItemArray[2].ToString();
                 chapters.chatpterText = dataSet.Tables[0].Rows[i].ItemArray[3].ToString();
+                chapters.approved = Convert.ToInt32(dataSet.Tables[0].Rows[i].ItemArray[4]);
                 books.chapters.Add(chapters);
             }
         }
@@ -165,7 +169,7 @@ namespace ReadingCat.Controllers
                 sqlCommand.Parameters.AddWithValue("@commenter", commenter);
                 sqlCommand.Parameters.AddWithValue("@bookCommented", bookCommented);
                 sqlCommand.Parameters.AddWithValue("@comment", comment);
-               
+
                 sqlCommand.ExecuteNonQuery();
             }
         }
@@ -182,11 +186,11 @@ namespace ReadingCat.Controllers
 
         private void getReadCount(int id)
         {
-            string query = " SELECT COUNT(BOOKID), BOOKID FROM READLOG WHERE BOOKID = "+id+" GROUP BY BOOKID";
+            string query = " SELECT COUNT(BOOKID), BOOKID FROM READLOG WHERE BOOKID = " + id + " GROUP BY BOOKID";
             DataSet dataSet = new DataSet();
             databaseModel = new DatabaseModel();
             dataSet = databaseModel.selectFunction(query);
-            books.readCount = Convert.ToInt32( dataSet.Tables[0].Rows[0].ItemArray[0]);
+            books.readCount = Convert.ToInt32(dataSet.Tables[0].Rows[0].ItemArray[0]);
         }
     }
 }

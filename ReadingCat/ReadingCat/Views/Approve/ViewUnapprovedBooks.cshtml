@@ -1,4 +1,4 @@
-﻿@model ReadingCat.ViewModel.LoginAndBookList
+﻿@model ReadingCat.ViewModel.ApproveChapters
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -28,74 +28,43 @@
     <br />
     <br />
 
-    <div class="row">
 
-        <div class="col-md-2">
-            <!--load profile image here-->
-            @{
-                var img = Model.loginModel.path;
-                if (img.IsEmpty())
-                {
-                    <img src="~/images/profile.png" class="profile" alt=" Image" style="width:200px;height:200px;border:solid;border-color:coral;" />
-
-                }
-                else
-                {
-                    <img src="@Url.Content(img)" class="profile" alt=" Image" style="width:200px;height:200px;border:solid;border-color:coral;" />
-                }
-            }
-
-        </div>
-        <div class="col-md-2">
-
-        </div>
-        <div class="col-md-2" style="margin-left:-50px;">
-            <h1 style="font-weight:bold;margin-top:85px;"> @Model.loginModel.username </h1>
-        </div>
-
-    </div>
-
-    <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-8" style="margin-left:145px;margin-top:-75px;">
-            <h3> @Model.loginModel.bio</h3>
-        </div>
-    </div>
-
-    <hr />
-    <br />
-    <br />
     <div>
-        @if ((int)System.Web.HttpContext.Current.Session["Id"] == Model.loginModel.userid && Model.booksAndDatabase.listOfBooks[0].Count>0)
+        @if ((int)System.Web.HttpContext.Current.Session["Id"] != 0 && (int)System.Web.HttpContext.Current.Session["Admin"] == 1 && Model.listOfBooks.Count > 0)
         {
 
-            <h4 class="headingprofile2" style= margin-left: 25px;
-        font-weight: bold;
-        color: black;
-        font-size: 25px;">Library</h4>
+            <h4 class="headingprofile2" style=margin-left: 25px;
+                font-weight: bold;
+                color: black;
+                font-size: 25px;">
+                Pending Approval
+            </h4>
             <div class="container">
                 <div class="row">
                     <div class="MultiCarousel" data-items="1,3,5,6" data-slide="1" id="MultiCarousel" data-interval="1000">
                         <div class="MultiCarousel-inner">
-                            @for (int i = 0; i < Model.booksAndDatabase.listOfBooks[0].Count; i++)
+
+                            @for (int i = 0; i < Model.listOfBooks.Count; i++)
                             {
                                 <div class="item">
                                     <div class="pad15">
                                         <div class="hovereffect">
 
                                             @{
-                                                var selectedId = Model.booksAndDatabase.listOfBooks[0][i].bookId;
+                                                var selectedId = Model.listOfBooks[i].bookId;
                                             }
 
-                                            <img src="@Url.Content(Model.booksAndDatabase.listOfBooks[0][i].bookCover) " class="img-responsive" />
+                                            <img src="@Url.Content(Model.listOfBooks[i].bookCover) " class="img-responsive" />
                                             <div class="overlay">
 
-                                                <a class="info" href="@Url.Action("BookDetails", "Book", new { @id = selectedId })">Book Details</a>
+                                                <a class="info" href="@Url.Action("BookDetails", "Book", new { @id = selectedId })">Review</a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             }
+
+
                         </div>
                         <button class="btn btn-primary leftLst"><</button>
                         <button class="btn btn-primary rightLst">></button>
@@ -103,80 +72,12 @@
                 </div>
             </div>
         }
+        else
 
-        @if (Model.booksAndDatabase.listOfBooks[1].Count > 0)
+
         {
-            <h4 class="headingprofile2" style="margin-left:25px;font-weight:bold;color:black;font-size:25px;">Published Stories</h4>
-            <div class="container">
-                <div class="row">
-                    <div class="MultiCarousel" data-items="1,3,5,6" data-slide="1" id="MultiCarousel" data-interval="1000">
-                        <div class="MultiCarousel-inner">
-                            @for (int i = 0; i < Model.booksAndDatabase.listOfBooks[1].Count; i++)
-                            {
-                                <div class="item">
-                                    <div class="pad15">
-                                        <div class="hovereffect">
-
-                                            @{
-                                                var selectedId = Model.booksAndDatabase.listOfBooks[1][i].bookId;
-                                            }
-
-                                            <img src="@Url.Content(Model.booksAndDatabase.listOfBooks[1][i].bookCover) " class="img-responsive" />
-                                            <div class="overlay">
-
-                                                <a class="info" href="@Url.Action("BookDetails", "Book", new { @id = selectedId })">Book Details</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            }
-                        </div>
-                        <button class="btn btn-primary leftLst"><</button>
-                        <button class="btn btn-primary rightLst">></button>
-                    </div>
-                </div>
-            </div>
+            Session["review"] = 0;
         }
-
-        @if ((int)System.Web.HttpContext.Current.Session["Id"] == Model.loginModel.userid)
-        {
-            for (int j = 0; j < Model.booksAndDatabase.tagList.Count; j++)
-            {
-                if (Model.booksAndDatabase.recommendation[j].Count > 0)
-                {
-                    <h3 class="headingprofile2" style="margin-left: 25px;font-weight:bold;color:black;font-size:25px;">Recommenation by @Model.booksAndDatabase.tagList[j].tagName</h3>
-                    <div class="container">
-                        <div class="row">
-                            <div class="MultiCarousel" data-items="1,3,5,6" data-slide="1" id="MultiCarousel" data-interval="1000">
-                                <div class="MultiCarousel-inner">
-                                    @for (int i = 0; i < Model.booksAndDatabase.recommendation[j].Count; i++)
-
-                                    {
-                                        <div class="item">
-                                            <div class="pad15">
-                                                <div class="hovereffect">
-                                                    @{
-                                                        var selectedId = Model.booksAndDatabase.recommendation[j][i].bookId;
-                                                    }
-
-                                                    <img src="@Url.Content(Model.booksAndDatabase.recommendation[j][i].bookCover)" class="img-responsive" />
-
-                                                    <div class="overlay">
-
-                                                        <a class="info" href="@Url.Action("BookDetails", "Book", new { @id = selectedId })">Book Details</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    }
-                                </div>
-                                <button class="btn btn-primary leftLst"><</button>
-                                <button class="btn btn-primary rightLst">></button>
-                            </div>
-                        </div>
-                    </div>
-                }
-            }
         }
         <script>
             $(document).ready(function () {

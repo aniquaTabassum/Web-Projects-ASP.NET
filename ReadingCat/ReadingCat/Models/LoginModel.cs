@@ -13,6 +13,7 @@ namespace ReadingCat.Models
         public int userid { get; set; }
         public string path { get; set; }
 
+        public int isAdmin { get; set; }
         public string bio { get; set; }
     }
 }

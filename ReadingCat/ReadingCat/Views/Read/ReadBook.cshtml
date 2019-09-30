@@ -25,7 +25,11 @@
     <title>WriteStory</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
+    <style>
+        .footercontainer {
+            display: none;
+        }
+    </style>
 </head>
 <body>
     <div>
@@ -36,8 +40,28 @@
             Dark mode:
             <span class="inner-switch">OFF</span>
         </div>
-        <div class="page">
 
+        <div class="page">
+            @if ((int)System.Web.HttpContext.Current.Session["admin"] == 1)
+            {
+                var reviewing = (int)System.Web.HttpContext.Current.Session["review"];
+                if (reviewing == 1 && Model.currentChapter.approved == 0)
+                {
+                    <div class="col-md-4">
+                        <button class="btn btn-primary" onclick="location.href ='@Url.Action("Publish", "Approve", new { @id = Model.currentChapter.chapterId })'">Approve</button>
+
+                    </div>
+                }
+                else
+                {
+
+                    <div class="col-md-4">
+                        <button class="btn btn-primary">Approved</button>
+
+                    </div>
+
+                }
+            }
             <div class="dropdown" id="chapter">
                 <button class="btn btn-default" type="button" data-toggle="dropdown">
                     <div style="color:dodgerblue;">@Model.currentChapter.chapterName</div>
@@ -48,8 +72,8 @@
                     <li class="divider"></li>
                     @for (int i = 0; i < Model.chapters.Count; i++)
                     {
-                    <li><a href="@Url.Action("ReadBook", "Read", new { @id = Model.chapters[i].chapterId })">@Model.chapters[i].chapterName</a></li>
-                   
+                        <li><a href="@Url.Action("ReadBook", "Read", new { @id = Model.chapters[i].chapterId })">@Model.chapters[i].chapterName</a></li>
+
                     }
                 </ul>
             </div>

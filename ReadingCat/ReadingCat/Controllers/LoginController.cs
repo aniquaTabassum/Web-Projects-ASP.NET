@@ -13,7 +13,7 @@ namespace ReadingCat.Controllers
 {
     public class LoginController : Controller
     {
-       // string connectionString = @"Data Source = DESKTOP-BKFDVUR\SQLEXPRESS; Initial Catalog = ReadingCat; Integrated Security = True";
+        // string connectionString = @"Data Source = DESKTOP-BKFDVUR\SQLEXPRESS; Initial Catalog = ReadingCat; Integrated Security = True";
         private int userid;
         // GET: Login
         [HttpGet]
@@ -29,7 +29,7 @@ namespace ReadingCat.Controllers
             string paswordFromUser = "";
 
 
-            string query = "SELECT password, userid, photo, bio FROM USERS WHERE username = '" + model.LoginModel.username + "'";
+            string query = "SELECT password, userid, photo, bio, isadmin FROM USERS WHERE username = '" + model.LoginModel.username + "'";
             string photo = "";
             DataSet dataSet;
             DatabaseModel databaseModel = model.DatabaseModel;
@@ -43,9 +43,11 @@ namespace ReadingCat.Controllers
                 userid = Convert.ToInt32(dataSet.Tables[0].Rows[0].ItemArray[1]);
                 photo = dataSet.Tables[0].Rows[0].ItemArray[2].ToString();
                 bio = dataSet.Tables[0].Rows[0].ItemArray[3].ToString();
+                int isAdmin = Convert.ToInt32(dataSet.Tables[0].Rows[0].ItemArray[4]);
                 model.LoginModel.userid = userid;
                 model.LoginModel.path = photo;
                 model.LoginModel.bio = bio;
+                model.LoginModel.isAdmin = isAdmin;
                 LoginAndBookList loginAndBookList = new LoginAndBookList();
                 loginAndBookList.loginModel = new LoginModel();
                 loginAndBookList.loginModel = model.LoginModel;
@@ -56,11 +58,19 @@ namespace ReadingCat.Controllers
                 Session["username"] = model.LoginModel.username;
                 Session["bio"] = model.LoginModel.bio;
                 Session["Picture"] = loginAndBookList.loginModel.path;
-
+                if(isAdmin == 1)
+                {
+                    Session["admin"] = 1;
+                    Session["review"] = 0;
+                }
+                else
+                {
+                    Session["admin"] = 0;
+                }
                 Boolean newUser = checkTags();
                 if (newUser)
                 {
-                   return RedirectToAction("ViewTags", "Tag");
+                    return RedirectToAction("ViewTags", "Tag");
                 }
                 else
                 {

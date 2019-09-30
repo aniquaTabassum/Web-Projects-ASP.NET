@@ -27,8 +27,10 @@ namespace ReadingCat.Controllers
         {
             string query = "SELECT *FROM  BookChapters WHERE CHAPTERID = " + id;
             dataSet = databaseModel.selectFunction(query);
+            books.currentChapter.chapterId = id;
             books.currentChapter.chapterName = dataSet.Tables[0].Rows[0].ItemArray[2].ToString();
             books.currentChapter.chatpterText = dataSet.Tables[0].Rows[0].ItemArray[3].ToString();
+            books.currentChapter.approved = Convert.ToInt32( dataSet.Tables[0].Rows[0].ItemArray[4]);
             books.bookId = Convert.ToInt32(dataSet.Tables[0].Rows[0].ItemArray[1]);
         }
 

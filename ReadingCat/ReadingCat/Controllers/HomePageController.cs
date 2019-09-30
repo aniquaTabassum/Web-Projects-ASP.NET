@@ -11,7 +11,7 @@ namespace ReadingCat.Controllers
 {
     public class HomePageController : Controller
     {
-       
+
         BooksAndDatabase booksAndDatabase = new BooksAndDatabase();
         // GET: HomePage
         public ActionResult HomePage()
@@ -47,10 +47,10 @@ namespace ReadingCat.Controllers
 
         private void getRecommendation()
         {
-            string query = "SELECT COUNT(READLOG.BOOKID), READLOG.BOOKID, BOOKS.BookName, BOOKS.BookCover, BOOKS.UserId, Books.Rating, BOOKS.BookCover, BOOKTAGS.TAGID FROM READLOG LEFT JOIN BOOKTAGS ON ReadLog.BookId = BookTags.BookId LEFT JOIN Books ON ReadLog.BookId = BOOKS.BookID GROUP BY READLOG.BookId, BookTags.TAGID, BOOKS.BookName, BOOKS.BookCover, BOOKS.Rating, BOOKS.UserId EXCEPT SELECT COUNT(READLOG.BOOKID), READLOG.BOOKID, BOOKS.BookName, BOOKS.BookCover, BOOKS.UserId, Books.Rating, BOOKS.BookCover, BOOKTAGS.TAGID FROM READLOG LEFT JOIN BOOKTAGS ON ReadLog.BookId = BookTags.BookId LEFT JOIN Books ON ReadLog.BookId = BOOKS.BookID WHERE ReadLog.UserId = "+(int)System.Web.HttpContext.Current.Session["Id"]+" GROUP BY READLOG.BookId, BookTags.TAGID, BOOKS.BookName, BOOKS.BookCover, BOOKS.Rating, BOOKS.UserId";
+            string query = "SELECT COUNT(READLOG.BOOKID), READLOG.BOOKID, BOOKS.BookName, BOOKS.BookCover, BOOKS.UserId, Books.Rating, BOOKS.BookCover, BOOKTAGS.TAGID FROM READLOG LEFT JOIN BOOKTAGS ON ReadLog.BookId = BookTags.BookId LEFT JOIN Books ON ReadLog.BookId = BOOKS.BookID GROUP BY READLOG.BookId, BookTags.TAGID, BOOKS.BookName, BOOKS.BookCover, BOOKS.Rating, BOOKS.UserId EXCEPT SELECT COUNT(READLOG.BOOKID), READLOG.BOOKID, BOOKS.BookName, BOOKS.BookCover, BOOKS.UserId, Books.Rating, BOOKS.BookCover, BOOKTAGS.TAGID FROM READLOG LEFT JOIN BOOKTAGS ON ReadLog.BookId = BookTags.BookId LEFT JOIN Books ON ReadLog.BookId = BOOKS.BookID WHERE ReadLog.UserId = " + (int)System.Web.HttpContext.Current.Session["Id"] + " GROUP BY READLOG.BookId, BookTags.TAGID, BOOKS.BookName, BOOKS.BookCover, BOOKS.Rating, BOOKS.UserId";
             DatabaseModel databaseModel = new DatabaseModel();
             DataSet dataSet = databaseModel.selectFunction(query);
-            
+
             for (int i = (dataSet.Tables[0].Rows.Count - 1); i >= 0; i--)
             {
 

@@ -21,14 +21,14 @@ namespace ReadingCat.Controllers
         {
             getTags();
             returnedRows = dataSet.Tables[0].Rows.Count;
-            createList();       
+            createList();
             return View(tags);
         }
 
         [HttpPost]
         public ActionResult ViewTags(Tags tags)
         {
-            if(tags.listOfTags.Count(m => m.isSelected) == 0)
+            if (tags.listOfTags.Count(m => m.isSelected) == 0)
             {
                 return View(tags);
             }
@@ -42,15 +42,15 @@ namespace ReadingCat.Controllers
 
                 foreach (Tags tag in tags.listOfTags)
                 {
-                    
-                    if(tag.isSelected)
+
+                    if (tag.isSelected)
                     {
                         string query = "INSERT INTO USERTAG VALUES (" + System.Web.HttpContext.Current.Session["Id"] + "," + tag.tagId + ")";
                         databaseModel.insert(query);
                     }
                 }
 
-                return RedirectToAction("Profile", "Profile", new { id = currentUser});
+                return RedirectToAction("Profile", "Profile", new { id = currentUser });
             }
         }
         private void getTags()
@@ -77,12 +77,12 @@ namespace ReadingCat.Controllers
         private void addTags()
         {
             DatabaseModel databaseModel = new DatabaseModel();
-            for(int i=0; i<tags.listOfTags.Count;i++)
+            for (int i = 0; i < tags.listOfTags.Count; i++)
             {
                 string query = "INSERT INTO USERTAG VALUES (" + System.Web.HttpContext.Current.Session["Id"] + "," + tags.listOfTags[i].tagId + ")";
                 databaseModel.insert(query);
             }
-            
+
         }
     }
 }

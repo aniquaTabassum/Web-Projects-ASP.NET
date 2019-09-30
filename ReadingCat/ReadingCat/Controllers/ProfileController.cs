@@ -22,11 +22,11 @@ namespace ReadingCat.Controllers
             getReadList(id);
             getPublishedList(id);
             getProfilePicture(id);
-           
+
             getTags(id);
             createRecommendation(id);
             loginAndBookList.booksAndDatabase = booksAndDatabase;
-            
+
             loginAndBookList.loginModel.userid = id;
             loginAndBookList.loginModel.path = pathName;
             return View(loginAndBookList);
@@ -38,15 +38,15 @@ namespace ReadingCat.Controllers
             String query = "SELECT *FROM USERS WHERE USERID = " + id;
             DataSet dataSet = new DataSet();
             dataSet = databaseModel.selectFunction(query);
-            
-            if(dataSet.Tables[0].Rows.Count == 1)
+
+            if (dataSet.Tables[0].Rows.Count == 1)
             {
                 user.username = dataSet.Tables[0].Rows[0].ItemArray[1].ToString();
                 user.useremail = dataSet.Tables[0].Rows[0].ItemArray[2].ToString();
                 user.password = dataSet.Tables[0].Rows[0].ItemArray[3].ToString();
                 user.bio = dataSet.Tables[0].Rows[0].ItemArray[5].ToString();
                 // user.paths[0] = dataSet.Tables[0].Rows[0].ItemArray[4].ToString();
-                return View("~/Views/Profile/ProfileEdit.cshtml",user);
+                return View("~/Views/Profile/ProfileEdit.cshtml", user);
             }
 
             return View("~/Views/Login/Login.cshtml");
@@ -60,7 +60,7 @@ namespace ReadingCat.Controllers
             string query = "";
             try
             {
-                if(file != null && file.ContentLength>0)
+                if (file != null && file.ContentLength > 0)
                 {
                     fileName = Path.GetFileName(file.FileName);
                     filePath = Path.Combine(Server.MapPath("~/images"), fileName);
@@ -86,12 +86,12 @@ namespace ReadingCat.Controllers
                     {
                         query = "UPDATE USERS SET bio = '" + user.bio + "' WHERE USERNAME = '" + Session["username"].ToString() + "'";
                     }
-                    }
+                }
             }
             catch
             {
                 // ViewBag.Message("Uploade file not saved");
-                 
+
             }
             //query = "UPDATE USERS SET PASSWORD = '" + user.password + "' WHERE USERNAME = '" + user.username + "'";
             DatabaseModel databaseModel = new DatabaseModel();
@@ -99,7 +99,7 @@ namespace ReadingCat.Controllers
 
             DatabaseModel databaseModel1 = new DatabaseModel();
             User user1 = new User();
-            query = "SELECT *FROM USERS WHERE USERID = "+ (int)System.Web.HttpContext.Current.Session["Id"];
+            query = "SELECT *FROM USERS WHERE USERID = " + (int)System.Web.HttpContext.Current.Session["Id"];
             DataSet dataSet = new DataSet();
             dataSet = databaseModel1.selectFunction(query);
             LoginModel loginModel = new LoginModel();
@@ -109,13 +109,13 @@ namespace ReadingCat.Controllers
             LoginAndBookList loginAndBookList = new LoginAndBookList();
             loginAndBookList.loginModel = loginModel;
 
-           
+
             int id = (int)System.Web.HttpContext.Current.Session["Id"];
 
-        
+
             return RedirectToAction("Profile", "Profile", new { id = id });
 
-            
+
         }
 
         public ActionResult NewStory()
@@ -144,7 +144,7 @@ namespace ReadingCat.Controllers
 
         private void getReadList(int id)
         {
-            String query = "SELECT *FROM BOOKS WHERE BOOKID IN (SELECT BOOKID FROM READLOG WHERE USERID = "+id+")";
+            String query = "SELECT *FROM BOOKS WHERE BOOKID IN (SELECT BOOKID FROM READLOG WHERE USERID = " + id + ")";
             DataSet dataSet = new DataSet();
             dataSet = booksAndDatabase.databaseModel.selectFunction(query);
             if (dataSet.Tables[0].Rows.Count >= 1)
@@ -169,7 +169,7 @@ namespace ReadingCat.Controllers
             if (dataSet.Tables[0].Rows.Count >= 1)
             {
                 pathName = dataSet.Tables[0].Rows[0].ItemArray[0].ToString();
-                
+
             }
             loginAndBookList.loginModel.username = dataSet.Tables[0].Rows[0].ItemArray[1].ToString();
             loginAndBookList.loginModel.bio = dataSet.Tables[0].Rows[0].ItemArray[2].ToString();
@@ -180,13 +180,13 @@ namespace ReadingCat.Controllers
             string query = " SELECT *FROM USERTAG LEFT JOIN TAGS ON UserTag.TAGID = Tags.TagID WHERE USERID =" + id;
             DatabaseModel database = new DatabaseModel();
             DataSet dataSet = database.selectFunction(query);
-            for(int i=0;i<dataSet.Tables[0].Rows.Count; i++)
+            for (int i = 0; i < dataSet.Tables[0].Rows.Count; i++)
             {
                 Tags tag = new Tags();
                 tag.tagId = Convert.ToInt32(dataSet.Tables[0].Rows[i].ItemArray[2]);
                 tag.tagName = dataSet.Tables[0].Rows[i].ItemArray[4].ToString();
                 booksAndDatabase.tagList.Add(tag);
-              
+
             }
         }
 
@@ -198,11 +198,11 @@ namespace ReadingCat.Controllers
             {
                 booksAndDatabase.recommendation.Add(new List<Books>());
                 List<Books> books = null;
-                string query = " SELECT READLOG.BOOKID, BOOKS.BookName, BOOKS.BookCover, BOOKS.UserId, Books.Rating, BOOKS.BookCover, BOOKTAGS.TAGID FROM READLOG LEFT JOIN BOOKTAGS ON ReadLog.BookId = BookTags.BookId LEFT JOIN Books ON ReadLog.BookId = BOOKS.BookID WHERE BOOKTAGS.TAGID = "+tag.tagId+ " GROUP BY READLOG.BookId, BookTags.TAGID, BOOKS.BookName, BOOKS.BookCover, BOOKS.Rating, BOOKS.UserId EXCEPT SELECT READLOG.BOOKID, BOOKS.BookName, BOOKS.BookCover, BOOKS.UserId, Books.Rating, BOOKS.BookCover, BOOKTAGS.TAGID FROM READLOG LEFT JOIN BOOKTAGS ON ReadLog.BookId = BookTags.BookId LEFT JOIN Books ON ReadLog.BookId = BOOKS.BookID WHERE BOOKTAGS.TAGID = "+tag.tagId+" AND ReadLog.UserId = "+System.Web.HttpContext.Current.Session["Id"]+" GROUP BY READLOG.BookId, BookTags.TAGID, BOOKS.BookName, BOOKS.BookCover, BOOKS.Rating, BOOKS.UserId";
+                string query = " SELECT READLOG.BOOKID, BOOKS.BookName, BOOKS.BookCover, BOOKS.UserId, Books.Rating, BOOKS.BookCover, BOOKTAGS.TAGID FROM READLOG LEFT JOIN BOOKTAGS ON ReadLog.BookId = BookTags.BookId LEFT JOIN Books ON ReadLog.BookId = BOOKS.BookID WHERE BOOKTAGS.TAGID = " + tag.tagId + " GROUP BY READLOG.BookId, BookTags.TAGID, BOOKS.BookName, BOOKS.BookCover, BOOKS.Rating, BOOKS.UserId EXCEPT SELECT READLOG.BOOKID, BOOKS.BookName, BOOKS.BookCover, BOOKS.UserId, Books.Rating, BOOKS.BookCover, BOOKTAGS.TAGID FROM READLOG LEFT JOIN BOOKTAGS ON ReadLog.BookId = BookTags.BookId LEFT JOIN Books ON ReadLog.BookId = BOOKS.BookID WHERE BOOKTAGS.TAGID = " + tag.tagId + " AND ReadLog.UserId = " + System.Web.HttpContext.Current.Session["Id"] + " GROUP BY READLOG.BookId, BookTags.TAGID, BOOKS.BookName, BOOKS.BookCover, BOOKS.Rating, BOOKS.UserId";
 
-               DataSet dataSet = databaseModel.selectFunction(query);
+                DataSet dataSet = databaseModel.selectFunction(query);
                 books = new List<Books>();
-                for (int i=0;i<dataSet.Tables[0].Rows.Count;i++)
+                for (int i = 0; i < dataSet.Tables[0].Rows.Count; i++)
                 {
 
                     Books book = new Books();
@@ -210,16 +210,16 @@ namespace ReadingCat.Controllers
                     book.bookName = dataSet.Tables[0].Rows[i].ItemArray[1].ToString();
                     book.bookCover = dataSet.Tables[0].Rows[i].ItemArray[2].ToString();
                     book.userId = Convert.ToInt32(dataSet.Tables[0].Rows[i].ItemArray[3]);
-                   // book.rating = Convert.ToInt32(dataSet.Tables[0].Rows[i].ItemArray[4]);
+                    // book.rating = Convert.ToInt32(dataSet.Tables[0].Rows[i].ItemArray[4]);
                     books.Add(book);
                 }
 
                 booksAndDatabase.recommendation[index] = books;
                 index++;
             }
-            
+
         }
 
-      
+
     }
 }
