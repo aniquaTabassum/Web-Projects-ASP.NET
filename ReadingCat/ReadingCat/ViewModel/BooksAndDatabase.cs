@@ -1,7 +1,5 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using ReadingCat.Models;
 
 namespace ReadingCat.ViewModel
@@ -32,7 +30,7 @@ namespace ReadingCat.ViewModel
 
             for(int i=0;i<3;i++)
             {
-                //listOfBooks[i] = new List<Books>();
+                //unapprovedListOfBooks[i] = new List<Books>();
                 listOfBooks.Add(new List<Books>());
             }
 

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using ReadingCat.Models;
 using ReadingCat.ViewModel;
@@ -18,12 +15,12 @@ namespace ReadingCat.Controllers
         {
             var exemploList = new SelectList(new[] { "Exemplo1:", "Exemplo2", "Exemplo3" });
             ViewBag.ExemploList = exemploList;
-            getRecommendation();
-            getNewRelease();
+            GetRecommendation();
+            GetNewRelease();
             return View(booksAndDatabase);
         }
 
-        private void getNewRelease()
+        private void GetNewRelease()
         {
             string query = "SELECT *FROM BOOKS";
             DatabaseModel databaseModel = new DatabaseModel();
@@ -45,7 +42,7 @@ namespace ReadingCat.Controllers
             }
         }
 
-        private void getRecommendation()
+        private void GetRecommendation()
         {
             string query = "SELECT COUNT(READLOG.BOOKID), READLOG.BOOKID, BOOKS.BookName, BOOKS.BookCover, BOOKS.UserId, Books.Rating, BOOKS.BookCover, BOOKTAGS.TAGID FROM READLOG LEFT JOIN BOOKTAGS ON ReadLog.BookId = BookTags.BookId LEFT JOIN Books ON ReadLog.BookId = BOOKS.BookID GROUP BY READLOG.BookId, BookTags.TAGID, BOOKS.BookName, BOOKS.BookCover, BOOKS.Rating, BOOKS.UserId EXCEPT SELECT COUNT(READLOG.BOOKID), READLOG.BOOKID, BOOKS.BookName, BOOKS.BookCover, BOOKS.UserId, Books.Rating, BOOKS.BookCover, BOOKTAGS.TAGID FROM READLOG LEFT JOIN BOOKTAGS ON ReadLog.BookId = BookTags.BookId LEFT JOIN Books ON ReadLog.BookId = BOOKS.BookID WHERE ReadLog.UserId = " + (int)System.Web.HttpContext.Current.Session["Id"] + " GROUP BY READLOG.BookId, BookTags.TAGID, BOOKS.BookName, BOOKS.BookCover, BOOKS.Rating, BOOKS.UserId";
             DatabaseModel databaseModel = new DatabaseModel();

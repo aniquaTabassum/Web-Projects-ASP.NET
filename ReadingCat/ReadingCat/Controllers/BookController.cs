@@ -2,62 +2,45 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using ReadingCat.Models;
 namespace ReadingCat.Controllers
 {
+    //This Controller is responsible for showing the details of a book
+    //Which includes its book cover, author and genre name, number of times it has been read,
+    //rating and chapters and the comment section
+    //A user will also be able to place a comment on a book or give a rating through this controller
     public class BookController : Controller
     {
         DatabaseModel databaseModel;
         Books books;
-        int booId;
         // GET: Book
+        //This method is responsible for showing the book details
         public ActionResult BookDetails(int id)
         {
             databaseModel = new DatabaseModel();
-            books = new Books();
-            books.chapters = new List<Chapters>();
-            getBookDetails(id);
-            getBookChapters(id);
-            getAuthorName(books.userId);
-            getComments(id);
-            getCommenterName();
-            getBookTag(id);
-            getReadCount(id);
-            booId = id;
-            books.bookId = id;
-            Session["CurrentBookId"] = id;
+            //Complete book details will be achieved through multiple database queries
+            //This method will combine the results of those different queries
+            combineBookDetails(id);
             return View(books);
         }
         
-        
+        //This method is reponsible for adding a new comment in a book
         [HttpPost]
         public ActionResult BookDetails(Books passedBook)
         {
             string getComment = passedBook.currentComment.comment;
             int commenter = (int)System.Web.HttpContext.Current.Session["Id"];
             int bookCommented = (int)System.Web.HttpContext.Current.Session["CurrentBookId"];
-            insertComment(getComment, commenter, bookCommented);
+            InsertComment(getComment, commenter, bookCommented);
             databaseModel = new DatabaseModel();
-            books = new Books();
-            books.chapters = new List<Chapters>();
-            getBookDetails(bookCommented);
-            getBookChapters(bookCommented);
-            getReadCount(bookCommented);
-            getAuthorName(books.userId);
-            getComments(bookCommented);
-            getCommenterName();
-            getBookTag(bookCommented);
-            booId = bookCommented;
-            books.bookId = bookCommented;
-            books.currentComment = new Comment();
-            books.currentComment.comment = "";
+            combineBookDetails(bookCommented);
             return View(books);
         }
 
-        private void getBookDetails(int id)
+        //This method is responsible for getting the name of the book, its authoId, cover picture
+        //summary and if the book is in the library of the user from the database
+        private void GetBookDetails(int id)
         {
             string query = "SELECT *FROM BOOKS WHERE BOOKID = " + id;
             DataSet dataSet = new DataSet();
@@ -70,9 +53,16 @@ namespace ReadingCat.Controllers
                 books.summary = dataSet.Tables[0].Rows[0].ItemArray[5].ToString();
             }
 
-            getLibraryState(id);
+            //getting information about weather the book is in the user's library or not
+            GetLibraryState(id);
         }
-        private void getBookChapters(int id)
+
+
+        //This method is responsible for getting the chapters of a book
+        //If the user is the writer of the book or one of the admins
+        //Then he will be able to view the unapproved chapters as well
+        //Otherwise, the user will just be able to view the approved chapters
+        private void GetBookChapters(int id)
         {
             string query = "SELECT *FROM BookChapters WHERE BOOKID = " + id;
             DataSet dataSet = new DataSet();
@@ -88,6 +78,8 @@ namespace ReadingCat.Controllers
                 books.chapters.Add(chapters);
             }
         }
+
+        //This method is responsible for adding the book to the user's library
         public ActionResult AddBook(int id)
         {
             int userId = (int)System.Web.HttpContext.Current.Session["Id"];
@@ -97,15 +89,21 @@ namespace ReadingCat.Controllers
             databaseModel.insert(query);
             return RedirectToAction("BookDetails", "Book", new { @id = id });
         }
-        private void getLibraryState(int id)
+
+        //This method is responsible for getting information on weather the book is
+        //in the library of the user or not
+        private void GetLibraryState(int id)
         {
             string query = "SELECT *FROM READLOG WHERE USERID = " + (int)System.Web.HttpContext.Current.Session["Id"] + " AND BOOKID = " + id;
             DataSet dataSet = new DataSet();
             dataSet = databaseModel.selectFunction(query);
+            //If there is an entry in the ReadLog in respect to the userid and the bookid
+            //that means that the book exists in his library
+            //If not, then the user does not have this book in his library
+            //ReadLog table consists information about which user has read which books
             if (dataSet.Tables[0].Rows.Count == 1)
             {
                 books.inLibrary = 1;
-
             }
 
             else
@@ -114,7 +112,11 @@ namespace ReadingCat.Controllers
             }
         }
 
-        private void getAuthorName(int id)
+
+        //This method is responsible for getting the name of the author of the book
+        //Since the "Book" table contains only the author's id as userId in the database
+        //We have to conduct a seperate query for getting the author's name
+        private void GetAuthorName(int id)
         {
             string query = "SELECT USERNAME FROM USERS WHERE USERID = " + id;
             DataSet dataSet = new DataSet();
@@ -123,11 +125,12 @@ namespace ReadingCat.Controllers
             if (dataSet.Tables[0].Rows.Count >= 1)
             {
                 books.author = dataSet.Tables[0].Rows[0].ItemArray[0].ToString();
-
             }
         }
 
-        private void getComments(int id)
+
+        //This method is responsible for retrieving the comments on the book
+        private void GetComments(int id)
         {
             string query = "SELECT *FROM COMMENTS WHERE BOOKID = " + id;
             DataSet dataSet = new DataSet();
@@ -143,7 +146,13 @@ namespace ReadingCat.Controllers
             }
         }
 
-        private void getCommenterName()
+
+        //This method is responsible for getting the name of the person who put a 
+        //new comment on the book
+        //The cshtml returns only the userid of the commenter and his comment
+        //So we have to conduct a seperate method to retrieve the username from the usrid from
+        //our database
+        private void GetCommenterName()
         {
             int i = 0;
             foreach (Comment comment in books.comments)
@@ -158,7 +167,9 @@ namespace ReadingCat.Controllers
             }
         }
 
-        private void insertComment(string comment, int commenter, int bookCommented)
+
+        //This method is responsible for inserting the new comment into the database
+        private void InsertComment(string comment, int commenter, int bookCommented)
         {
             string connectionString = @"Data Source = DESKTOP-BKFDVUR\SQLEXPRESS; Initial Catalog = ReadingCat; Integrated Security = True";
             using (SqlConnection sqlConnection = new SqlConnection(connectionString))
@@ -174,7 +185,11 @@ namespace ReadingCat.Controllers
             }
         }
 
-        private void getBookTag(int id)
+
+        //This method is responsible for getting the tag/ genre of the book
+        //Since the "Book" table contains only the tag's id as tagId in the database
+        //We have to conduct a seperate query for getting the tag's name
+        private void GetBookTag(int id)
         {
             string query = "SELECT TAGNAME FROM TAGS WHERE TAGID = ( SELECT TAGID FROM BOOKTAGS WHERE BOOKID = " + id + ")";
             DataSet dataSet = new DataSet();
@@ -184,13 +199,34 @@ namespace ReadingCat.Controllers
 
         }
 
-        private void getReadCount(int id)
+        //This method is responsible for retieving the number of times the book has been read 
+        //from the databse
+        //Aggregate functions are being used to retrieve this information
+        private void GetReadCount(int id)
         {
             string query = " SELECT COUNT(BOOKID), BOOKID FROM READLOG WHERE BOOKID = " + id + " GROUP BY BOOKID";
             DataSet dataSet = new DataSet();
             databaseModel = new DatabaseModel();
             dataSet = databaseModel.selectFunction(query);
             books.readCount = Convert.ToInt32(dataSet.Tables[0].Rows[0].ItemArray[0]);
+        }
+
+
+        //This method is responsible for combining all the details of the book
+        //that are obtained from different database queries
+        private void combineBookDetails(int id)
+        {
+            books = new Books();
+            books.chapters = new List<Chapters>();
+            GetBookDetails(id);
+            GetBookChapters(id);
+            GetAuthorName(books.userId);
+            GetComments(id);
+            GetCommenterName();
+            GetBookTag(id);
+            GetReadCount(id);
+            books.bookId = id;
+            Session["CurrentBookId"] = id;
         }
     }
 }

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using ReadingCat.ViewModel;
 using ReadingCat.Models;
@@ -21,14 +18,14 @@ namespace ReadingCat.Controllers
             string[] arrayOfString = searchString.Split(new char[0]);
             if (arrayOfString.Length == 1)
             {
-                searchByTag(searchString);
+                SearchByTag(searchString);
             }
 
-            searchByName(searchString);
+            SearchByName(searchString);
             return View(searchResults);
         }
 
-        private void searchByTag(string searchByString)
+        private void SearchByTag(string searchByString)
         {
             String query = "SELECT *FROM BOOKS WHERE BOOKID IN (SELECT BOOKID FROM BOOKTAGS WHERE TAGID = (SELECT TAGID FROM TAGS WHERE TAGNAME = '" + searchByString + "'))";
             DatabaseModel databaseModel = new DatabaseModel();
@@ -48,7 +45,7 @@ namespace ReadingCat.Controllers
             }
         }
 
-        private void searchByName(string searchString)
+        private void SearchByName(string searchString)
         {
             string query = "SELECT *FROM BOOKS WHERE BOOKNAME LIKE '%" + searchString + "%'";
             DatabaseModel databaseModel = new DatabaseModel();

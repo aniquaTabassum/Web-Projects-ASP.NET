@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using ReadingCat.Models;
-using ReadingCat.ViewModel;
+
 
 namespace ReadingCat.Controllers
 {
@@ -17,13 +14,13 @@ namespace ReadingCat.Controllers
         Books books = new Books();
         public ActionResult ReadBook(int id)
         {
-            getChapter(id);
-            getAllChapters(books.bookId);
-            getBookName(books.bookId);
+            GetChapter(id);
+            GetAllChapters(books.bookId);
+            GetBookName(books.bookId);
             return View(books);
         }
 
-        private void getChapter(int id)
+        private void GetChapter(int id)
         {
             string query = "SELECT *FROM  BookChapters WHERE CHAPTERID = " + id;
             dataSet = databaseModel.selectFunction(query);
@@ -34,7 +31,7 @@ namespace ReadingCat.Controllers
             books.bookId = Convert.ToInt32(dataSet.Tables[0].Rows[0].ItemArray[1]);
         }
 
-        private void getAllChapters(int id)
+        private void GetAllChapters(int id)
         {
             string query = "SELECT *FROM BookChapters WHERE BOOKID = " + id;
             DataSet dataSet = new DataSet();
@@ -50,7 +47,7 @@ namespace ReadingCat.Controllers
             }
         }
 
-        private void getBookName(int id)
+        private void GetBookName(int id)
         {
             string query = "SELECT BOOKNAME FROM BOOKS WHERE BOOKID = " + id;
             databaseModel = new DatabaseModel();

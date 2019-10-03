@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Text;
-using System.Web;
 using System.Web.Mvc;
 using ReadingCat.Models;
 
@@ -11,7 +9,7 @@ namespace ReadingCat.Controllers
 {
     public class TagController : Controller
     {
-        string connectionString = @"Data Source = DESKTOP-BKFDVUR\SQLEXPRESS; Initial Catalog = ReadingCat; Integrated Security = True";
+ 
         DataSet dataSet;
         Tags tags = new Tags();
         int returnedRows;
@@ -19,9 +17,9 @@ namespace ReadingCat.Controllers
         [HttpGet]
         public ActionResult ViewTags()
         {
-            getTags();
+            GetTags();
             returnedRows = dataSet.Tables[0].Rows.Count;
-            createList();
+            CreateList();
             return View(tags);
         }
 
@@ -53,7 +51,7 @@ namespace ReadingCat.Controllers
                 return RedirectToAction("Profile", "Profile", new { id = currentUser });
             }
         }
-        private void getTags()
+        private void GetTags()
         {
             string query = "SELECT *FROM TAGS";
             DatabaseModel databaseModel = new DatabaseModel();
@@ -61,7 +59,7 @@ namespace ReadingCat.Controllers
             dataSet = databaseModel.selectFunction(query);
         }
 
-        private void createList()
+        private void CreateList()
         {
             tags.listOfTags = new List<Tags>();
             for (int i = 0; i < returnedRows; i++)
@@ -74,7 +72,7 @@ namespace ReadingCat.Controllers
             }
         }
 
-        private void addTags()
+        private void AddTags()
         {
             DatabaseModel databaseModel = new DatabaseModel();
             for (int i = 0; i < tags.listOfTags.Count; i++)

@@ -1,7 +1,6 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+
 
 namespace ReadingCat.Models
 {
@@ -25,7 +24,7 @@ namespace ReadingCat.Models
         public string author { get; set; }
         public string tag { get; set; }
         public int readCount { get; set; }
-        public int reviewing { get; set; }
+       // public int reviewing { get; set; }
         public Chapters currentChapter { get; set; }
         public Comment currentComment { get; set; }
         public List<Chapters> chapters { get; set; }

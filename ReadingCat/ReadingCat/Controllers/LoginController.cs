@@ -1,19 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using System.Data;
-using System.Data.SqlClient;
 using ReadingCat.Models;
 using ReadingCat.ViewModel;
-using System.Web.Routing;
+
 
 namespace ReadingCat.Controllers
 {
     public class LoginController : Controller
     {
-        // string connectionString = @"Data Source = DESKTOP-BKFDVUR\SQLEXPRESS; Initial Catalog = ReadingCat; Integrated Security = True";
+ 
         private int userid;
         // GET: Login
         [HttpGet]
@@ -66,8 +62,9 @@ namespace ReadingCat.Controllers
                 else
                 {
                     Session["admin"] = 0;
+                    Session["review"] = 0;
                 }
-                Boolean newUser = checkTags();
+                Boolean newUser = CheckTags();
                 if (newUser)
                 {
                     return RedirectToAction("ViewTags", "Tag");
@@ -81,7 +78,7 @@ namespace ReadingCat.Controllers
                 return View();
         }
 
-        private Boolean checkTags()
+        private Boolean CheckTags()
         {
             string query = "SELECT *FROM USERTAG WHERE USERID = " + System.Web.HttpContext.Current.Session["Id"];
             DatabaseModel database = new DatabaseModel();

@@ -1,30 +1,53 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using System.Data;
 using ReadingCat.Models;
 using System.IO;
 using ReadingCat.ViewModel;
 
+//The Controller is responsible for viewing the profile of a user
+//This corresponding View of this controller will view the library, published list and
+//recommendation by the user's preferred tags
+//User will also be able to navigate to the home page or edit his information here
 namespace ReadingCat.Controllers
 {
     public class ProfileController : Controller
     {
+        //This controller uses an object of LoginAndDatabase model
+        //which will contain information about the user that has logged in and the books of their
+        //library and recommendatons
+        //The reason we are not using Session for these information is because
+        //Users will be able to view other user's pofiles and the guest user's information
+        //will be viewed based on the LoginModel and BooksAndDatabase iformation of the guest user
+        //Other options, which are private to a user, will be handled by the value of Session
+        //For better understanding, let us assume the parameter ""id" of Profil method to be the
+        //id of the guest user
+        //a user, even if he is in his own profile, will be considered as guest user in this
+        //case, where he is the host user as well
+       
         LoginAndBookList loginAndBookList = new LoginAndBookList();
+        
+        //The following object is needed because LoginAndBookList class contains an object of
+        //BooksAndDatabase. This object will hold the information of the book lists that will be
+        //retieved from the database, such as Library, Published List and Recommendation
         BooksAndDatabase booksAndDatabase = new BooksAndDatabase();
         string pathName = "";
+
+        //This method is responsible for loading the profile of the user/guest user
         [HttpGet]
         public ActionResult Profile(int id)
         {
             loginAndBookList.loginModel = new LoginModel();
-            getReadList(id);
-            getPublishedList(id);
-            getProfilePicture(id);
 
-            getTags(id);
-            createRecommendation(id);
+            //Different components of the guest user's profile reqire different queries
+            //which will be brought together by the following method
+            CombineProfileInfo(id);
+           /* GetReadList(id);
+            GetPublishedList(id);
+            GetProfilePicture(id);
+            GetTags(id);
+            CreateRecommendation(id);*/
             loginAndBookList.booksAndDatabase = booksAndDatabase;
 
             loginAndBookList.loginModel.userid = id;
@@ -69,7 +92,7 @@ namespace ReadingCat.Controllers
                     if (!string.IsNullOrEmpty(user.password))
                     {
                         query = "UPDATE USERS SET PASSWORD = '" + user.password + "', photo = '" + toSave + "', bio = '" + user.bio + "' WHERE USERNAME = '" + Session["username"].ToString() + "'";
-                        //ViewBag.Message("Uploaded file saved");
+                        
                     }
                     else
                     {
@@ -90,10 +113,10 @@ namespace ReadingCat.Controllers
             }
             catch
             {
-                // ViewBag.Message("Uploade file not saved");
+                
 
             }
-            //query = "UPDATE USERS SET PASSWORD = '" + user.password + "' WHERE USERNAME = '" + user.username + "'";
+
             DatabaseModel databaseModel = new DatabaseModel();
             databaseModel.update(query);
 
@@ -118,12 +141,7 @@ namespace ReadingCat.Controllers
 
         }
 
-        public ActionResult NewStory()
-        {
-            return View();
-        }
-
-        private void getPublishedList(int id)
+        private void GetPublishedList(int id)
         {
             String query = "SELECT *FROM BOOKS WHERE USERID = " + id;
             DataSet dataSet = new DataSet();
@@ -142,7 +160,7 @@ namespace ReadingCat.Controllers
             }
         }
 
-        private void getReadList(int id)
+        private void GetReadList(int id)
         {
             String query = "SELECT *FROM BOOKS WHERE BOOKID IN (SELECT BOOKID FROM READLOG WHERE USERID = " + id + ")";
             DataSet dataSet = new DataSet();
@@ -161,7 +179,7 @@ namespace ReadingCat.Controllers
             }
         }
 
-        private void getProfilePicture(int id)
+        private void GetUserInformation(int id)
         {
             String query = "SELECT PHOTO, USERNAME, BIO FROM USERS WHERE USERID = " + id; ;
             DataSet dataSet = new DataSet();
@@ -175,7 +193,7 @@ namespace ReadingCat.Controllers
             loginAndBookList.loginModel.bio = dataSet.Tables[0].Rows[0].ItemArray[2].ToString();
         }
 
-        private void getTags(int id)
+        private void GetTags(int id)
         {
             string query = " SELECT *FROM USERTAG LEFT JOIN TAGS ON UserTag.TAGID = Tags.TagID WHERE USERID =" + id;
             DatabaseModel database = new DatabaseModel();
@@ -190,7 +208,7 @@ namespace ReadingCat.Controllers
             }
         }
 
-        private void createRecommendation(int id)
+        private void CreateRecommendation(int id)
         {
             DatabaseModel databaseModel = new DatabaseModel();
             int index = 0;
@@ -221,5 +239,15 @@ namespace ReadingCat.Controllers
         }
 
 
+        //This method is responsible for getting the library, published list, profile picture
+        //username, bio, preferred tags and reccommendations based on the tags of the guest user
+        private void CombineProfileInfo(int id)
+        {
+            GetReadList(id);
+            GetPublishedList(id);
+            GetUserInformation(id);
+            GetTags(id);
+            CreateRecommendation(id);
+        }
     }
 }

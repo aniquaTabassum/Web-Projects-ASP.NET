@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using ReadingCat.ViewModel;
 using ReadingCat.Models;
@@ -38,9 +35,6 @@ namespace ReadingCat.Controllers
                     filePath = Path.Combine(Server.MapPath("~/images/Books"), fileName);
                     string toSave = "~/images/Books/" + fileName;
                     file.SaveAs(filePath);
-
-                    // query = "UPDATE USERS SET PASSWORD = '" + user.password + "', photo = '" + toSave + "' WHERE USERNAME = '" + user.username + "'";
-                    //ViewBag.Message("Uploaded file saved");
                     int currentUser = (int)System.Web.HttpContext.Current.Session["Id"];
                     query = "INSERT INTO BOOKS VALUES ('" + bookName + "'," + currentUser + ",null,'" + toSave + "','" + boodSummary + "')";
                     DatabaseModel databaseModel = new DatabaseModel();
@@ -70,7 +64,7 @@ namespace ReadingCat.Controllers
         public ActionResult ViewPublished()
         {
             int id = (int)System.Web.HttpContext.Current.Session["Id"];
-            getPublishedList(id);
+            GetPublishedList(id);
 
             return View(booksAndDatabase);
         }
@@ -88,13 +82,11 @@ namespace ReadingCat.Controllers
             string text = chapters.chatpterText;
             int bookId = (int)System.Web.HttpContext.Current.Session["BookId"];
             chapters.bookId = bookId;
-            /* insertChapter(bookId, title, text);
-             return RedirectToAction("BookDetails", "Book", new { @id = bookId });
-             */
-            return RedirectToAction("BookDetals", "Book", new { @id = bookId });
+            InsertChapter(bookId, title, text);
+            return RedirectToAction("Profile", "Profile", new { @id = (int)System.Web.HttpContext.Current.Session["Id"]});
         }
 
-        private void getPublishedList(int id)
+        private void GetPublishedList(int id)
         {
             String query = "SELECT *FROM BOOKS WHERE USERID = " + id;
             DataSet dataSet = new DataSet();
@@ -113,7 +105,7 @@ namespace ReadingCat.Controllers
             }
         }
 
-        private void insertChapter(int id, string title, string text)
+        private void InsertChapter(int id, string title, string text)
         {
             string query = "INSERT INTO BOOKCHAPTERS VALUES (@id,@title, @text, @approved)";
 

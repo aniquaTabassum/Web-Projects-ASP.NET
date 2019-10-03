@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using ReadingCat.Models;
+﻿using ReadingCat.Models;
 
 namespace ReadingCat.ViewModel
 {

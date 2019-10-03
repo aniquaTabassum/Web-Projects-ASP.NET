@@ -128,6 +128,9 @@
 
                             </tr>
                         </thead>
+                        @{ 
+                            var check = (int)System.Web.HttpContext.Current.Session["review"];
+                        }
                         @if ((int)System.Web.HttpContext.Current.Session["review"] == 0)
                         {
                             <tbody>
@@ -247,8 +250,8 @@
             {
 
                 <div class="col-md-11">
-                    <div class="form-group" style="font-size:15px;width:100px;">
-                        @Html.TextAreaFor(model => model.currentComment.comment, new { @class = "form-control", @rows = 5, @id = "comment", @style = "width:800px;", @Value = "default" })
+                    <div class="form-group" style="font-size:15px;width:150px;">
+                        @Html.TextAreaFor(model => model.currentComment.comment, new { @class = "form-control", @rows = 5, @id = "comment", @style = "width:1000px;", @Value = "default" })
                         @Html.ValidationMessageFor(model => model.currentComment.comment)
 
 
