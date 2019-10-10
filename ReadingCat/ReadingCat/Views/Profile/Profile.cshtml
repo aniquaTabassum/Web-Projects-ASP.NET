@@ -13,14 +13,63 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="~/css/home.css">
-
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
+       .dbtn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px;
+  width: 200px;
+  font-size: 16px;
+  border: none;
+}
+
+.ddown {
+  position: relative;
+  display: inline-block;
+  width : 200px;
+}
+
+.ddown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  width : 200px;
+}
+
+.ddown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  width : 200px;
+}
+
+.ddown-content a:hover {background-color: #ddd;}
+
+.ddown:hover .ddown-content {display: block;}
+
+.ddown:hover .dbtn {background-color: #3e8e41;}  
+.down {
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+   transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+        
     </style>
 
     <link rel="stylesheet" href="~/css/home.css">
     <link rel="stylesheet" href="~/css/profile.css">
+
 </head>
 <body>
 
@@ -47,32 +96,63 @@
 
         </div>
 
-        <div class="col-md-6" style="">
-            <h1 style="font-weight:bold;margin-top:85px;"> @Model.loginModel.username </h1>
-            <h5> @Model.loginModel.bio</h5>
+        <div class="col-md-4" style="">
+            <h1 style="font-weight:bold;margin-top:85px;margin-left:100px;"> @Model.loginModel.username </h1>
+            <h5 style="margin-left:100px;"> @Model.loginModel.bio</h5>
         </div>
 
-        <div class="col-md-4" style="padding-left:30px;">
-            <button class="btn btn-success" style="">Follow</button>
+        <div class="col-md-6" style="padding-left:30px;margin-top:70px;">
+            <div class="col-md-2"><div style="opacity:0.5;">@Model.loginModel.totalPublished</div></div>
+            <div class="col-md-2"><div style="opacity:0.5;">@Model.loginModel.totalViews</div></div>
+            <div class="col-md-2"><div style="opacity:0.5;">@Model.loginModel.followerNum</div></div>
+            <br />
+            <br />
+            <div class="col-md-2"><div style="font-size:12px;font-weight:bold"><i class="fas fa-typewriter">Published</i></div></div>
+            <div class="col-md-2"><div style="font-size:12px;font-weight:bold">Views</div></div>
+            <div class="col-md-2"><div style="font-size:12px;font-weight:bold">Followers</div></div>
+            <br />
+            <br />
+            @if ((int)System.Web.HttpContext.Current.Session["Id"] != Model.loginModel.userid)
+            {
+                if (Model.loginModel.isFollowing == 0)
+                {
+                    <button class="btn btn-success" onclick="location.href = '@Url.Action("AddFollower", "Profile", new { @id = Model.loginModel.userid })'" style="width:250px;">Follow</button>
+                }
+                else
+                {
+        <div class="ddown">
+            <button class="dbtn">Unfollow <i class="fa fa-caret-down"></i></button>
+            <div class="ddown-content">
+                <a href="@Url.Action("Unfollow", "Profile", new { @id  = Model.loginModel.userid})">Unfollow</a>
+                <a href="#">Block</a>
+               
+            </div>
         </div>
+                
+            }
+        }
+        </div>
+
 
 
 
     </div>
 
-  
+
 
     <hr />
     <br />
     <br />
     <div>
-        @if ((int)System.Web.HttpContext.Current.Session["Id"] == Model.loginModel.userid && Model.booksAndDatabase.listOfBooks[0].Count>0)
+        @if ((int)System.Web.HttpContext.Current.Session["Id"] == Model.loginModel.userid && Model.booksAndDatabase.listOfBooks[0].Count > 0)
         {
 
-            <h4 class="headingprofile2" style= margin-left: 25px;
-        font-weight: bold;
-        color: black;
-        font-size: 25px;">Library</h4>
+            <h4 class="headingprofile2" style=margin-left: 25px;
+                font-weight: bold;
+                color: black;
+                font-size: 25px;">
+                Library
+            </h4>
             <div class="container">
                 <div class="row">
                     <div class="MultiCarousel" data-items="1,3,5,6" data-slide="1" id="MultiCarousel" data-interval="1000">

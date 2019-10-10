@@ -8,7 +8,7 @@ using System.Web.Mvc;
 //This Controller is responsible for viewing approving the chapters that the writers publish in the website
 namespace ReadingCat.Controllers
 {
-    public class ApproveController : Controller
+    public class AdminController : Controller
     {
         //This object contains a list of unique books that contain unapproved chapters
         UnapprovedChapters aproveChapters = new UnapprovedChapters();
@@ -40,8 +40,68 @@ namespace ReadingCat.Controllers
             return RedirectToAction("ReadBook", "Read", new { @id = id });
         }
 
+        public ActionResult Disapprove(int id)
+        {
+            string query = "DELETE FROM BOOKCHAPTERS WHERE CHAPTERID = " + id;
+            DatabaseModel databaseModel = new DatabaseModel();
+            databaseModel.insert(query);
+            return RedirectToAction("ReadBook", "Read", new { @id = id });
+
+        }
+
+        [HttpGet]
+        public ActionResult SearchUser()
+        {
+            return View();
+
+        }
+
+        [HttpGet]
+        public ActionResult UserDetails(string id)
+        {
+
+            User user = new User();
+            GetUserDetails(user, id);
+            return View(user);
+
+        }
+        [HttpPost]
+        public ActionResult UserDetails(User id)
+        {
+
+            User user = new User();
+            GetUserDetails(user, id.username);
+            return View(user);
+
+        }
+
+        [HttpPost]
+        public ActionResult AddAdmin(User user)
+        {
+            String query = "UPDATE USERS SET ISADMIN = 1 WHERE USERNAME = '" + user.username + "'";
+            DatabaseModel databaseModel = new DatabaseModel();
+            databaseModel.update(query);
+            return RedirectToAction("UserDetails", new { @id = user.username });
+        }
+        private void GetUserDetails(User user, string userName)
+        {
+            string query = "SELECT USERNAME, PHOTO, ISADMIN FROM USERS WHERE USERNAME = '" + userName+"'";
+            DataSet dataSet = new DataSet();
+            DatabaseModel databaseModel = new DatabaseModel();
+            dataSet = databaseModel.selectFunction(query);
+            if(dataSet.Tables[0].Rows.Count > 0)
+            {
+                user.username = dataSet.Tables[0].Rows[0].ItemArray[0].ToString();
+                user.paths = dataSet.Tables[0].Rows[0].ItemArray[1].ToString();
+                if(String.IsNullOrEmpty(user.paths))
+                {
+                    user.paths = "~/images/profile.png";
+                }
+                user.isAdmin = Convert.ToInt32(dataSet.Tables[0].Rows[0].ItemArray[2]);
+            }
+        }
         //This method is responsible for retrieving the unique booklist from the database
-        
+
         private void GetUniqueBookList()
         {
             string query = "SELECT DISTINCT BOOKS.BOOKID, BOOKNAME, USERID, RATING, BOOKCOVER, SUMMARY, TAGS.TagName FROM BOOKS JOIN BookChapters ON BOOKS.BookID = BookChapters.BookId LEFT JOIN BookTags ON BOOKS.BookID = BookTags.BookId LEFT JOIN Tags ON BOOKTAGS.TAGID = Tags.TagID WHERE APPROVED = 0";

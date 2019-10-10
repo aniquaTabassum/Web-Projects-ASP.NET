@@ -121,7 +121,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\ApproveController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\BookController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HomePageController.cs" />
@@ -250,6 +250,10 @@
     <Content Include="Views\Read\ReadBook.cshtml" />
     <Content Include="Views\Approve\Approve.cshtml" />
     <Content Include="Views\Approve\ViewUnapprovedBooks.cshtml" />
+    <Content Include="Views\Admin\SearchUser.cshtml" />
+    <Content Include="Views\Admin\UserDetails.cshtml" />
+    <Content Include="Views\Admin\Approve.cshtml" />
+    <Content Include="Views\Admin\ViewUnapprovedBooks.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

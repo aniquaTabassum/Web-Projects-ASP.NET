@@ -43,11 +43,7 @@ namespace ReadingCat.Controllers
             //Different components of the guest user's profile reqire different queries
             //which will be brought together by the following method
             CombineProfileInfo(id);
-           /* GetReadList(id);
-            GetPublishedList(id);
-            GetProfilePicture(id);
-            GetTags(id);
-            CreateRecommendation(id);*/
+         
             loginAndBookList.booksAndDatabase = booksAndDatabase;
 
             loginAndBookList.loginModel.userid = id;
@@ -141,6 +137,7 @@ namespace ReadingCat.Controllers
 
         }
 
+        //This method is responsible for showing the books that have been published by the guest user
         private void GetPublishedList(int id)
         {
             String query = "SELECT *FROM BOOKS WHERE USERID = " + id;
@@ -157,9 +154,16 @@ namespace ReadingCat.Controllers
                     books.bookCover = dataSet.Tables[0].Rows[i].ItemArray[4].ToString();
                     booksAndDatabase.listOfBooks[1].Add(books);
                 }
+                loginAndBookList.loginModel.totalPublished = booksAndDatabase.listOfBooks[1].Count;
             }
         }
 
+
+        //This method is responsible for showing the books that are in the library of the guest user
+        //This method will be called every time someone requests to view a profile
+        //But unless Session["Id"] matches the id that has been sent as the parameter of the Profile(int id)
+        //method, that is, a host user is viewing the profile of a guest user, this list will not be shown
+        //to the guest user, that is, this list is private to the owner of the account
         private void GetReadList(int id)
         {
             String query = "SELECT *FROM BOOKS WHERE BOOKID IN (SELECT BOOKID FROM READLOG WHERE USERID = " + id + ")";
@@ -179,6 +183,9 @@ namespace ReadingCat.Controllers
             }
         }
 
+
+        //This method is responsible for showing the profile photo, username and bio of the
+        //guest user
         private void GetUserInformation(int id)
         {
             String query = "SELECT PHOTO, USERNAME, BIO FROM USERS WHERE USERID = " + id; ;
@@ -193,6 +200,9 @@ namespace ReadingCat.Controllers
             loginAndBookList.loginModel.bio = dataSet.Tables[0].Rows[0].ItemArray[2].ToString();
         }
 
+
+        //This method retrieves the desired tags of the guest user. This will come in use while
+        //creating recommendations for the user
         private void GetTags(int id)
         {
             string query = " SELECT *FROM USERTAG LEFT JOIN TAGS ON UserTag.TAGID = Tags.TagID WHERE USERID =" + id;
@@ -208,6 +218,13 @@ namespace ReadingCat.Controllers
             }
         }
 
+
+        //This method is responsible for creating recommendation of books to the guest user
+        //based on their desired tags
+        //This method will be called every time someone requests to view a profile
+        //But unless Session["Id"] matches the id that has been sent as the parameter of the Profile(int id)
+        //method, that is, a host user is viewing the profile of a guest user, this list will not be shown
+        //to the guest user, that is, this list is private to the owner of the account
         private void CreateRecommendation(int id)
         {
             DatabaseModel databaseModel = new DatabaseModel();
@@ -238,7 +255,64 @@ namespace ReadingCat.Controllers
 
         }
 
+       
+        private void GetTotalReaderCount(int id)
+        {
+             string query = "SELECT COUNT (USERID) FROM ReadLog WHERE BOOKID IN (SELECT BOOKID FROM BOOKS WHERE USERID = " + id + ")";
+            DatabaseModel databaseModel = new DatabaseModel();
+            
+            DataSet dataSet = new DataSet();
+            dataSet = databaseModel.selectFunction(query);
+            if(dataSet.Tables[0].Rows.Count>0)
+            {
+                loginAndBookList.loginModel.totalViews = Convert.ToInt32(dataSet.Tables[0].Rows[0].ItemArray[0]);
+            }
+        }
 
+        public ActionResult AddFollower(int id)
+        {
+            int follower = (int)System.Web.HttpContext.Current.Session["Id"];
+            string query = "INSERT INTO FOLLOW VALUES (" + follower + ", " + id + ")";
+            DatabaseModel database = new DatabaseModel();
+            database.insert(query);
+            return RedirectToAction("Profile", "Profile", new { @id = id });
+        }
+        private void GetFollowerCount(int id)
+        {
+            string query = "SELECT COUNT (follower) FROM follow WHERE following = " + id;
+            DatabaseModel databaseModel = new DatabaseModel();
+
+            DataSet dataSet = new DataSet();
+            dataSet = databaseModel.selectFunction(query);
+            if (dataSet.Tables[0].Rows.Count > 0)
+            {
+                loginAndBookList.loginModel.followerNum = Convert.ToInt32(dataSet.Tables[0].Rows[0].ItemArray[0]);
+            }
+        }
+
+        private void GetFollowingState(int id)
+        {
+            int follower = (int)System.Web.HttpContext.Current.Session["Id"];
+            string query = "SELECT *FROM FOLLOW WHERE follower = " + follower + " AND following ="+ id;
+            DataSet dataset = new DataSet();
+            DatabaseModel databaseModel = new DatabaseModel();
+            dataset = databaseModel.selectFunction(query);
+            if (dataset.Tables[0].Rows.Count > 0)
+            {
+                loginAndBookList.loginModel.isFollowing = 1;
+            }
+        }
+        public ActionResult Unfollow(int id)
+        {
+            int follower = (int)System.Web.HttpContext.Current.Session["Id"];
+            string query = "DELETE FROM FOLLOW WHERE follower = " + follower + " AND following =" + id;
+            
+            DatabaseModel databaseModel = new DatabaseModel();
+            databaseModel.insert(query);
+
+            return RedirectToAction("Profile", "Profile", new { @id = id });
+            
+        }
         //This method is responsible for getting the library, published list, profile picture
         //username, bio, preferred tags and reccommendations based on the tags of the guest user
         private void CombineProfileInfo(int id)
@@ -248,6 +322,9 @@ namespace ReadingCat.Controllers
             GetUserInformation(id);
             GetTags(id);
             CreateRecommendation(id);
+            GetTotalReaderCount(id);
+            GetFollowerCount(id);
+            GetFollowingState(id);
         }
     }
 }

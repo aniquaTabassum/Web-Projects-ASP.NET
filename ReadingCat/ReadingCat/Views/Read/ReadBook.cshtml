@@ -47,18 +47,20 @@
                 var reviewing = (int)System.Web.HttpContext.Current.Session["review"];
                 if (reviewing == 1 && Model.currentChapter.approved == 0)
                 {
-                    <div class="col-md-4">
-                        <button class="btn btn-primary" onclick="location.href ='@Url.Action("Publish", "Approve", new { @id = Model.currentChapter.chapterId })'">Approve</button>
+            <div class="col-md-4">
+                <button class="btn btn-danger" onclick="location.href ='@Url.Action("Disapprove", "Admin", new { @id = Model.currentChapter.chapterId })'">Disapprove</button>
+                <button class="btn btn-primary" onclick="location.href ='@Url.Action("Publish", "Admin", new { @id = Model.currentChapter.chapterId })'">Approve</button>
 
-                    </div>
+            </div>
                 }
                 else
                 {
 
-                    <div class="col-md-4">
-                        <button class="btn btn-primary">Approved</button>
+        <div class="col-md-4">
+            <button class="btn btn-primary">Approved</button>
+            
 
-                    </div>
+        </div>
 
                 }
             }
