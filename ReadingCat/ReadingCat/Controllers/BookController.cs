@@ -208,7 +208,15 @@ namespace ReadingCat.Controllers
             DataSet dataSet = new DataSet();
             databaseModel = new DatabaseModel();
             dataSet = databaseModel.selectFunction(query);
-            books.readCount = Convert.ToInt32(dataSet.Tables[0].Rows[0].ItemArray[0]);
+            if (dataSet.Tables[0].Rows.Count > 0)
+            {
+                books.readCount = Convert.ToInt32(dataSet.Tables[0].Rows[0].ItemArray[0]);
+            }
+
+            else
+            {
+                books.readCount = 0;
+            }
         }
 
 

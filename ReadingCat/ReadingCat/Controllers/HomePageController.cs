@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Web.Mvc;
 using ReadingCat.Models;
@@ -17,6 +18,7 @@ namespace ReadingCat.Controllers
             ViewBag.ExemploList = exemploList;
             GetRecommendation();
             GetNewRelease();
+            GetPeopleRecoomendation();
             return View(booksAndDatabase);
         }
 
@@ -61,6 +63,133 @@ namespace ReadingCat.Controllers
             }
         }
 
+        private void GetPeopleRecoomendation()
+        {
+            int userid = (int)System.Web.HttpContext.Current.Session["Id"];
+            List<int> listOfFollower = new List<int>();
 
+            GetFollowList(listOfFollower, userid);
+            CreateFollowRecommendation(listOfFollower, userid);
+        }
+
+        private void GetFollowList(List<int> listOfFollower, int userid)
+        {
+            string query = "SELECT FOLLOWING FROM FOLLOW WHERE FOLLOWER = " + userid;
+            DataSet dataSet = new DataSet();
+            DatabaseModel database = new DatabaseModel();
+            dataSet = database.selectFunction(query);
+            if (dataSet.Tables[0].Rows.Count > 0)
+            {
+                for (int i = 0; i < dataSet.Tables[0].Rows.Count; i++)
+                {
+                    listOfFollower.Add(Convert.ToInt32(dataSet.Tables[0].Rows[i].ItemArray[0]));
+                }
+            }
+        }
+
+
+        private void CreateFollowRecommendation(List<int> listOfFollower, int userid)
+        {
+            if (listOfFollower.Count > 0)
+            {
+                List<int> uniqueID = new List<int>();
+                for (int i = 0; i < listOfFollower.Count; i++)
+                {
+                    int following = listOfFollower[i];
+                    uniqueID.Add(following);
+                    string query1 = "SELECT USERID, PHOTO, USERNAME FROM USERS WHERE USERID IN (SELECT FOLLOWING FROM FOLLOW WHERE FOLLOWER IN (SELECT FOLLOWER FROM FOLLOW WHERE FOLLOWING = " + following + ") EXCEPT (SELECT FOLLOWING FROM FOLLOW WHERE FOLLOWING = " + following + " OR FOLLOWER = " + userid + " ))";
+                    DataSet dataSet1 = new DataSet();
+                    DatabaseModel database1 = new DatabaseModel();
+                    dataSet1 = database1.selectFunction(query1);
+                    if (dataSet1.Tables[0].Rows.Count > 0)
+                    {
+                        for (int j = 0; j < dataSet1.Tables[0].Rows.Count; j++)
+                        {
+                            int followingId = Convert.ToInt32(dataSet1.Tables[0].Rows[j].ItemArray[0]);
+                            if (!uniqueID.Contains(followingId))
+                            {
+                                User user = new User();
+                                user.userid = followingId;
+                                string img = dataSet1.Tables[0].Rows[j].ItemArray[1].ToString();
+                                if (string.IsNullOrEmpty(img))
+                                {
+                                    user.paths = "~/images/profile.png";
+                                }
+                                else
+                                {
+                                    user.paths = dataSet1.Tables[0].Rows[j].ItemArray[1].ToString();
+                                }
+                                user.username = dataSet1.Tables[0].Rows[j].ItemArray[2].ToString();
+                                booksAndDatabase.followRecommendation.Add(user);
+                                uniqueID.Add(followingId);
+                            }
+
+                        }
+                    }
+                }
+
+                string query = "SELECT COUNT(FOLLOWING), USERID, PHOTO, USERNAME FROM FOLLOW LEFT JOIN USERS ON USERS.userid = Follow.following GROUP BY FOLLOWING, USERID, PHOTO, USERNAME ORDER BY COUNT(FOLLOWING) DESC";
+                DataSet dataSet = new DataSet();
+                DatabaseModel database = new DatabaseModel();
+                dataSet = database.selectFunction(query);
+                if (dataSet.Tables[0].Rows.Count > 0)
+                {
+                    for (int j = 0; j < dataSet.Tables[0].Rows.Count; j++)
+                    {
+                        int followingId = Convert.ToInt32(dataSet.Tables[0].Rows[j].ItemArray[1]);
+                        if (!uniqueID.Contains(followingId))
+                        {
+                            User user = new User();
+                            user.userid = followingId;
+                            string img = dataSet.Tables[0].Rows[j].ItemArray[2].ToString();
+                            if (string.IsNullOrEmpty(img))
+                            {
+                                user.paths = "~/images/profile.png";
+                            }
+                            else
+                            {
+                                user.paths = img;
+                            }
+                            user.username = dataSet.Tables[0].Rows[j].ItemArray[3].ToString();
+                            booksAndDatabase.followRecommendation.Add(user);
+                            uniqueID.Add(followingId);
+                        }
+
+                    }
+                }
+            }
+            else
+            {
+                string query2 = "SELECT COUNT(FOLLOWING), USERID, PHOTO, USERNAME FROM FOLLOW LEFT JOIN USERS ON USERS.userid = Follow.following GROUP BY FOLLOWING, USERID, PHOTO, USERNAME ORDER BY COUNT(FOLLOWING) DESC";
+                DataSet dataSet2 = new DataSet();
+                DatabaseModel database2 = new DatabaseModel();
+                dataSet2 = database2.selectFunction(query2);
+                if (dataSet2.Tables[0].Rows.Count > 0)
+                {
+                    for (int j = 0; j < dataSet2.Tables[0].Rows.Count; j++)
+                    {
+                        int followingId = Convert.ToInt32(dataSet2.Tables[0].Rows[j].ItemArray[1]);
+                        if (followingId != userid)
+                        {
+                            User user = new User();
+                            user.userid = followingId;
+                            string img = dataSet2.Tables[0].Rows[j].ItemArray[2].ToString();
+                            if (string.IsNullOrEmpty(img))
+                            {
+                                user.paths = "~/images/profile.png";
+                            }
+                            else
+                            {
+                                user.paths = img;
+                                user.paths = img;
+                            }
+                            user.username = dataSet2.Tables[0].Rows[j].ItemArray[3].ToString();
+                            booksAndDatabase.followRecommendation.Add(user);
+
+                        }
+                    }
+                }
+            }
+            }
+        }
     }
-}

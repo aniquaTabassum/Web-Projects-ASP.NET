@@ -25,9 +25,9 @@ namespace ReadingCat.Controllers
         //id of the guest user
         //a user, even if he is in his own profile, will be considered as guest user in this
         //case, where he is the host user as well
-       
+
         LoginAndBookList loginAndBookList = new LoginAndBookList();
-        
+
         //The following object is needed because LoginAndBookList class contains an object of
         //BooksAndDatabase. This object will hold the information of the book lists that will be
         //retieved from the database, such as Library, Published List and Recommendation
@@ -43,7 +43,7 @@ namespace ReadingCat.Controllers
             //Different components of the guest user's profile reqire different queries
             //which will be brought together by the following method
             CombineProfileInfo(id);
-         
+
             loginAndBookList.booksAndDatabase = booksAndDatabase;
 
             loginAndBookList.loginModel.userid = id;
@@ -88,7 +88,7 @@ namespace ReadingCat.Controllers
                     if (!string.IsNullOrEmpty(user.password))
                     {
                         query = "UPDATE USERS SET PASSWORD = '" + user.password + "', photo = '" + toSave + "', bio = '" + user.bio + "' WHERE USERNAME = '" + Session["username"].ToString() + "'";
-                        
+
                     }
                     else
                     {
@@ -109,7 +109,79 @@ namespace ReadingCat.Controllers
             }
             catch
             {
+
+
+            }
+
+            DatabaseModel databaseModel = new DatabaseModel();
+            databaseModel.update(query);
+
+            DatabaseModel databaseModel1 = new DatabaseModel();
+            User user1 = new User();
+            query = "SELECT *FROM USERS WHERE USERID = " + (int)System.Web.HttpContext.Current.Session["Id"];
+            DataSet dataSet = new DataSet();
+            dataSet = databaseModel1.selectFunction(query);
+            LoginModel loginModel = new LoginModel();
+            loginModel.userid = Convert.ToInt32(dataSet.Tables[0].Rows[0].ItemArray[0]);
+            loginModel.username = dataSet.Tables[0].Rows[0].ItemArray[1].ToString();
+            loginModel.path = dataSet.Tables[0].Rows[0].ItemArray[4].ToString();
+            LoginAndBookList loginAndBookList = new LoginAndBookList();
+            loginAndBookList.loginModel = loginModel;
+
+
+            int id = (int)System.Web.HttpContext.Current.Session["Id"];
+
+
+            return RedirectToAction("Profile", "Profile", new { id = id });
+
+
+        }
+
+        public ActionResult UpdateProfiePicture(int id)
+        {
+            DatabaseModel databaseModel = new DatabaseModel();
+            User user = new User();
+            String query = "SELECT *FROM USERS WHERE USERID = " + id;
+            DataSet dataSet = new DataSet();
+            dataSet = databaseModel.selectFunction(query);
+
+            if (dataSet.Tables[0].Rows.Count == 1)
+            {
+                user.username = dataSet.Tables[0].Rows[0].ItemArray[1].ToString();
+                user.useremail = dataSet.Tables[0].Rows[0].ItemArray[2].ToString();
+                user.password = dataSet.Tables[0].Rows[0].ItemArray[3].ToString();
+                user.bio = dataSet.Tables[0].Rows[0].ItemArray[5].ToString();
+                // user.paths[0] = dataSet.Tables[0].Rows[0].ItemArray[4].ToString();
+                return View("~/Views/Profile/ProfileEdit.cshtml", user);
+            }
+
+            return View("~/Views/Login/UpdateProfiePicture.cshtml");
+        }
+        [HttpPost]
+        public ActionResult UpdateProfiePicture(User user)
+        {
+            string fileName = "";
+            string filePath = "";
+            var file = user.File[0];
+            string query = "";
+            try
+            {
+                if (file != null && file.ContentLength > 0)
+                {
+                    fileName = Path.GetFileName(file.FileName);
+                    filePath = Path.Combine(Server.MapPath("~/images"), fileName);
+                    file.SaveAs(filePath);
+                    string toSave = "~/images/" + fileName;
+
+
+                    query = "UPDATE USERS SET photo = '" + toSave + "' WHERE USERNAME = '" + Session["username"].ToString() + "'";
+
+                }
                 
+            }
+            catch
+            {
+
 
             }
 
@@ -255,15 +327,15 @@ namespace ReadingCat.Controllers
 
         }
 
-       
+
         private void GetTotalReaderCount(int id)
         {
-             string query = "SELECT COUNT (USERID) FROM ReadLog WHERE BOOKID IN (SELECT BOOKID FROM BOOKS WHERE USERID = " + id + ")";
+            string query = "SELECT COUNT (USERID) FROM ReadLog WHERE BOOKID IN (SELECT BOOKID FROM BOOKS WHERE USERID = " + id + ")";
             DatabaseModel databaseModel = new DatabaseModel();
-            
+
             DataSet dataSet = new DataSet();
             dataSet = databaseModel.selectFunction(query);
-            if(dataSet.Tables[0].Rows.Count>0)
+            if (dataSet.Tables[0].Rows.Count > 0)
             {
                 loginAndBookList.loginModel.totalViews = Convert.ToInt32(dataSet.Tables[0].Rows[0].ItemArray[0]);
             }
@@ -293,7 +365,7 @@ namespace ReadingCat.Controllers
         private void GetFollowingState(int id)
         {
             int follower = (int)System.Web.HttpContext.Current.Session["Id"];
-            string query = "SELECT *FROM FOLLOW WHERE follower = " + follower + " AND following ="+ id;
+            string query = "SELECT *FROM FOLLOW WHERE follower = " + follower + " AND following =" + id;
             DataSet dataset = new DataSet();
             DatabaseModel databaseModel = new DatabaseModel();
             dataset = databaseModel.selectFunction(query);
@@ -306,12 +378,12 @@ namespace ReadingCat.Controllers
         {
             int follower = (int)System.Web.HttpContext.Current.Session["Id"];
             string query = "DELETE FROM FOLLOW WHERE follower = " + follower + " AND following =" + id;
-            
+
             DatabaseModel databaseModel = new DatabaseModel();
             databaseModel.insert(query);
 
             return RedirectToAction("Profile", "Profile", new { @id = id });
-            
+
         }
         //This method is responsible for getting the library, published list, profile picture
         //username, bio, preferred tags and reccommendations based on the tags of the guest user

@@ -12,6 +12,7 @@ namespace ReadingCat.ViewModel
             listOfBooks = new List<List<Books>>();
             recommendation = new List<List<Books>>();
             tagList = new List<Tags>();
+            followRecommendation = new List<User>();
             initializeList();
         }
         public DatabaseModel databaseModel { get; set; }
@@ -20,7 +21,8 @@ namespace ReadingCat.ViewModel
         public List<Books> library { get; set; }
         public List<Books> publishedStories { get; set; }
         public List<List<Books>> recommendation { get; set; }
-       
+        public List<User> followRecommendation { get; set; }
+
         public List<Tags> tagList { get; set; }
         private void initializeList()
         {

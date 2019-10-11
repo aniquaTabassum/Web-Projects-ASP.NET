@@ -80,22 +80,43 @@
     <div class="row">
 
         <div class="col-md-2">
-            <!--load profile image here-->
-            @{
-                var img = Model.loginModel.path;
-                if (img.IsEmpty())
-                {
-                    <img src="~/images/profile.png" class="profile" alt=" Image" style="width:200px;height:200px;border:solid;border-color:coral;" />
+            <div class="item">
+                <div class="pad15">
+                    <div class="hoverdp">
+                        @{
+                            var img = Model.loginModel.path;
+                            if (img.IsEmpty())
+                            {
+                                <img src="~/images/profile.png" class="profile" alt=" Image" style="width:200px;height:200px;border:solid;border-color:coral;" />
 
-                }
-                else
-                {
-                    <img src="@Url.Content(img)" class="profile" alt=" Image" style="width:200px;height:200px;border:solid;border-color:coral;" />
-                }
-            }
+                            }
+                            else
+                            {
+                                <img src="@Url.Content(img)" class="profile" alt=" Image" style="width:200px;height:200px;border:solid;border-color:coral;" />
+                            }
+                        }
+                    <div class="middle">
+                        <div class="text" onclick="location.href = '@Url.Action("UpdateProfiePicture","Profile", new {@id = (int)System.Web.HttpContext.Current.Session["Id"] })'">Change Picture</div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
 
         </div>
+        <!--load profile image here-->
+        <!--  @{
+        /*  var img = Model.loginModel.path;
+          if (img.IsEmpty())
+          {
+              <img src="~/images/profile.png" class="profile" alt=" Image" style="width:200px;height:200px;border:solid;border-color:coral;" />
 
+          }
+          else
+          {
+              <img src="@Url.Content(img)" class="profile" alt=" Image" style="width:200px;height:200px;border:solid;border-color:coral;" />
+          }*/
+      } -->
         <div class="col-md-4" style="">
             <h1 style="font-weight:bold;margin-top:85px;margin-left:100px;"> @Model.loginModel.username </h1>
             <h5 style="margin-left:100px;"> @Model.loginModel.bio</h5>
@@ -120,17 +141,17 @@
                 }
                 else
                 {
-        <div class="ddown">
-            <button class="dbtn">Unfollow <i class="fa fa-caret-down"></i></button>
-            <div class="ddown-content">
-                <a href="@Url.Action("Unfollow", "Profile", new { @id  = Model.loginModel.userid})">Unfollow</a>
-                <a href="#">Block</a>
-               
-            </div>
-        </div>
-                
+                    <div class="ddown">
+                        <button class="dbtn">Unfollow <i class="fa fa-caret-down"></i></button>
+                        <div class="ddown-content">
+                            <a href="@Url.Action("Unfollow", "Profile", new { @id  = Model.loginModel.userid})">Unfollow</a>
+                            <a href="#">Block</a>
+
+                        </div>
+                    </div>
+
+                }
             }
-        }
         </div>
 
 
