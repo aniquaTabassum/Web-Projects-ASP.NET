@@ -14,11 +14,14 @@ namespace ReadingCat.Models
         }
         public int userid { get; set; }
 
+        [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [Display(Name = "username")]
         public string username { get; set; }
 
         [Required]
         [EmailAddress(ErrorMessage = "Please enter a valid email ID")]
+        [Display(Name = "Email Address")]
         public string useremail { get; set; }
         public string bio { get; set; }
 

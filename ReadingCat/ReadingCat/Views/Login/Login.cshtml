@@ -20,9 +20,9 @@
             @using (Html.BeginForm("Login", "Login", FormMethod.Post))
             {
                 <form class="login-form">
-                    @Html.EditorFor(model => model.LoginModel.username, new { htmlAttributes = new { @class = "login.css", @placeholder = "username" } })
+                    @Html.EditorFor(model => model.LoginModel.username, new { htmlAttributes = new { @class = "login.css", @placeholder = "username", @required = true } })
                     @Html.ValidationMessageFor(model => model.LoginModel.username);
-                    @Html.PasswordFor(model => model.LoginModel.password, new { htmlAttributes = new { @class = "login.css", @placeholder = "password", @Autocomplete = "off" } })
+                    @Html.PasswordFor(model => model.LoginModel.password, new { htmlAttributes = new { @class = "login.css", @placeholder = "password", @Autocomplete = "off", @required = true } })
 
                     @Html.ValidationMessageFor(model => model.LoginModel.password);
                     <div class="form-submit">

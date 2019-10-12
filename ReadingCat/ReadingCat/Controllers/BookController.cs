@@ -49,6 +49,7 @@ namespace ReadingCat.Controllers
             {
                 books.bookName = dataSet.Tables[0].Rows[0].ItemArray[1].ToString();
                 books.userId = Convert.ToInt32(dataSet.Tables[0].Rows[0].ItemArray[2]);
+                books.rating = Convert.ToInt32(dataSet.Tables[0].Rows[0].ItemArray[3]);
                 books.bookCover = dataSet.Tables[0].Rows[0].ItemArray[4].ToString();
                 books.summary = dataSet.Tables[0].Rows[0].ItemArray[5].ToString();
             }
@@ -219,6 +220,16 @@ namespace ReadingCat.Controllers
             }
         }
 
+
+        public void Rating(int id, int star)
+        {
+           
+                   // string query = "insert into reads(rating) Values(" + star + ") where MangaID=" + id + " AND userid=" + currentUser.ID + "";
+                    //string query = "update reads set rating=" + star + " where mangaid=" + id + " and userid=" + currentUser.ID;
+              
+
+          
+        }
 
         //This method is responsible for combining all the details of the book
         //that are obtained from different database queries

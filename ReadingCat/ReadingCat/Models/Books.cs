@@ -1,6 +1,6 @@
 ﻿
 using System.Collections.Generic;
-
+using System.ComponentModel.DataAnnotations;
 
 namespace ReadingCat.Models
 {
@@ -14,14 +14,26 @@ namespace ReadingCat.Models
             currentComment = new Comment();
         }
         public int bookId { get; set; }
+
+        [Required]
+        [StringLength(30, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 10)]
+        [Display(Name = "Book Name")]
         public string bookName { get; set; }
         public int userId { get; set; }
         public int rating { get; set; }
         public string bookCover { get; set; }
         public int inLibrary { get; set; }
         public int addToLibrary { get; set; }
+
+        [Required]
+        [StringLength(500, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 50)]
+        [Display(Name = "Description")]
         public string summary { get; set; }
         public string author { get; set; }
+
+        
+        [Required]
+        [Display(Name = "Genre")]
         public string tag { get; set; }
         public int readCount { get; set; }
        // public int reviewing { get; set; }
