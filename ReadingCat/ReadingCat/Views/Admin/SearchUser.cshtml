@@ -14,38 +14,54 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="~/css/bookdetails.css">
+   
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
 
     .footercontainer{
         display : none;
     }
+    .box {
+    background-color:white;
+    padding: 20px;
+    box-shadow: 5px 10px 8px 10px #c7c7c7;
+    width: 600px;
+    height: 300px;
+    margin: 10px auto;
+    padding-right: 200px;
+    font-family: DejaVu Sans Mono, monospace;
+    margin-top:200px;
+}
+    .body{
+         background-image:url(catpattern.png);
+    background-size:cover;
+    }
 </style>
 </head>
 <body>
     <div class="box">
-        <div class="col-2" style="font-family : Arial;">
+        <div class="row" style="margin-top:80px;">
+            <div class="col-md-12" style="font-size : 15px;">
             <div class="input-group">
-                @using (Html.BeginForm("UserDetails", "Admin", FormMethod.Post))
+                @using (Html.BeginForm("UserList", "Admin", FormMethod.Post))
                 {
-                    <div class="col-2" style="font-family : Arial;">
+                    <div class="col-md-6" style="font-family : Arial;">
                         <div class="input-group">
-                            <label class="label">Password</label>
-                            @Html.EditorFor(model => model.username, new { htmlAttributes = new { @class = "input--style-4" } })
+
+                            @Html.EditorFor(model => model.username, new { htmlAttributes = new { @class = "input--style-4",@style="width:1000px;border-style:double; height: 50px; margin-left : 10px;", @placeholder = "search user" } })
 
                             @Html.ValidationMessageFor(model => model.username, "", new { @class = "text-danger" })
                         </div>
 
                     </div>
-
-                    <button type="submit" value="Submit" class="submit" id="submit" name="submit">Search</button>
-                }
+                <div class="col-md-12" style="font-size : 15px; font-family : Arial;"><button type="submit" value="Submit" class="btn btn-primary" id="submit" name="submit" style="width:100px; height: 50px; margin-left: 200px; margin-top: 20px; ">Search</button>
+            </div>    }
 
             </div>
         </div>
            
     </div>
+        </div>
 
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

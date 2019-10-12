@@ -9,8 +9,6 @@ h1{
 
 #chapter {
     float: right;
-    position: -webkit-sticky;
-    position: sticky;
     top: 0;
     margin-right: 70px;
     margin-bottom: 30px;

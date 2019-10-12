@@ -220,6 +220,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Views\Admin\catpattern.png" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -251,9 +252,11 @@
     <Content Include="Views\Approve\Approve.cshtml" />
     <Content Include="Views\Approve\ViewUnapprovedBooks.cshtml" />
     <Content Include="Views\Admin\SearchUser.cshtml" />
-    <Content Include="Views\Admin\UserDetails.cshtml" />
+    <Content Include="Views\Admin\UserList.cshtml" />
     <Content Include="Views\Admin\Approve.cshtml" />
     <Content Include="Views\Admin\ViewUnapprovedBooks.cshtml" />
+    <Content Include="Views\Admin\AddNewGenre.cshtml" />
+    <Content Include="Views\Admin\UserDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,6 +1,6 @@
 ﻿@model ReadingCat.Models.User
 @{
-     Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <!DOCTYPE html>
@@ -46,9 +46,58 @@
                     }
                 }
             </div>
+
+            <div class="row">
+                <div class="col-md-12">
+
+                    <div class="table-wrapper-scroll-y my-custom-scrollbar">
+
+                        <table class="table table-bordered table-striped mb-0">
+                            <thead>
+                                <tr>
+                                    <th scope="col" style="font-size:15px;">Attributes</th>
+                                    <th scope="col">Details</th>
+
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+
+
+                                    <td style="font-size : 15px;"> Username</a></td>
+
+                                    <td style="font-size : 15px;"><a href="@Url.Action("Profile", "Profile", new { @id = Model.userid })"> @Model.username</a></td>
+
+                                    
+
+                                </tr>
+
+                                <tr>
+
+                                   
+
+                                    <td style="font-size : 15px;">Email ID</a></td>
+
+                                    <td style="font-size : 15px;"> @Model.useremail</a></td>
+
+                                  
+
+                                </tr>
+
+                            </tbody>
+
+
+
+                        </table>
+
+                    </div>
+                </div>
+            </div>
         </div>
 
-        
+
     </div>
 
 

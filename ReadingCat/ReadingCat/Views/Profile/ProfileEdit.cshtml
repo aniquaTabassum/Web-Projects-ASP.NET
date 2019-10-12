@@ -59,8 +59,8 @@
                     {
                         <div class="col-2" style="font-family : Arial;">
                             <div class="input-group">
-                                <label class="label">Bio</label>
-                                @Html.EditorFor(model => model.bio, new { htmlAttributes = new { @class = "input--style-4" } })
+                                <label class="label" style="font-weight:bold;">Bio</label>
+                                @Html.EditorFor(model => model.bio, new { htmlAttributes = new { @class = "input--style-4", @style="width:500px;" } })
 
                                 @Html.ValidationMessageFor(model => model.bio, "", new { @class = "text-danger" })
                             </div>
@@ -70,7 +70,8 @@
                             <div class="col-2" style="font-family : Arial;">
                                 <div class="input-group">
                                     <label class="label">Password</label>
-                                    @Html.PasswordFor(model => model.password, new { htmlAttributes = new { @class = "input--style-4" } })
+                                    @Html.PasswordFor(model => model.password, new { htmlAttributes = new {@style="border-style:double;" } })
+                                    <hr/>
 
                                     @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
                                 </div>

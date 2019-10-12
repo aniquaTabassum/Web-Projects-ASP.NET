@@ -1,6 +1,7 @@
 ﻿using ReadingCat.Models;
 using ReadingCat.ViewModel;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Web.Mvc;
 
@@ -56,7 +57,16 @@ namespace ReadingCat.Controllers
 
         }
 
-        [HttpGet]
+        [HttpPost]
+        public ActionResult UserList(User id)
+        {
+
+            List<User> user = new List<User>();
+            GetUserList(user, id.username);
+            return View(user);
+
+        }
+       
         public ActionResult UserDetails(string id)
         {
 
@@ -65,13 +75,34 @@ namespace ReadingCat.Controllers
             return View(user);
 
         }
-        [HttpPost]
-        public ActionResult UserDetails(User id)
-        {
 
-            User user = new User();
-            GetUserDetails(user, id.username);
-            return View(user);
+        [HttpGet]
+        public ActionResult AddNewGenre()
+        {       
+            return View();
+        }
+        [HttpPost]
+        public ActionResult AddNewGenre(Tags id)
+        {
+            List<string> listOfTags = new List<string>();
+            string query = "SELECT *FROM TAGS";
+            DataSet dataSet = new DataSet();
+            DatabaseModel databaseModel = new DatabaseModel();
+            dataSet = databaseModel.selectFunction(query);
+            if(dataSet.Tables[0].Rows.Count>0)
+            {
+                for(int i=0;i<dataSet.Tables[0].Rows.Count;i++)
+                {
+                    listOfTags.Add(dataSet.Tables[0].Rows[i].ItemArray[0].ToString());
+                }
+            }
+
+            if(!listOfTags.Contains(id.tagName))
+            {
+                query = "INSERT INTO TAGS VALUES ('" + id.tagName + "')";
+                databaseModel.insert(query);
+            }
+            return View();
 
         }
 
@@ -81,23 +112,53 @@ namespace ReadingCat.Controllers
             String query = "UPDATE USERS SET ISADMIN = 1 WHERE USERNAME = '" + user.username + "'";
             DatabaseModel databaseModel = new DatabaseModel();
             databaseModel.update(query);
-            return RedirectToAction("UserDetails", new { @id = user.username });
+            return RedirectToAction("UserList", new { @id = user.username });
         }
+
+        
         private void GetUserDetails(User user, string userName)
         {
-            string query = "SELECT USERNAME, PHOTO, ISADMIN FROM USERS WHERE USERNAME = '" + userName+"'";
+            string query = "SELECT USERNAME, PHOTO, ISADMIN, USERID, USEREMAIL FROM USERS WHERE USERNAME = '" + userName+"'";
             DataSet dataSet = new DataSet();
             DatabaseModel databaseModel = new DatabaseModel();
             dataSet = databaseModel.selectFunction(query);
             if(dataSet.Tables[0].Rows.Count > 0)
             {
-                user.username = dataSet.Tables[0].Rows[0].ItemArray[0].ToString();
-                user.paths = dataSet.Tables[0].Rows[0].ItemArray[1].ToString();
-                if(String.IsNullOrEmpty(user.paths))
+                
+                    
+                    user.username = dataSet.Tables[0].Rows[0].ItemArray[0].ToString();
+                    user.paths = dataSet.Tables[0].Rows[0].ItemArray[1].ToString();
+                    if (String.IsNullOrEmpty(user.paths))
+                    {
+                        user.paths = "~/images/profile.png";
+                    }
+                    user.isAdmin = Convert.ToInt32(dataSet.Tables[0].Rows[0].ItemArray[2]);
+                    user.userid = Convert.ToInt32(dataSet.Tables[0].Rows[0].ItemArray[3]);
+                    user.useremail = dataSet.Tables[0].Rows[0].ItemArray[4].ToString();
+
+            }
+        }
+
+        private void GetUserList(List<User> user, string userName)
+        {
+            string query = "SELECT USERNAME, PHOTO, ISADMIN FROM USERS WHERE USERNAME LIKE '%" + userName + "%'";
+            DataSet dataSet = new DataSet();
+            DatabaseModel databaseModel = new DatabaseModel();
+            dataSet = databaseModel.selectFunction(query);
+            if (dataSet.Tables[0].Rows.Count > 0)
+            {
+                for (int i = 0; i < dataSet.Tables[0].Rows.Count; i++)
                 {
-                    user.paths = "~/images/profile.png";
+                    User userToAdd = new User();
+                    userToAdd.username = dataSet.Tables[0].Rows[i].ItemArray[0].ToString();
+                    userToAdd.paths = dataSet.Tables[0].Rows[i].ItemArray[1].ToString();
+                    if (String.IsNullOrEmpty(userToAdd.paths))
+                    {
+                        userToAdd.paths = "~/images/profile.png";
+                    }
+                    userToAdd.isAdmin = Convert.ToInt32(dataSet.Tables[0].Rows[i].ItemArray[2]);
+                    user.Add(userToAdd);
                 }
-                user.isAdmin = Convert.ToInt32(dataSet.Tables[0].Rows[0].ItemArray[2]);
             }
         }
         //This method is responsible for retrieving the unique booklist from the database
