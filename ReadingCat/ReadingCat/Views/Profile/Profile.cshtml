@@ -56,14 +56,15 @@
 
 .ddown:hover .ddown-content {display: block;}
 
-.ddown:hover .dbtn {background-color: #3e8e41;}  
-.down {
-  border: solid black;
-  border-width: 0 3px 3px 0;
-  display: inline-block;
-  padding: 3px;
-   transform: rotate(45deg);
-  -webkit-transform: rotate(45deg);
+.ddown:hover .dbtn {background-color: #3e8e41;}
+        .down {
+            border: solid black;
+            border-width: 0 3px 3px 0;
+            display: inline-block;
+            padding: 3px;
+            transform: rotate(45deg);
+            -webkit-transform: rotate(45deg);
+        }
         
     </style>
 
@@ -72,7 +73,7 @@
 
 </head>
 <body>
-
+    @Html.Raw(TempData["write"]);
 
     <br />
     <br />
@@ -95,9 +96,9 @@
                                 <img src="@Url.Content(img)" class="profile" alt=" Image" style="width:200px;height:200px;border:solid;border-color:coral;" />
                             }
                         }
-                    <div class="middle">
-                        <div class="text" onclick="location.href = '@Url.Action("ProfileEdit1","Profile", new {@id = (int)System.Web.HttpContext.Current.Session["Id"] })'">Change Picture</div>
-                    </div>
+                        <div class="middle">
+                            <div class="text" onclick="location.href = '@Url.Action("ProfileEdit1","Profile", new {@id = (int)System.Web.HttpContext.Current.Session["Id"] })'">Change Picture</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -106,17 +107,17 @@
         </div>
         <!--load profile image here-->
         <!--  @{
-        /*  var img = Model.loginModel.path;
-          if (img.IsEmpty())
-          {
-              <img src="~/images/profile.png" class="profile" alt=" Image" style="width:200px;height:200px;border:solid;border-color:coral;" />
+          /*  var img = Model.loginModel.path;
+            if (img.IsEmpty())
+            {
+                <img src="~/images/profile.png" class="profile" alt=" Image" style="width:200px;height:200px;border:solid;border-color:coral;" />
 
-          }
-          else
-          {
-              <img src="@Url.Content(img)" class="profile" alt=" Image" style="width:200px;height:200px;border:solid;border-color:coral;" />
-          }*/
-      } -->
+            }
+            else
+            {
+                <img src="@Url.Content(img)" class="profile" alt=" Image" style="width:200px;height:200px;border:solid;border-color:coral;" />
+            }*/
+        } -->
         <div class="col-md-4" style="">
             <h1 style="font-weight:bold;margin-top:85px;margin-left:100px;"> @Model.loginModel.username </h1>
             <h5 style="margin-left:100px;"> @Model.loginModel.bio</h5>

@@ -5,6 +5,7 @@ using ReadingCat.ViewModel;
 using ReadingCat.Models;
 using System.Data;
 using System.Data.SqlClient;
+using System.Collections.Generic;
 
 namespace ReadingCat.Controllers
 {
@@ -12,9 +13,20 @@ namespace ReadingCat.Controllers
     {
         BooksAndDatabase booksAndDatabase = new BooksAndDatabase();
         [HttpGet]
-        public ActionResult NewStory()
+        public ActionResult AddBookTag()
         {
-            return View();
+                    
+            Tags tags = new Tags();
+            GetListOfTags(tags);
+            return View(tags);
+        }
+
+        
+        public ActionResult NewStory(string id)
+        {
+            NewStoryInfo newStoryInfo = new NewStoryInfo();
+            newStoryInfo.tags.tagName = id;
+            return View(newStoryInfo);
         }
         // GET: Write
         [HttpPost]
@@ -83,6 +95,7 @@ namespace ReadingCat.Controllers
             int bookId = (int)System.Web.HttpContext.Current.Session["BookId"];
             chapters.bookId = bookId;
             InsertChapter(bookId, title, text);
+            TempData["write"] = "<script> alert('Your chapter has been inserted');</script>";
             return RedirectToAction("Profile", "Profile", new { @id = (int)System.Web.HttpContext.Current.Session["Id"]});
         }
 
@@ -119,6 +132,20 @@ namespace ReadingCat.Controllers
                 sqlCommand.Parameters.AddWithValue("@text", text);
                 sqlCommand.Parameters.AddWithValue("@approved", 0);
                 sqlCommand.ExecuteNonQuery();
+            }
+        }
+
+        private void GetListOfTags(Tags tags)
+        {
+            string query = "SELECT TAGNAME FROM TAGS";
+            DataSet dataSet = new DataSet();
+            DatabaseModel databaseModel = new DatabaseModel();
+            dataSet = databaseModel.selectFunction(query);
+            for(int i = 0;i< dataSet.Tables[0].Rows.Count; i++)
+            {
+                Tags tagToAdd = new Tags();
+                tagToAdd.tagName = dataSet.Tables[0].Rows[i].ItemArray[0].ToString();
+                tags.listOfTags.Add(tagToAdd);
             }
         }
     }

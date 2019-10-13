@@ -257,6 +257,7 @@
     <Content Include="Views\Admin\ViewUnapprovedBooks.cshtml" />
     <Content Include="Views\Admin\AddNewGenre.cshtml" />
     <Content Include="Views\Admin\UserDetails.cshtml" />
+    <Content Include="Views\Write\AddBookTag.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -54,7 +54,7 @@ namespace ReadingCat.Controllers
                 Session["username"] = model.LoginModel.username;
                 Session["bio"] = model.LoginModel.bio;
                 Session["Picture"] = loginAndBookList.loginModel.path;
-                if(isAdmin == 1)
+                if (isAdmin == 1)
                 {
                     Session["admin"] = 1;
                     Session["review"] = 0;
@@ -75,6 +75,7 @@ namespace ReadingCat.Controllers
                 }
             }
             else
+                TempData["msg"] = "<script> alert('Wrong Password!');</script>";
                 return View();
         }
 

@@ -102,7 +102,9 @@ namespace ReadingCat.Controllers
                 query = "INSERT INTO TAGS VALUES ('" + id.tagName + "')";
                 databaseModel.insert(query);
             }
-            return View();
+            TempData["tag"] = "<script> alert('Added the new tag');</script>";
+            Tags tags = new Tags();
+            return View(tags);
 
         }
 
