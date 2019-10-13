@@ -16,7 +16,7 @@ namespace ReadingCat.Models
         public int bookId { get; set; }
 
         [Required]
-        [StringLength(30, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 10)]
+        [StringLength(30, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 1)]
         [Display(Name = "Book Name")]
         public string bookName { get; set; }
         public int userId { get; set; }

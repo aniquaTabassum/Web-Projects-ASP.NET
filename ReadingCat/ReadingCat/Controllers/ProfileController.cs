@@ -289,6 +289,11 @@ namespace ReadingCat.Controllers
 
         public ActionResult AddFollower(int id)
         {
+            if(Session["Id"] == null)
+            {
+                TempData["notloggedin"] = "<script> alert('Please Login To Continue');</script>";
+                return RedirectToAction("Profile", "Profile", new { @id = id});
+            }
             int follower = (int)System.Web.HttpContext.Current.Session["Id"];
             string query = "INSERT INTO FOLLOW VALUES (" + follower + ", " + id + ")";
             DatabaseModel database = new DatabaseModel();
@@ -335,14 +340,23 @@ namespace ReadingCat.Controllers
         //username, bio, preferred tags and reccommendations based on the tags of the guest user
         private void CombineProfileInfo(int id)
         {
-            GetReadList(id);
             GetPublishedList(id);
-            GetUserInformation(id);
-            GetTags(id);
-            CreateRecommendation(id);
-            GetTotalReaderCount(id);
             GetFollowerCount(id);
-            GetFollowingState(id);
+            GetTotalReaderCount(id);
+            if (Session["Id"] != null)
+            {
+                GetReadList(id);
+                GetUserInformation(id);
+                GetTags(id);
+                CreateRecommendation(id);
+                GetFollowingState(id);
+                
+            }
+            else
+            {
+                loginAndBookList.loginModel.isFollowing = 0;
+            }
+            
         }
 
        

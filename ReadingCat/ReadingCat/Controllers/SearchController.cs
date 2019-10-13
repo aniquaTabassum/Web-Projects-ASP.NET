@@ -15,6 +15,7 @@ namespace ReadingCat.Controllers
         {
             string searchString = id;
             searchString.Trim();
+           
             string[] arrayOfString = searchString.Split(new char[0]);
             if (arrayOfString.Length == 1)
             {

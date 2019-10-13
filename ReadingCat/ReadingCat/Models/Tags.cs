@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.ComponentModel.DataAnnotations;
 
 namespace ReadingCat.Models
 {
@@ -11,6 +11,8 @@ namespace ReadingCat.Models
             listOfTags = new List<Tags>();
         }
         public int tagId { get; set; }
+
+        [Required]
         public string tagName { get; set; }
         public Boolean isSelected { get; set; }
 

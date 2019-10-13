@@ -12,8 +12,7 @@ namespace ReadingCat.Models
         public DataSet selectFunction(string command)
         {
             dataset = new DataSet();
-            string realPassword = "";
-            string paswordFromUser = "";
+            
             using (SqlConnection sqlConnection = new SqlConnection(connectionString))
             {
                 sqlConnection.Open();
