@@ -8,8 +8,10 @@ namespace ReadingCat.ViewModel
         {
             searchByTag = new List<Books>();
             searchByName = new List<Books>();
+            searchByUserName = new List<User>();
         }
         public List<Books> searchByTag { get; set; }
         public List<Books> searchByName { get; set; }
+        public List<User> searchByUserName { get; set; }
     }
 }

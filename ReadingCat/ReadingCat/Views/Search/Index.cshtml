@@ -94,6 +94,47 @@
     <link rel="stylesheet" href="~/css/home.css">
 </head>
 <body>
+    @if (Model.searchByUserName.Count >= 1)
+    {
+        <h3 class="headingprofile2" style="margin-left:25px;font-weight:bold;color:black;font-size:25px;">Search Results By Username</h3>
+        <div class="container">
+            <div class="row">
+                <div class="MultiCarousel" data-items="1,3,5,6" data-slide="1" id="MultiCarousel" data-interval="1000">
+                    <div class="MultiCarousel-inner">
+                        @for (int i = 0; i < Model.searchByUserName.Count; i++)
+                        {
+                            <div class="item">
+                                <div class="pad15">
+                                    <div class="hovereffect">
+
+
+                                        @if (!string.IsNullOrEmpty(Model.searchByUserName[i].paths))
+                                        {
+                                            <img src="@Url.Content(Model.searchByUserName[i].paths)" class="img-responsive" />
+                                        }
+                                        else
+                                        {
+                                            <img src="~/images/pleasework.jpg" class="profile" alt=" Image" style="width:200px;height:200px;border:solid;border-color:coral;" />
+                                        }
+                                        <div class="overlay">
+
+                                            <a class="info" href="@Url.Action("Profile", "Profile", new { @id = Model.searchByUserName[i].userid })">@Model.searchByUserName[i].username</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <button class="btn btn-primary leftLst"><</button>
+                    <button class="btn btn-primary rightLst">></button>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <h3 class="headingprofile2" style="margin-left:25px;font-weight:bold;color:black;font-size:25px;">No Results By Tag</h3>
+    }
 
     @if (Model.searchByTag.Count >= 1)
     {

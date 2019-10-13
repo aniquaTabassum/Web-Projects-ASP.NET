@@ -14,6 +14,11 @@ namespace ReadingCat.Controllers
         Books books = new Books();
         public ActionResult ReadBook(int id)
         {
+            if (Session["Id"] == null)
+            {
+                TempData["notloggedin"] = "<script> alert('Please Login To Continue');</script>";
+                return RedirectToAction("Login", "Login");
+            }
             GetChapter(id);
             GetAllChapters(books.bookId);
             GetBookName(books.bookId);

@@ -73,8 +73,8 @@
 
 </head>
 <body>
-    @Html.Raw(TempData["write"]);
-
+    @Html.Raw(TempData["write"])
+    @Html.Raw(TempData["password"]);
     <br />
     <br />
 
@@ -83,7 +83,7 @@
         <div class="col-md-2">
             <div class="item">
                 <div class="pad15">
-                    <div class="hoverdp">
+                    <div>
                         @{
                             var img = Model.loginModel.path;
                             if (img.IsEmpty())
@@ -105,19 +105,7 @@
 
 
         </div>
-        <!--load profile image here-->
-        <!--  @{
-          /*  var img = Model.loginModel.path;
-            if (img.IsEmpty())
-            {
-                <img src="~/images/profile.png" class="profile" alt=" Image" style="width:200px;height:200px;border:solid;border-color:coral;" />
 
-            }
-            else
-            {
-                <img src="@Url.Content(img)" class="profile" alt=" Image" style="width:200px;height:200px;border:solid;border-color:coral;" />
-            }*/
-        } -->
         <div class="col-md-4" style="">
             <h1 style="font-weight:bold;margin-top:85px;margin-left:100px;"> @Model.loginModel.username </h1>
             <h5 style="margin-left:100px;"> @Model.loginModel.bio</h5>
@@ -169,12 +157,7 @@
         @if ((int)System.Web.HttpContext.Current.Session["Id"] == Model.loginModel.userid && Model.booksAndDatabase.listOfBooks[0].Count > 0)
         {
 
-            <h4 class="headingprofile2" style=margin-left: 25px;
-                font-weight: bold;
-                color: black;
-                font-size: 25px;">
-                Library
-            </h4>
+            <h4 class="headingprofile2" style="margin-left:25px;font-weight:bold;color:black;font-size:25px;">Library</h4>
             <div class="container">
                 <div class="row">
                     <div class="MultiCarousel" data-items="1,3,5,6" data-slide="1" id="MultiCarousel" data-interval="1000">

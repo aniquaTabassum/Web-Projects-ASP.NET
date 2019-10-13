@@ -29,6 +29,11 @@ namespace ReadingCat.Controllers
         [HttpPost]
         public ActionResult BookDetails(Books passedBook)
         {
+            if (Session["Id"] == null)
+            {
+                TempData["notloggedin"] = "<script> alert('Please Login To Continue');</script>";
+                return RedirectToAction("BookDetails", "Book", new { @id = passedBook.bookId });
+            }
             string getComment = passedBook.currentComment.comment;
             int commenter = (int)System.Web.HttpContext.Current.Session["Id"];
             int bookCommented = (int)System.Web.HttpContext.Current.Session["CurrentBookId"];
@@ -49,13 +54,16 @@ namespace ReadingCat.Controllers
             {
                 books.bookName = dataSet.Tables[0].Rows[0].ItemArray[1].ToString();
                 books.userId = Convert.ToInt32(dataSet.Tables[0].Rows[0].ItemArray[2]);
-                books.rating = Convert.ToInt32(dataSet.Tables[0].Rows[0].ItemArray[3]);
+               // books.rating = Convert.ToInt32(dataSet.Tables[0].Rows[0].ItemArray[3]);
                 books.bookCover = dataSet.Tables[0].Rows[0].ItemArray[4].ToString();
                 books.summary = dataSet.Tables[0].Rows[0].ItemArray[5].ToString();
             }
 
             //getting information about weather the book is in the user's library or not
-            GetLibraryState(id);
+            if (Session["Id"] != null)
+            {
+                GetLibraryState(id);
+            }
         }
 
 
@@ -83,6 +91,11 @@ namespace ReadingCat.Controllers
         //This method is responsible for adding the book to the user's library
         public ActionResult AddBook(int id)
         {
+            if(Session["Id"] == null)
+            {
+                TempData["notloggedin"] = "<script> alert('Please Login To Continue');</script>";
+                return RedirectToAction("BookDetails", "Book", new { @id = id });
+            }
             int userId = (int)System.Web.HttpContext.Current.Session["Id"];
             string query = "INSERT INTO READLOG VALUES (" + userId + ", " + id + ")";
             DataSet dataSet = new DataSet();
@@ -172,6 +185,7 @@ namespace ReadingCat.Controllers
         //This method is responsible for inserting the new comment into the database
         private void InsertComment(string comment, int commenter, int bookCommented)
         {
+            
             string connectionString = @"Data Source = DESKTOP-BKFDVUR\SQLEXPRESS; Initial Catalog = ReadingCat; Integrated Security = True";
             using (SqlConnection sqlConnection = new SqlConnection(connectionString))
             {

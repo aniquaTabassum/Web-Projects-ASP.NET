@@ -22,6 +22,7 @@ namespace ReadingCat.Controllers
             }
 
             SearchByName(searchString);
+            SearchByUserName(searchString);
             return View(searchResults);
         }
 
@@ -61,6 +62,24 @@ namespace ReadingCat.Controllers
                     //books.rating = Convert.ToInt32(dataSet.Tables[0].Rows[i].ItemArray[3]);
                     books.bookCover = dataSet.Tables[0].Rows[i].ItemArray[4].ToString();
                     searchResults.searchByName.Add(books);
+                }
+            }
+        }
+
+        private void SearchByUserName(string searchString)
+        {
+            string query = "SELECT USERID, USERNAME, PHOTO FROM USERS WHERE USERNAME LIKE '%" + searchString + "%'";
+            DatabaseModel databaseModel = new DatabaseModel();
+            DataSet dataSet = databaseModel.selectFunction(query);
+            if (dataSet.Tables[0].Rows.Count >= 1)
+            {
+                for (int i = 0; i < dataSet.Tables[0].Rows.Count; i++)
+                {
+                    User user = new User();
+                    user.userid = Convert.ToInt32(dataSet.Tables[0].Rows[i].ItemArray[0]);
+                    user.username = dataSet.Tables[0].Rows[i].ItemArray[1].ToString();
+                    user.paths = dataSet.Tables[0].Rows[i].ItemArray[2].ToString();
+                    searchResults.searchByUserName.Add(user);
                 }
             }
         }

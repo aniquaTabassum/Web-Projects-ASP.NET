@@ -15,7 +15,11 @@ namespace ReadingCat.Controllers
         [HttpGet]
         public ActionResult AddBookTag()
         {
-                    
+            if (Session["Id"] == null)
+            {
+                TempData["notloggedin"] = "<script> alert('Please Login To Continue');</script>";
+                return RedirectToAction("Login", "Login");
+            }
             Tags tags = new Tags();
             GetListOfTags(tags);
             return View(tags);
@@ -24,14 +28,25 @@ namespace ReadingCat.Controllers
         
         public ActionResult NewStory(string id)
         {
+            if (Session["Id"] == null)
+            {
+                TempData["notloggedin"] = "<script> alert('Please Login To Continue');</script>";
+                return RedirectToAction("Login", "Login");
+            }
             NewStoryInfo newStoryInfo = new NewStoryInfo();
             newStoryInfo.tags.tagName = id;
+            Session["currentTag"] = id;
             return View(newStoryInfo);
         }
         // GET: Write
         [HttpPost]
         public ActionResult NewStory(NewStoryInfo storyInfo)
         {
+            if (Session["Id"] == null)
+            {
+                TempData["notloggedin"] = "<script> alert('Please Login To Continue');</script>";
+                return RedirectToAction("Login", "Login");
+            }
             string fileName = "";
             string filePath = "";
             var file = storyInfo.file[0];
@@ -75,6 +90,11 @@ namespace ReadingCat.Controllers
         }
         public ActionResult ViewPublished()
         {
+            if (Session["Id"] == null)
+            {
+                TempData["notloggedin"] = "<script> alert('Please Login To Continue');</script>";
+                return RedirectToAction("Login", "Login");
+            }
             int id = (int)System.Web.HttpContext.Current.Session["Id"];
             GetPublishedList(id);
 
@@ -83,6 +103,11 @@ namespace ReadingCat.Controllers
         [HttpGet]
         public ActionResult WriteStory(int id)
         {
+            if (Session["Id"] == null)
+            {
+                TempData["notloggedin"] = "<script> alert('Please Login To Continue');</script>";
+                return RedirectToAction("Login", "Login");
+            }
             Session["BookId"] = id;
             return View();
         }
@@ -95,7 +120,7 @@ namespace ReadingCat.Controllers
             int bookId = (int)System.Web.HttpContext.Current.Session["BookId"];
             chapters.bookId = bookId;
             InsertChapter(bookId, title, text);
-            TempData["write"] = "<script> alert('Your chapter has been inserted');</script>";
+            TempData["write"] = "<script> alert('Your chapter has been submitted for review');</script>";
             return RedirectToAction("Profile", "Profile", new { @id = (int)System.Web.HttpContext.Current.Session["Id"]});
         }
 

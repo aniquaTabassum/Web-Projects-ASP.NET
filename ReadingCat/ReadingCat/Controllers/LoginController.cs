@@ -3,7 +3,7 @@ using System.Web.Mvc;
 using System.Data;
 using ReadingCat.Models;
 using ReadingCat.ViewModel;
-
+using System.Collections.Generic;
 
 namespace ReadingCat.Controllers
 {
@@ -24,7 +24,14 @@ namespace ReadingCat.Controllers
             string realPassword = "";
             string paswordFromUser = "";
 
-
+            List<string> listOfUserName = new List<string>();
+            GetAllUserName(listOfUserName);
+            Boolean validUser = CheckValidUser(model.LoginModel.username, listOfUserName);
+            if(validUser == false)
+            {
+                TempData["valid"] = "<script> alert('username not recognized');</script>";
+                return RedirectToAction("Login", "Login");
+            }
             string query = "SELECT password, userid, photo, bio, isadmin FROM USERS WHERE username = '" + model.LoginModel.username + "'";
             string photo = "";
             DataSet dataSet;
@@ -32,28 +39,29 @@ namespace ReadingCat.Controllers
             databaseModel = new DatabaseModel();
             dataSet = databaseModel.selectFunction(query);
             realPassword = dataSet.Tables[0].Rows[0].ItemArray[0].ToString();
-            string bio = "";
             paswordFromUser = model.LoginModel.password;
+            Hashing hashing = new Hashing();
+            paswordFromUser = hashing.SHA512(paswordFromUser);
             if (realPassword == paswordFromUser)
             {
                 userid = Convert.ToInt32(dataSet.Tables[0].Rows[0].ItemArray[1]);
-                photo = dataSet.Tables[0].Rows[0].ItemArray[2].ToString();
-                bio = dataSet.Tables[0].Rows[0].ItemArray[3].ToString();
+               // photo = dataSet.Tables[0].Rows[0].ItemArray[2].ToString();
+               // bio = dataSet.Tables[0].Rows[0].ItemArray[3].ToString();
                 int isAdmin = Convert.ToInt32(dataSet.Tables[0].Rows[0].ItemArray[4]);
-                model.LoginModel.userid = userid;
-                model.LoginModel.path = photo;
-                model.LoginModel.bio = bio;
-                model.LoginModel.isAdmin = isAdmin;
-                LoginAndBookList loginAndBookList = new LoginAndBookList();
-                loginAndBookList.loginModel = new LoginModel();
-                loginAndBookList.loginModel = model.LoginModel;
-                loginAndBookList.loginModel.userid = userid;
-                loginAndBookList.loginModel.username = model.LoginModel.username;
-                loginAndBookList.loginModel.bio = model.LoginModel.bio;
-                Session["Id"] = loginAndBookList.loginModel.userid;
+                //model.LoginModel.userid = userid;
+                //model.LoginModel.path = photo;
+                //model.LoginModel.bio = bio;
+                //model.LoginModel.isAdmin = isAdmin;
+                //LoginAndBookList loginAndBookList = new LoginAndBookList();
+                //loginAndBookList.loginModel = new LoginModel();
+                //loginAndBookList.loginModel = model.LoginModel;
+                //loginAndBookList.loginModel.userid = userid;
+                //loginAndBookList.loginModel.username = model.LoginModel.username;
+                //loginAndBookList.loginModel.bio = model.LoginModel.bio;
+                Session["Id"] = userid;
                 Session["username"] = model.LoginModel.username;
                 Session["bio"] = model.LoginModel.bio;
-                Session["Picture"] = loginAndBookList.loginModel.path;
+                Session["Picture"] = photo;
                 if (isAdmin == 1)
                 {
                     Session["admin"] = 1;
@@ -88,6 +96,30 @@ namespace ReadingCat.Controllers
                 return true;
             else
                 return false;
+        }
+
+        private void GetAllUserName(List<string> listOfUserName)
+        {
+            string query = "SELECT USERNAME FROM USERS";
+            DataSet dataSet = new DataSet();
+            DatabaseModel databaseModel = new DatabaseModel();
+            dataSet = databaseModel.selectFunction(query);
+            for(int i=0;i<dataSet.Tables[0].Rows.Count; i++)
+            {
+                listOfUserName.Add(dataSet.Tables[0].Rows[i].ItemArray[0].ToString());
+            }
+        }
+
+        private Boolean CheckValidUser(string username,List<string> listOfUserName)
+        {
+            if(listOfUserName.Contains(username))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

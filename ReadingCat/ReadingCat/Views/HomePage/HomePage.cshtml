@@ -92,8 +92,10 @@
     </style>
 </head>
 <body>
-    @if (Model.followRecommendation.Count > 0)
+    @if (Session["Id"] != null)
     {
+        if (Model.followRecommendation.Count > 0)
+        {
         <h3 class="heading">People You May Follow</h3>
 
         <div class="container">
@@ -102,12 +104,12 @@
                     <div class="MultiCarousel-inner">
 
                         @for (int i = 0; i < Model.followRecommendation.Count; i++)
-                        {
+    {
                             <div class="item">
                                 <div class="pad15">
                                     <div class="hovereffect">
                                         @{
-                                            var userId = Model.followRecommendation[i].userid;
+        var userId = Model.followRecommendation[i].userid;
                                         }
 
                                         <img src="@Url.Content(Model.followRecommendation[i].paths) " class="img-responsive" />
@@ -118,15 +120,15 @@
                                     </div>
                                 </div>
                             </div>
-                        }
+        }
                     </div>
                     <button class="btn btn-primary leftLst"><</button>
                     <button class="btn btn-primary rightLst">></button>
                 </div>
             </div>
         </div>
-    }
-
+            }
+        }
 
     <h3 class="heading">New Release</h3>
     <h4 class="heading2">A fresh set of stories, just for you</h4>

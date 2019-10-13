@@ -129,32 +129,51 @@
 
             </div>
         </div>
-        <div class="dropdownCustom">
-            <button class="dropbtnCustom">
-                @Session["username"].ToString()
-                <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdownCustom-content">
-                <a href="@Url.Action("Profile","Profile", new {@id = (int)System.Web.HttpContext.Current.Session["Id"] })">My Profile</a>
-                <a href="@Url.Action("ProfileEdit1","Profile", new {@id = (int)System.Web.HttpContext.Current.Session["Id"] })">Settings</a>
-                <a href="@Url.Action("Login","Login")">Logout</a>
-            </div>
-        </div>
-        @if ((int)System.Web.HttpContext.Current.Session["admin"] == 1)
+        @if (Session["Id"] != null)
         {
-        <div class="dropdownCustom">
-            <button class="dropbtnCustom">
-                admin
-                <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdownCustom-content">
-                <a href="@Url.Action("SearchUser","Admin")">add admin</a>
-                <a href="@Url.Action("ViewUnapprovedBooks","Admin")">review pending</a>
-                <a href="@Url.Action("AddNewGenre","Admin")">add new tags</a>
-
+            <div class="dropdownCustom">
+                <button class="dropbtnCustom">
+                    @Session["username"].ToString()
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdownCustom-content">
+                    <a href="@Url.Action("Profile","Profile", new {@id = (int)System.Web.HttpContext.Current.Session["Id"] })">My Profile</a>
+                    <a href="@Url.Action("ProfileEdit1","Profile", new {@id = (int)System.Web.HttpContext.Current.Session["Id"] })">Settings</a>
+                    <a href="@Url.Action("Login","Login")">Logout</a>
+                </div>
             </div>
-        </div>
+
+            if ((int)System.Web.HttpContext.Current.Session["admin"] == 1)
+            {
+                <div class="dropdownCustom">
+                    <button class="dropbtnCustom">
+                        admin
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdownCustom-content">
+                        <a href="@Url.Action("SearchUser","Admin")">add admin</a>
+                        <a href="@Url.Action("ViewUnapprovedBooks","Admin")">review pending</a>
+                        <a href="@Url.Action("AddNewGenre","Admin")">add new tags</a>
+
+                    </div>
+                </div>
+            }
         }
+        else
+        {
+            <div class="dropdownCustom">
+                <button class="dropbtnCustom">
+                    Account
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdownCustom-content">
+
+                    <a href="@Url.Action("Login","Login")">Login </a>
+                    <a href="@Url.Action("Register1", "Register")">Login </a>
+                </div>
+            </div>
+        }
+
     </div>
 
 

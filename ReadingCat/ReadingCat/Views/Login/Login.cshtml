@@ -13,8 +13,10 @@
     <link rel="stylesheet" href="~/css/login.css">
 </head>
 <body>
-    @Html.Raw(TempData["msg"]);
-    @Html.Raw(TempData["complete"]);
+    @Html.Raw(TempData["msg"])
+    @Html.Raw(TempData["complete"])
+    @Html.Raw(TempData["valid"])
+    @Html.Raw(TempData["notloggedin"])
     <div class="login-page">
         <div class="form">
             <form class="register-form">

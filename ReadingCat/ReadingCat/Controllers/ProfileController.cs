@@ -33,7 +33,7 @@ namespace ReadingCat.Controllers
         //retieved from the database, such as Library, Published List and Recommendation
         BooksAndDatabase booksAndDatabase = new BooksAndDatabase();
         string pathName = "";
-
+        Hashing hashing = new Hashing();
         //This method is responsible for loading the profile of the user/guest user
         [HttpGet]
         public ActionResult Profile(int id)
@@ -87,8 +87,16 @@ namespace ReadingCat.Controllers
                     string toSave = "~/images/" + fileName;
                     if (!string.IsNullOrEmpty(user.password))
                     {
-                        query = "UPDATE USERS SET PASSWORD = '" + user.password + "', photo = '" + toSave + "', bio = '" + user.bio + "' WHERE USERNAME = '" + Session["username"].ToString() + "'";
-                        
+                        if (user.password == user.confirmPassword)
+                        {
+                            user.password = hashing.SHA512(user.password);
+                            query = "UPDATE USERS SET PASSWORD = '" + user.password + "', photo = '" + toSave + "', bio = '" + user.bio + "' WHERE USERNAME = '" + Session["username"].ToString() + "'";
+                        }
+                        else
+                        {
+                            TempData["password"] = "<script> alert('password and confirm password do not match');</script>";
+                            return View("~/Views/Profile/ProfileEdit.cshtml", user);
+                        }
                     }
                     else
                     {
@@ -99,7 +107,17 @@ namespace ReadingCat.Controllers
                 {
                     if (!string.IsNullOrEmpty(user.password))
                     {
-                        query = "UPDATE USERS SET PASSWORD = '" + user.password + "', bio = '" + user.bio + "' WHERE USERNAME = '" + Session["username"].ToString() + "'";
+                        if (user.password == user.confirmPassword)
+                        {
+                            user.password = hashing.SHA512(user.password);
+                            query = "UPDATE USERS SET PASSWORD = '" + user.password + "', bio = '" + user.bio + "' WHERE USERNAME = '" + Session["username"].ToString() + "'";
+
+                        }
+                        else
+                        {
+                            TempData["password"] = "<script> alert('password and confirm password do not match');</script>";
+                            return View("~/Views/Profile/ProfileEdit.cshtml", user);
+                        }
                     }
                     else
                     {
@@ -326,5 +344,7 @@ namespace ReadingCat.Controllers
             GetFollowerCount(id);
             GetFollowingState(id);
         }
+
+       
     }
 }
